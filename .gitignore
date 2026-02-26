@@ -1,0 +1,23 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Composer
+composer.phar
+
+# Environment
+.env
+
+# Build artifacts
+/dist/

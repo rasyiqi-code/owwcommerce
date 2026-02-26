@@ -1,0 +1,436 @@
+/*
+ * OwwCommerce Frontend — Design System & Komponen Umum
+ * 
+ * Menggunakan CSS Variables agar mudah di-override oleh tema WordPress.
+ * Tema cukup re-deklarasi variabel di :root untuk mengubah tampilan.
+ * 
+ * Contoh override di tema:
+ *   :root { --owwc-primary: #E11D48; }
+ */
+
+/* ==============================================================
+   DESIGN TOKENS (CSS Variables)
+   Override variabel ini di tema untuk kustomisasi tampilan.
+   ============================================================== */
+:root {
+    /* Warna utama */
+    --owwc-primary: #4F46E5;
+    --owwc-primary-hover: #4338CA;
+    --owwc-primary-light: rgba(79, 70, 229, 0.08);
+    --owwc-primary-ring: rgba(79, 70, 229, 0.25);
+
+    /* Warna semantik */
+    --owwc-danger: #EF4444;
+    --owwc-danger-light: #FEE2E2;
+    --owwc-success: #10B981;
+    --owwc-success-light: #D1FAE5;
+    --owwc-warning: #F59E0B;
+
+    /* Surface & background */
+    --owwc-bg: #F9FAFB;
+    --owwc-surface: #FFFFFF;
+    --owwc-border: #E5E7EB;
+    --owwc-border-hover: #D1D5DB;
+
+    /* Tipografi */
+    --owwc-text-main: #111827;
+    --owwc-text-secondary: #374151;
+    --owwc-text-muted: #6B7280;
+    --owwc-text-light: #9CA3AF;
+    --owwc-font-family: inherit;
+    --owwc-font-size-xs: 0.75rem;
+    --owwc-font-size-sm: 0.875rem;
+    --owwc-font-size-base: 1rem;
+    --owwc-font-size-lg: 1.125rem;
+    --owwc-font-size-xl: 1.25rem;
+    --owwc-font-size-2xl: 1.5rem;
+    --owwc-font-size-3xl: 2rem;
+
+    /* Spacing */
+    --owwc-space-xs: 4px;
+    --owwc-space-sm: 8px;
+    --owwc-space-md: 16px;
+    --owwc-space-lg: 24px;
+    --owwc-space-xl: 32px;
+    --owwc-space-2xl: 48px;
+
+    /* Efek visual */
+    --owwc-radius-sm: 8px;
+    --owwc-radius-md: 12px;
+    --owwc-radius-lg: 16px;
+    --owwc-radius-full: 9999px;
+    --owwc-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --owwc-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    --owwc-shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    --owwc-shadow-xl: 0 20px 40px -4px rgba(0, 0, 0, 0.1);
+    --owwc-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --owwc-transition-bounce: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ==============================================================
+   BASE — Reset ringan khusus elemen OwwCommerce
+   ============================================================== */
+[class^="owwc-"],
+[class*=" owwc-"] {
+    box-sizing: border-box;
+    font-family: var(--owwc-font-family);
+}
+
+/* ==============================================================
+   BUTTONS
+   ============================================================== */
+.owwc-btn,
+.owwc-add-to-cart-btn {
+    appearance: none;
+    background: var(--owwc-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--owwc-radius-sm);
+    padding: 12px 24px;
+    font-size: var(--owwc-font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--owwc-transition);
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--owwc-space-sm);
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.owwc-btn:hover,
+.owwc-add-to-cart-btn:hover {
+    background: var(--owwc-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--owwc-primary-ring);
+}
+
+.owwc-btn:active,
+.owwc-add-to-cart-btn:active {
+    transform: translateY(0);
+}
+
+.owwc-btn:disabled,
+.owwc-add-to-cart-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Variant: secondary / outline */
+.owwc-btn--outline {
+    background: transparent;
+    color: var(--owwc-primary);
+    border: 1.5px solid var(--owwc-primary);
+}
+
+.owwc-btn--outline:hover {
+    background: var(--owwc-primary-light);
+    box-shadow: none;
+}
+
+/* Variant: full-width */
+.owwc-btn--block {
+    width: 100%;
+}
+
+/* ==============================================================
+   FORM INPUTS
+   ============================================================== */
+.owwc-input,
+.owwc-select {
+    width: 100%;
+    padding: 12px var(--owwc-space-md);
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    background: var(--owwc-surface);
+    font-size: var(--owwc-font-size-base);
+    color: var(--owwc-text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    font-family: var(--owwc-font-family);
+}
+
+.owwc-input:focus,
+.owwc-select:focus {
+    border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+}
+
+.owwc-form-group {
+    margin-bottom: var(--owwc-space-lg);
+}
+
+.owwc-form-group label {
+    display: block;
+    margin-bottom: var(--owwc-space-sm);
+    font-weight: 600;
+    color: var(--owwc-text-main);
+    font-size: var(--owwc-font-size-sm);
+}
+
+/* Form row (2 kolom berdampingan) */
+.owwc-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--owwc-space-md);
+}
+
+@media (max-width: 480px) {
+    .owwc-form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==============================================================
+   TOAST NOTIFICATIONS
+   ============================================================== */
+.owwc-toast-container {
+    position: fixed;
+    bottom: var(--owwc-space-lg);
+    right: var(--owwc-space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--owwc-space-sm);
+    z-index: 10000;
+    pointer-events: none;
+}
+
+.owwc-toast {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-left: 4px solid var(--owwc-primary);
+    box-shadow: var(--owwc-shadow-lg);
+    border-radius: var(--owwc-radius-sm);
+    padding: 14px 20px;
+    color: var(--owwc-text-main);
+    font-size: var(--owwc-font-size-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--owwc-space-sm);
+    pointer-events: auto;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+    max-width: 360px;
+}
+
+.owwc-toast.owwc-show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.owwc-toast.success {
+    border-left-color: var(--owwc-success);
+}
+
+.owwc-toast.error {
+    border-left-color: var(--owwc-danger);
+}
+
+/* ==============================================================
+   LOADING SKELETON
+   ============================================================== */
+.owwc-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: owwc-shimmer 1.5s ease-in-out infinite;
+    border-radius: var(--owwc-radius-sm);
+}
+
+.owwc-skeleton--text {
+    height: 14px;
+    margin-bottom: 10px;
+    width: 80%;
+}
+
+.owwc-skeleton--text-sm {
+    height: 12px;
+    margin-bottom: 8px;
+    width: 60%;
+}
+
+.owwc-skeleton--box {
+    height: 60px;
+    width: 100%;
+}
+
+.owwc-skeleton--circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+@keyframes owwc-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes owwc-spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==============================================================
+   SECTION HEADING
+   ============================================================== */
+.owwc-section-title {
+    font-size: var(--owwc-font-size-2xl);
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    margin: 0 0 var(--owwc-space-sm) 0;
+    line-height: 1.3;
+}
+
+.owwc-section-subtitle {
+    font-size: var(--owwc-font-size-sm);
+    color: var(--owwc-text-muted);
+    margin: 0 0 var(--owwc-space-xl) 0;
+}
+
+/* ==============================================================
+   BREADCRUMB
+   ============================================================== */
+.owwc-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--owwc-space-sm);
+    font-size: var(--owwc-font-size-sm);
+    color: var(--owwc-text-muted);
+    margin-bottom: var(--owwc-space-lg);
+    flex-wrap: wrap;
+}
+
+.owwc-breadcrumb a {
+    color: var(--owwc-text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.owwc-breadcrumb a:hover {
+    color: var(--owwc-primary);
+}
+
+.owwc-breadcrumb .owwc-breadcrumb-sep {
+    color: var(--owwc-text-light);
+    user-select: none;
+}
+
+.owwc-breadcrumb .owwc-breadcrumb-current {
+    color: var(--owwc-text-main);
+    font-weight: 500;
+}
+
+/* ==============================================================
+   FLOATING CART
+   ============================================================== */
+.owwc-floating-cart-wrapper {
+    position: fixed;
+    z-index: 9999;
+    background: var(--owwc-surface);
+    box-shadow: var(--owwc-shadow-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--owwc-transition-bounce);
+}
+
+.owwc-floating-cart-wrapper:hover {
+    transform: scale(1.08) translateY(-3px);
+}
+
+.owwc-floating-cart-wrapper .owwc-cart-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--owwc-text-main) !important;
+    text-decoration: none;
+}
+
+/* Posisi */
+.owwc-floating-cart-wrapper.bottom-right {
+    bottom: 28px;
+    right: 28px;
+}
+
+.owwc-floating-cart-wrapper.bottom-left {
+    bottom: 28px;
+    left: 28px;
+}
+
+.owwc-floating-cart-wrapper.top-right {
+    top: 28px;
+    right: 28px;
+}
+
+.owwc-floating-cart-wrapper.top-left {
+    top: 28px;
+    left: 28px;
+}
+
+/* Varian style */
+.owwc-floating-cart-wrapper.style-1 {
+    border-radius: 50%;
+    padding: 14px;
+}
+
+.owwc-floating-cart-wrapper.style-2 {
+    border-radius: var(--owwc-radius-lg);
+    padding: 14px;
+}
+
+.owwc-floating-cart-wrapper.style-3 {
+    border-radius: var(--owwc-radius-full);
+    padding: 14px 24px;
+}
+
+.owwc-floating-cart-wrapper.style-3 .owwc-cart-icon-link::after {
+    content: "Keranjang";
+    margin-left: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--owwc-text-main);
+}
+
+/* Mobile adjustment */
+@media (max-width: 768px) {
+    .owwc-floating-cart-wrapper.bottom-right {
+        bottom: 20px;
+        right: 16px;
+    }
+
+    .owwc-floating-cart-wrapper.bottom-left {
+        bottom: 20px;
+        left: 16px;
+    }
+
+    .owwc-floating-cart-wrapper.top-right {
+        top: 20px;
+        right: 16px;
+    }
+
+    .owwc-floating-cart-wrapper.top-left {
+        top: 20px;
+        left: 16px;
+    }
+
+    .owwc-toast-container {
+        right: var(--owwc-space-md);
+        left: var(--owwc-space-md);
+    }
+
+    .owwc-toast {
+        max-width: 100%;
+    }
+}
