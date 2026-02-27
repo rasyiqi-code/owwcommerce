@@ -9,6 +9,9 @@ class OwwCommerceCheckout {
         this.submitBtn = document.getElementById('owwc-place-order');
         this.errorBox = document.getElementById('owwc-checkout-error');
         this.cartReviewBox = document.getElementById('owwc-checkout-cart-review');
+        this.shippingCost = 0;
+        this.appliedCoupon = null;
+        this.lastCartSubtotal = 0;
 
         if (this.form) {
             this.init();
@@ -29,26 +32,54 @@ class OwwCommerceCheckout {
             const cartData = await res.json();
 
             if (cartData && cartData.count > 0) {
+                let subtotal = cartData.total;
+                this.lastCartSubtotal = subtotal; // Simpan untuk shipping check
                 let html = '<div>';
                 Object.values(cartData.items).forEach(item => {
                     html += `
                         <div class="owwc-summary-row">
                             <span>${item.title} x ${item.qty}</span>
-                            <span>Rp${Number(item.price * item.qty).toLocaleString()}</span>
+                            <span>${window.owwcFormatPrice(item.price * item.qty)}</span>
                         </div>
                     `;
                 });
                 html += '</div>';
 
-                // Nanti ongkir bisa ditambahkan secara dinamis di sini
+                let discountAmount = 0;
+                if (this.appliedCoupon) {
+                    if (this.appliedCoupon.type === 'percent') {
+                        discountAmount = (subtotal * this.appliedCoupon.amount) / 100;
+                    } else {
+                        discountAmount = Math.min(this.appliedCoupon.amount, subtotal);
+                    }
+                }
+
+                const total = Math.max(0, Number(subtotal) + Number(this.shippingCost) - Number(discountAmount));
+
                 html += `
                     <div class="owwc-summary-row">
                         <span>Subtotal</span>
-                        <span>Rp${Number(cartData.total).toLocaleString()}</span>
+                        <span>${window.owwcFormatPrice(subtotal)}</span>
                     </div>
+                    <div class="owwc-summary-row">
+                        <span>Biaya Pengiriman</span>
+                        <span>${this.shippingCost > 0 ? window.owwcFormatPrice(this.shippingCost) : 'Gratis'}</span>
+                    </div>
+                `;
+
+                if (discountAmount > 0) {
+                    html += `
+                        <div class="owwc-summary-row owwc-text-success">
+                            <span>Diskon (${this.appliedCoupon.code})</span>
+                            <span>- ${window.owwcFormatPrice(discountAmount)}</span>
+                        </div>
+                    `;
+                }
+
+                html += `
                     <div class="owwc-summary-total">
                         <span>Total Tagihan</span>
-                        <span>Rp${Number(cartData.total).toLocaleString()}</span>
+                        <span>${window.owwcFormatPrice(total)}</span>
                     </div>
                 `;
                 this.cartReviewBox.innerHTML = html;
@@ -64,12 +95,61 @@ class OwwCommerceCheckout {
     }
 
     bindEvents() {
+        // Event listener untuk pilihan pengiriman agar update ongkir di review
+        const shippingRadios = document.querySelectorAll('input[name="shipping_method"]');
+        shippingRadios.forEach(radio => {
+            radio.addEventListener('change', async (e) => {
+                const subtotal = this.lastCartSubtotal || 0;
+                const flatRate = owwcSettings.flatRateCost || 15000;
+                const threshold = owwcSettings.freeShippingThreshold || 0;
+
+                if (e.target.value === 'flat_rate') {
+                    if (threshold > 0 && subtotal >= threshold) {
+                        this.shippingCost = 0;
+                    } else {
+                        this.shippingCost = flatRate;
+                    }
+                } else {
+                    this.shippingCost = 0;
+                }
+                this.loadCartReview();
+            });
+            // Trigger awal
+            if (radio.checked) {
+                const subtotal = this.lastCartSubtotal || 0;
+                const flatRate = owwcSettings.flatRateCost || 15000;
+                const threshold = owwcSettings.freeShippingThreshold || 0;
+
+                if (radio.value === 'flat_rate') {
+                    if (threshold > 0 && subtotal >= threshold) {
+                        this.shippingCost = 0;
+                    } else {
+                        this.shippingCost = flatRate;
+                    }
+                } else {
+                    this.shippingCost = 0;
+                }
+                this.loadCartReview();
+            }
+        });
+
+        // Event listener untuk Kupon
+        const applyBtn = document.getElementById('owwc-apply-coupon');
+        if (applyBtn) {
+            applyBtn.addEventListener('click', () => this.applyCoupon());
+        }
+
         this.form.addEventListener('submit', async (e) => {
             e.preventDefault();
             this.clearError();
 
             const formData = new FormData(this.form);
             const payload = Object.fromEntries(formData.entries());
+
+            // Tambahkan kupon yang sedang aktif ke payload
+            if (this.appliedCoupon) {
+                payload.coupon_code = this.appliedCoupon.code;
+            }
 
             // Anti-spam check
             if (payload.owwc_anti_spam !== '') {
@@ -103,7 +183,7 @@ class OwwCommerceCheckout {
                         if (data.order && data.order.redirect_url) {
                             window.location.href = data.order.redirect_url;
                         } else {
-                            window.location.href = '/?order-received=' + data.order_id;
+                            window.location.href = '/checkout/order-received/' + data.order_id;
                         }
                     }, 1500);
 
@@ -114,10 +194,37 @@ class OwwCommerceCheckout {
 
             } catch (error) {
                 console.error('Checkout error:', error);
-                this.showError('Terjadi kesalahan jaringan rute.');
+                this.showError('Terjadi kesalahan jaringan.');
                 this.setLoading(false);
             }
         });
+    }
+
+    async applyCoupon() {
+        const input = document.getElementById('owwc-coupon-code');
+        const msgBox = document.getElementById('owwc-coupon-message');
+        const code = input.value.trim();
+
+        if (!code) return;
+
+        try {
+            const apiCoupon = (typeof owwcSettings !== 'undefined') ? `${owwcSettings.restUrl}owwc/v1/coupons/validate?code=${encodeURIComponent(code)}` : `/wp-json/owwc/v1/coupons/validate?code=${encodeURIComponent(code)}`;
+            const res = await fetch(apiCoupon);
+            const data = await res.json();
+
+            msgBox.style.display = 'block';
+            if (res.ok && data.success) {
+                this.appliedCoupon = data.coupon;
+                msgBox.innerText = data.message;
+                msgBox.style.color = 'green';
+                this.loadCartReview();
+            } else {
+                msgBox.innerText = data.message || 'Kupon tidak valid.';
+                msgBox.style.color = 'red';
+            }
+        } catch (e) {
+            console.error('Coupon error', e);
+        }
     }
 
     setLoading(isLoading) {

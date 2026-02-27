@@ -55,19 +55,35 @@ class CartController extends WP_REST_Controller {
         $enriched_items = [];
         $total_amount = 0;
 
-        foreach ( $cart_items as $item ) {
+        foreach ( $cart_items as $key => $item ) {
             $product = $this->product_repo->find( $item['product_id'] );
             if ( $product ) {
                 $price = $product->sale_price ?? $product->price;
+                $title = $product->title;
+
+                // Jika ada variasi, ambil harganya dari variasi (jika ada)
+                if ( ! empty( $item['variation_id'] ) ) {
+                    foreach ( $product->variations as $v ) {
+                        if ( $v->id == $item['variation_id'] ) {
+                            $price = $v->sale_price ?: $v->price;
+                            $attr_desc = implode( ', ', array_values( $v->attributes ) );
+                            $title .= " ({$attr_desc})";
+                            break;
+                        }
+                    }
+                }
+
                 $line_total = $price * $item['qty'];
                 $total_amount += $line_total;
 
                 $enriched_items[] = [
-                    'product_id' => $product->id,
-                    'title'      => $product->title,
-                    'price'      => $price,
-                    'qty'        => $item['qty'],
-                    'line_total' => $line_total,
+                    'key'          => $key,
+                    'product_id'   => $product->id,
+                    'variation_id' => $item['variation_id'] ?? 0,
+                    'title'        => $title,
+                    'price'        => $price,
+                    'qty'          => $item['qty'],
+                    'line_total'   => $line_total,
                 ];
             }
         }
@@ -86,8 +102,9 @@ class CartController extends WP_REST_Controller {
             return new WP_Error( 'invalid_product', 'Product ID is required.', [ 'status' => 400 ] );
         }
 
-        $product_id = (int) $data['product_id'];
-        $qty        = isset( $data['qty'] ) ? (int) $data['qty'] : 1;
+        $product_id   = (int) $data['product_id'];
+        $variation_id = isset( $data['variation_id'] ) ? (int) $data['variation_id'] : 0;
+        $qty          = isset( $data['qty'] ) ? (int) $data['qty'] : 1;
 
         // Validasi produk
         $product = $this->product_repo->find( $product_id );
@@ -95,14 +112,14 @@ class CartController extends WP_REST_Controller {
             return new WP_Error( 'not_found', 'Product not found.', [ 'status' => 404 ] );
         }
 
-        $this->cart->add_item( $product_id, $qty );
+        $this->cart->add_item( $product_id, $qty, $variation_id );
 
         return $this->get_cart( $request );
     }
 
     public function remove_from_cart( $request ) {
-        $product_id = (int) $request['id'];
-        $this->cart->remove_item( $product_id );
+        $key = $request['id']; // Bisa berupa string "1_2" atau numeric "1"
+        $this->cart->remove_item( $key );
         return $this->get_cart( $request );
     }
 

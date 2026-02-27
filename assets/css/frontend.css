@@ -1,6 +1,8 @@
 /*
  * OwwCommerce Frontend — Design System & Komponen Umum
  * 
+ * Tema: Hitam & Gold (Dark Mode Premium)
+ * 
  * Menggunakan CSS Variables agar mudah di-override oleh tema WordPress.
  * Tema cukup re-deklarasi variabel di :root untuk mengubah tampilan.
  * 
@@ -13,11 +15,11 @@
    Override variabel ini di tema untuk kustomisasi tampilan.
    ============================================================== */
 :root {
-    /* Warna utama */
-    --owwc-primary: #4F46E5;
-    --owwc-primary-hover: #4338CA;
-    --owwc-primary-light: rgba(79, 70, 229, 0.08);
-    --owwc-primary-ring: rgba(79, 70, 229, 0.25);
+    /* Warna utama — Gold */
+    --owwc-primary: #D4A843;
+    --owwc-primary-hover: #B8912E;
+    --owwc-primary-light: rgba(212, 168, 67, 0.10);
+    --owwc-primary-ring: rgba(212, 168, 67, 0.30);
 
     /* Warna semantik */
     --owwc-danger: #EF4444;
@@ -26,13 +28,13 @@
     --owwc-success-light: #D1FAE5;
     --owwc-warning: #F59E0B;
 
-    /* Surface & background */
+    /* Surface & background — Tetap Light Mode */
     --owwc-bg: #F9FAFB;
     --owwc-surface: #FFFFFF;
     --owwc-border: #E5E7EB;
     --owwc-border-hover: #D1D5DB;
 
-    /* Tipografi */
+    /* Tipografi — Hitam/gelap untuk kontras di light mode */
     --owwc-text-main: #111827;
     --owwc-text-secondary: #374151;
     --owwc-text-muted: #6B7280;
@@ -54,15 +56,21 @@
     --owwc-space-xl: 32px;
     --owwc-space-2xl: 48px;
 
-    /* Efek visual */
+    /* Efek visual — Shadow dengan subtle gold glow */
     --owwc-radius-sm: 8px;
     --owwc-radius-md: 12px;
     --owwc-radius-lg: 16px;
     --owwc-radius-full: 9999px;
-    --owwc-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --owwc-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-    --owwc-shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-    --owwc-shadow-xl: 0 20px 40px -4px rgba(0, 0, 0, 0.1);
+    --owwc-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --owwc-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --owwc-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --owwc-shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --owwc-shadow-gold: 0 10px 15px -3px rgba(212, 168, 67, 0.2), 0 4px 6px -2px rgba(212, 168, 67, 0.1);
+
+    /* Gradients */
+    --owwc-gradient-gold: linear-gradient(135deg, #D4A843 0%, #B8912E 100%);
+    --owwc-gradient-dark: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+
     --owwc-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --owwc-transition-bounce: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -83,6 +91,7 @@
 .owwc-add-to-cart-btn {
     appearance: none;
     background: var(--owwc-primary);
+    /* Teks putih di atas background gold untuk kontras */
     color: #fff;
     border: none;
     border-radius: var(--owwc-radius-sm);
@@ -159,6 +168,16 @@
 .owwc-select:focus {
     border-color: var(--owwc-primary);
     box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+    background: var(--owwc-surface);
+}
+
+.owwc-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
 }
 
 .owwc-form-group {
@@ -201,6 +220,7 @@
 }
 
 .owwc-toast {
+    /* Surface terang + blur untuk toast */
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -237,6 +257,7 @@
    LOADING SKELETON
    ============================================================== */
 .owwc-skeleton {
+    /* Skeleton loading shimmer untuk light mode */
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: owwc-shimmer 1.5s ease-in-out infinite;
@@ -346,6 +367,12 @@
     transition: var(--owwc-transition-bounce);
 }
 
+/* Sembunyikan jika di halaman My Account atau Checkout */
+.owwc-my-account-page .owwc-floating-cart-wrapper,
+.owwc-checkout-page .owwc-floating-cart-wrapper {
+    display: none !important;
+}
+
 .owwc-floating-cart-wrapper:hover {
     transform: scale(1.08) translateY(-3px);
 }
@@ -433,4 +460,36 @@
     .owwc-toast {
         max-width: 100%;
     }
+}
+
+/* ==============================================================
+   PRODUCT GALLERY
+   ============================================================== */
+.owwc-product-gallery {
+    margin-top: var(--owwc-space-md);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: var(--owwc-space-sm);
+}
+
+.owwc-gallery-thumb {
+    aspect-ratio: 1/1;
+    border: 1px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--owwc-transition);
+}
+
+.owwc-gallery-thumb:hover,
+.owwc-gallery-thumb.active {
+    border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 2px var(--owwc-primary-ring);
+}
+
+.owwc-gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }

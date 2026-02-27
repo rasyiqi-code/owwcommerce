@@ -3,7 +3,7 @@
  * Plugin Name: OwwCommerce
  * Plugin URI: https://example.com/owwcommerce
  * Description: The Zero-Bloatware E-Commerce Engine for WordPress.
- * Version: 1.0.0
+ * Version: 1.1.2
  * Requires at least: 6.0
  * Requires PHP: 8.1
  * Author: OwwCommerce Team
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants
-define( 'OWWCOMMERCE_VERSION', '1.0.0' );
+define( 'OWWCOMMERCE_VERSION', '1.3.0' );
 define( 'OWWCOMMERCE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OWWCOMMERCE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 

@@ -34,10 +34,39 @@ class ProductsController extends WP_REST_Controller {
                 'methods'             => WP_REST_Server::CREATABLE,
                 'callback'            => [ $this, 'create_item' ],
                 'permission_callback' => [ $this, 'create_item_permissions_check' ],
+                'args'                => [
+                    'title' => [
+                        'required'          => true,
+                        'type'              => 'string',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'price' => [
+                        'type'              => 'number',
+                        'sanitize_callback' => 'floatval',
+                    ],
+                    'sku' => [
+                        'type'              => 'string',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'stock_qty' => [
+                        'type'              => 'integer',
+                        'sanitize_callback' => 'intval',
+                    ],
+                ],
             ],
         ] );
 
         register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'get_item' ],
+                'permission_callback' => [ $this, 'get_items_permissions_check' ],
+            ],
+            [
+                'methods'             => WP_REST_Server::EDITABLE, // POST, PUT, PATCH
+                'callback'            => [ $this, 'update_item' ],
+                'permission_callback' => [ $this, 'update_item_permissions_check' ],
+            ],
             [
                 'methods'             => WP_REST_Server::DELETABLE,
                 'callback'            => [ $this, 'delete_item' ],
@@ -54,6 +83,10 @@ class ProductsController extends WP_REST_Controller {
         return current_user_can( 'manage_options' );
     }
 
+    public function update_item_permissions_check( $request ) {
+        return current_user_can( 'manage_options' );
+    }
+
     public function delete_item_permissions_check( $request ) {
         return current_user_can( 'manage_options' );
     }
@@ -62,6 +95,17 @@ class ProductsController extends WP_REST_Controller {
         $products = $this->repository->get_all();
         $formatted = array_map( fn($p) => $p->to_array(), $products );
         return rest_ensure_response( $formatted );
+    }
+
+    public function get_item( $request ) {
+        $id = (int) $request['id'];
+        $product = $this->repository->find( $id );
+
+        if ( ! $product ) {
+            return new WP_Error( 'rest_product_not_found', 'Product not found.', [ 'status' => 404 ] );
+        }
+
+        return rest_ensure_response( $product->to_array() );
     }
 
     public function create_item( $request ) {
@@ -76,11 +120,59 @@ class ProductsController extends WP_REST_Controller {
             'title'       => sanitize_text_field( $data['title'] ),
             'slug'        => sanitize_title( $data['title'] ),
             'description' => sanitize_textarea_field( $data['description'] ?? '' ),
+            'type'        => sanitize_text_field( $data['type'] ?? 'simple' ),
+            'status'      => sanitize_text_field( $data['status'] ?? 'publish' ),
             'price'       => floatval( $data['price'] ?? 0 ),
-            'sale_price'  => isset( $data['sale_price'] ) ? floatval( $data['sale_price'] ) : null,
+            'sale_price'  => isset( $data['sale_price'] ) && $data['sale_price'] !== '' ? floatval( $data['sale_price'] ) : null,
             'sku'         => sanitize_text_field( $data['sku'] ?? '' ),
-            'stock_qty'   => intval( $data['stock_qty'] ?? 0 )
+            'stock_qty'   => intval( $data['stock_qty'] ?? 0 ),
+            'image_url'   => esc_url_raw( $data['image_url'] ?? '' ) ?: null,
+            'gallery_ids' => isset( $data['gallery_ids'] ) ? array_map( 'intval', (array) $data['gallery_ids'] ) : [],
         ] );
+
+        // Handle variations if type is variable
+        if ( $product->type === 'variable' && ! empty( $data['variations'] ) && is_array( $data['variations'] ) ) {
+            foreach ( $data['variations'] as $v ) {
+                $product->variations[] = new \OwwCommerce\Models\ProductVariation( (array) $v );
+            }
+        }
+
+        $saved_product = $this->repository->save( $product );
+
+        return rest_ensure_response( $saved_product->to_array() );
+    }
+
+    public function update_item( $request ) {
+        $id = (int) $request['id'];
+        $product = $this->repository->find( $id );
+
+        if ( ! $product ) {
+            return new WP_Error( 'rest_product_not_found', 'Product not found.', [ 'status' => 404 ] );
+        }
+
+        $data = $request->get_json_params() ?: $request->get_params();
+
+        // Update fields jika dikirim
+        if ( isset( $data['title'] ) ) {
+            $product->title = sanitize_text_field( $data['title'] );
+            $product->slug  = sanitize_title( $data['title'] );
+        }
+        if ( isset( $data['description'] ) ) $product->description = sanitize_textarea_field( $data['description'] );
+        if ( isset( $data['type'] ) )        $product->type        = sanitize_text_field( $data['type'] );
+        if ( isset( $data['status'] ) )      $product->status      = sanitize_text_field( $data['status'] );
+        if ( isset( $data['price'] ) )       $product->price       = floatval( $data['price'] );
+        if ( isset( $data['sale_price'] ) )  $product->sale_price  = ( $data['sale_price'] !== '' ) ? floatval( $data['sale_price'] ) : null;
+        if ( isset( $data['sku'] ) )         $product->sku         = sanitize_text_field( $data['sku'] );
+        if ( isset( $data['stock_qty'] ) )   $product->stock_qty   = intval( $data['stock_qty'] );
+        if ( isset( $data['image_url'] ) )   $product->image_url   = esc_url_raw( $data['image_url'] ) ?: null;
+        if ( isset( $data['gallery_ids'] ) ) $product->gallery_ids = array_map( 'intval', (array) $data['gallery_ids'] );
+
+        if ( $product->type === 'variable' && isset( $data['variations'] ) && is_array( $data['variations'] ) ) {
+            $product->variations = [];
+            foreach ( $data['variations'] as $v ) {
+                $product->variations[] = new \OwwCommerce\Models\ProductVariation( (array) $v );
+            }
+        }
 
         $saved_product = $this->repository->save( $product );
 

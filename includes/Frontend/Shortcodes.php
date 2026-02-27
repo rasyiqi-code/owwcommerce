@@ -10,6 +10,7 @@ class Shortcodes {
         add_shortcode( 'owwcommerce_shop', [ $this, 'render_shop' ] );
         add_shortcode( 'owwcommerce_cart', [ $this, 'render_cart' ] );
         add_shortcode( 'owwcommerce_checkout', [ $this, 'render_checkout' ] );
+        add_shortcode( 'owwcommerce_my_account', [ $this, 'render_my_account' ] );
         add_shortcode( 'owwcommerce_cart_icon', [ $this, 'render_cart_icon' ] );
 
         // Sembunyikan judul halaman dari tema pada halaman milik OwwCommerce.
@@ -29,20 +30,26 @@ class Shortcodes {
      * @return string Judul kosong jika halaman OwwCommerce, atau judul asli
      */
     public function hide_page_title_on_owwc_pages( $title, $id = 0 ) {
-        // Hanya aktif di main loop — jangan sembunyikan judul di menu/widget
-        if ( ! in_the_loop() || ! is_page() ) {
+        // Jangan sembunyikan judul di menu/widget
+        if ( ! in_the_loop() ) {
             return $title;
         }
 
-        // Daftar page ID yang dikelola OwwCommerce
+        // 1. Cek Virtual Pages (Single Product / Order Received) via Query Vars
+        if ( get_query_var( 'owwc_product_slug' ) || get_query_var( 'owwc_order_received' ) ) {
+            return '';
+        }
+
+        // 2. Daftar page ID yang dikelola OwwCommerce
         $owwc_page_ids = array_filter( [
             (int) get_option( 'owwc_page_cart_id' ),
             (int) get_option( 'owwc_page_checkout_id' ),
             (int) get_option( 'owwc_page_shop_id' ),
+            (int) get_option( 'owwc_page_myaccount_id' ),
         ] );
 
         // Jika halaman ini milik OwwCommerce, kembalikan string kosong
-        if ( in_array( (int) $id, $owwc_page_ids, true ) ) {
+        if ( in_array( (int) $id, $owwc_page_ids, true ) || ( is_page() && in_array( get_the_ID(), $owwc_page_ids, true ) ) ) {
             return '';
         }
 
@@ -68,6 +75,13 @@ class Shortcodes {
      */
     public function render_checkout( $atts ) {
         return TemplateLoader::get_template( 'checkout.php' );
+    }
+
+    /**
+     * Render Halaman Akun Saya (My Account)
+     */
+    public function render_my_account( $atts ) {
+        return TemplateLoader::get_template( 'my-account.php' );
     }
 
     /**

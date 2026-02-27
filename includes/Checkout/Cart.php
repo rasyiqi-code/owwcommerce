@@ -27,21 +27,24 @@ class Cart {
         $_SESSION[ $this->session_key ] = $this->items;
     }
 
-    public function add_item( int $product_id, int $quantity = 1, array $data = [] ): void {
-        if ( isset( $this->items[ $product_id ] ) ) {
-            $this->items[ $product_id ]['qty'] += $quantity;
+    public function add_item( int $product_id, int $quantity = 1, int $variation_id = 0, array $data = [] ): void {
+        $key = $variation_id ? "{$product_id}_{$variation_id}" : (string) $product_id;
+
+        if ( isset( $this->items[ $key ] ) ) {
+            $this->items[ $key ]['qty'] += $quantity;
         } else {
-            $this->items[ $product_id ] = array_merge( [
-                'product_id' => $product_id,
-                'qty'        => $quantity,
+            $this->items[ $key ] = array_merge( [
+                'product_id'   => $product_id,
+                'variation_id' => $variation_id,
+                'qty'          => $quantity,
             ], $data );
         }
         $this->save_cart();
     }
 
-    public function remove_item( int $product_id ): void {
-        if ( isset( $this->items[ $product_id ] ) ) {
-            unset( $this->items[ $product_id ] );
+    public function remove_item( string $key ): void {
+        if ( isset( $this->items[ $key ] ) ) {
+            unset( $this->items[ $key ] );
             $this->save_cart();
         }
     }

@@ -9,14 +9,17 @@ use OwwCommerce\Models\Product;
  */
 class ProductRepository {
     private string $table_name;
+    private string $table_variations;
 
     public function __construct() {
         global $wpdb;
         $this->table_name = $wpdb->prefix . 'oww_products';
+        $this->table_variations = $wpdb->prefix . 'oww_product_variations';
     }
 
     /**
      * Menyimpan produk baru atau memperbarui jika ada ID.
+     * Termasuk field image_url untuk gambar produk.
      */
     public function save( Product $product ): Product {
         global $wpdb;
@@ -26,13 +29,17 @@ class ProductRepository {
             'slug'        => $product->slug ?: sanitize_title( $product->title ),
             'description' => $product->description,
             'type'        => $product->type,
+            'status'      => $product->status,
             'price'       => $product->price,
             'sale_price'  => $product->sale_price,
             'sku'         => $product->sku,
+            'image_url'   => $product->image_url,
+            'gallery_ids' => ! empty( $product->gallery_ids ) ? implode( ',', $product->gallery_ids ) : null,
+            'sales_count' => $product->sales_count,
             'stock_qty'   => $product->stock_qty,
         ];
 
-        $format = [ '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%d' ];
+        $format = [ '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%d', '%d', '%d' ];
 
         if ( $product->id ) {
             $wpdb->update( $this->table_name, $data, [ 'id' => $product->id ], $format, [ '%d' ] );
@@ -41,7 +48,33 @@ class ProductRepository {
             $product->id = $wpdb->insert_id;
         }
 
+        // Simpan Variasi jika tipe produk adalah Variable
+        if ( $product->type === 'variable' && ! empty( $product->variations ) ) {
+            $this->save_variations( $product->id, $product->variations );
+        }
+
         return $this->find( $product->id );
+    }
+
+    /**
+     * Helper untuk menyimpan daftar variasi.
+     */
+    private function save_variations( int $product_id, array $variations ): void {
+        global $wpdb;
+
+        // Hapus variasi lama (Simple sync strategy)
+        $wpdb->delete( $this->table_variations, [ 'product_id' => $product_id ], [ '%d' ] );
+
+        foreach ( $variations as $v ) {
+            $wpdb->insert( $this->table_variations, [
+                'product_id' => $product_id,
+                'sku'        => $v->sku,
+                'price'      => $v->price,
+                'sale_price' => $v->sale_price,
+                'stock_qty'  => $v->stock_qty,
+                'attributes' => json_encode( $v->attributes ),
+            ], [ '%d', '%s', '%f', '%f', '%d', '%s' ] );
+        }
     }
 
     /**
@@ -50,7 +83,33 @@ class ProductRepository {
     public function find( int $id ): ?Product {
         global $wpdb;
         $row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE id = %d", $id ), ARRAY_A );
-        
+
+        if ( ! $row ) {
+            return null;
+        }
+
+        $product = new Product( $row );
+
+        // Load Variations
+        $variation_rows = $wpdb->get_results( $wpdb->prepare( 
+            "SELECT * FROM {$this->table_variations} WHERE product_id = %d", 
+            $id 
+        ), ARRAY_A );
+
+        if ( $variation_rows ) {
+            $product->variations = array_map( fn($v) => new \OwwCommerce\Models\ProductVariation( $v ), $variation_rows );
+        }
+
+        return $product;
+    }
+
+    /**
+     * Mencari produk berdasarkan slug.
+     */
+    public function find_by_slug( string $slug ): ?Product {
+        global $wpdb;
+        $row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE slug = %s", $slug ), ARRAY_A );
+
         if ( ! $row ) {
             return null;
         }
@@ -59,14 +118,52 @@ class ProductRepository {
     }
 
     /**
-     * Memuat semua atau beberapa produk dengan Limit.
+     * Memuat semua atau beberapa produk dengan Limit, Pencarian, dan Filter Kategori.
      */
-    public function get_all( int $limit = 50, int $offset = 0 ): array {
+    public function get_all( int $limit = 50, int $offset = 0, array $filters = [] ): array {
         global $wpdb;
-        $results = $wpdb->get_results( 
-            $wpdb->prepare( "SELECT * FROM {$this->table_name} ORDER BY created_at DESC LIMIT %d OFFSET %d", $limit, $offset ), 
-            ARRAY_A 
-        );
+        
+        $sql = "SELECT p.* FROM {$this->table_name} p";
+        $where = ["p.status = 'publish'"];
+        $params = [];
+
+        // Filter Kategori (Slug)
+        if ( ! empty( $filters['category'] ) ) {
+            $table_rel = $wpdb->prefix . 'oww_product_category_rel';
+            $table_cat = $wpdb->prefix . 'oww_categories';
+            $sql .= " JOIN {$table_rel} rel ON p.id = rel.product_id";
+            $sql .= " JOIN {$table_cat} cat ON rel.category_id = cat.id";
+            $where[] = "cat.slug = %s";
+            $params[] = $filters['category'];
+        }
+
+        // Search Keyword
+        if ( ! empty( $filters['s'] ) ) {
+            $where[] = "p.title LIKE %s";
+            $params[] = '%' . $wpdb->esc_like( $filters['s'] ) . '%';
+        }
+
+        if ( ! empty( $where ) ) {
+            $sql .= " WHERE " . implode( " AND ", $where );
+        }
+
+        // Sorting Logic
+        $orderby_map = [
+            'newest'       => 'p.created_at DESC',
+            'oldest'       => 'p.created_at ASC',
+            'title_az'     => 'p.title ASC',
+            'title_za'     => 'p.title DESC',
+            'best_selling' => 'p.sales_count DESC',
+            'trending'     => 'p.sales_count DESC',
+        ];
+
+        $orderby = $orderby_map[ $filters['orderby'] ?? 'newest' ] ?? 'p.created_at DESC';
+
+        $sql .= " ORDER BY {$orderby} LIMIT %d OFFSET %d";
+        $params[] = $limit;
+        $params[] = $offset;
+
+        $results = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
 
         return array_map( fn( $row ) => new Product( $row ), $results );
     }
@@ -76,6 +173,38 @@ class ProductRepository {
      */
     public function delete( int $id ): bool {
         global $wpdb;
+        // Hapus variasi terkait terlebih dahulu
+        $wpdb->delete( $this->table_variations, [ 'product_id' => $id ], [ '%d' ] );
         return (bool) $wpdb->delete( $this->table_name, [ 'id' => $id ], [ '%d' ] );
+    }
+
+    /**
+     * Mengurangi stok produk setelah checkout berhasil.
+     * Menggunakan query atomik untuk mencegah race condition.
+     *
+     * @param int $product_id ID produk
+     * @param int $qty Jumlah yang dikurangi
+     * @return bool True jika berhasil, false jika stok tidak cukup
+     */
+    public function reduce_stock( int $product_id, int $qty ): bool {
+        global $wpdb;
+
+        // Query atomik: hanya kurangi jika stok >= qty (anti-overselling)
+        $result = $wpdb->query( $wpdb->prepare(
+            "UPDATE {$this->table_name} SET stock_qty = stock_qty - %d WHERE id = %d AND stock_qty >= %d",
+            $qty,
+            $product_id,
+            $qty
+        ) );
+
+        return (bool) $result;
+    }
+
+    /**
+     * Menghitung total produk.
+     */
+    public function count(): int {
+        global $wpdb;
+        return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$this->table_name}" );
     }
 }

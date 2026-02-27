@@ -48,7 +48,7 @@ $shop_url     = $shop_page_id ? get_permalink( $shop_page_id ) : site_url( '/tok
     <div id="owwc-cart-summary" class="owwc-cart-summary" style="display: none;">
         <div class="owwc-cart-summary-total">
             <span>Total</span>
-            <span id="owwc-cart-total">Rp0</span>
+            <span id="owwc-cart-total"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( 0 ) ); ?></span>
         </div>
         <div class="owwc-cart-actions">
             <a href="<?php echo esc_url( $shop_url ); ?>" class="owwc-btn owwc-btn--outline">

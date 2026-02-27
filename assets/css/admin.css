@@ -1,11 +1,13 @@
 /*
  * OwwCommerce Admin Premium CSS
+ * Tema: Hitam & Gold (Dark Mode Premium)
  * Clean, SaaS-like dashboard design inside WordPress admin panel.
  */
 
 :root {
-    --owwc-admin-primary: #4F46E5;
-    --owwc-admin-primary-hover: #4338CA;
+    /* Admin — Palet Hitam & Gold (Light Mode) */
+    --owwc-admin-primary: #D4A843;
+    --owwc-admin-primary-hover: #B8912E;
     --owwc-admin-bg: #F3F4F6;
     --owwc-admin-surface: #FFFFFF;
     --owwc-admin-border: #E5E7EB;
@@ -60,6 +62,20 @@
     min-width: 0;
 }
 
+/* 2-Column Form Layout (Main + Sidebar) */
+.owwc-admin-2col-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .owwc-admin-2col-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ==============================================================
    2. CARDS / SURFACES
    ============================================================== */
@@ -104,7 +120,8 @@
     padding: 10px 14px;
     border: 1px solid var(--owwc-admin-border);
     border-radius: var(--owwc-admin-radius-sm);
-    background-color: #fff;
+    /* Gunakan variable agar konsisten dengan dark mode */
+    background-color: var(--owwc-admin-surface);
     color: var(--owwc-admin-text-main);
     font-size: 14px;
     transition: all 0.2s ease;
@@ -115,7 +132,8 @@
 .owwc-admin-select:focus,
 .owwc-admin-textarea:focus {
     border-color: var(--owwc-admin-primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    /* Focus ring gold */
+    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
     outline: none;
 }
 
@@ -127,6 +145,7 @@
     align-items: center;
     justify-content: center;
     background: var(--owwc-admin-primary);
+    /* Teks putih di atas background gold */
     color: #fff;
     border: none;
     border-radius: var(--owwc-admin-radius-sm);
@@ -142,7 +161,8 @@
 .owwc-admin-btn:hover {
     background: var(--owwc-admin-primary-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+    /* Shadow gold pada hover */
+    box-shadow: 0 4px 6px rgba(212, 168, 67, 0.25);
     color: #fff;
 }
 
@@ -154,7 +174,8 @@
 
 .owwc-admin-btn-outline:hover {
     background: var(--owwc-admin-bg);
-    border-color: #d1d5db;
+    /* Gunakan variable border agar konsisten */
+    border-color: var(--owwc-admin-border);
     color: var(--owwc-admin-text-main);
     transform: translateY(-1px);
 }
@@ -209,6 +230,7 @@
 }
 
 .owwc-admin-table tbody tr:hover {
+    /* Hover row */
     background-color: #F9FAFB;
 }
 
@@ -244,6 +266,122 @@
     color: #991B1B;
 }
 
+/* ==============================================================
+   6. MODALS
+   ============================================================== */
+.owwc-admin-modal {
+    position: fixed;
+    z-index: 100000;
+    /* Higher than WP Admin Bar */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: none;
+    /* Default hidden */
+    align-items: center;
+    justify-content: center;
+}
+
+.owwc-admin-modal-content {
+    background-color: var(--owwc-admin-surface);
+    border-radius: var(--owwc-admin-radius);
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    animation: owwc-modal-fade 0.3s ease-out;
+}
+
+.owwc-admin-modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--owwc-admin-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.owwc-admin-modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.owwc-close-modal {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--owwc-admin-text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.owwc-close-modal:hover {
+    color: var(--owwc-admin-text-main);
+}
+
+/* ==============================================================
+   7. ADVANCED FORM STYLES
+   ============================================================== */
+.owwc-admin-form {
+    padding: 24px;
+}
+
+.owwc-form-group {
+    margin-bottom: 20px;
+}
+
+.owwc-form-group:last-of-type {
+    margin-bottom: 24px;
+}
+
+.owwc-form-group label {
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: var(--owwc-admin-text-main);
+    display: block;
+    font-weight: 500;
+}
+
+.owwc-form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 12px;
+    border-top: 1px solid var(--owwc-admin-border);
+    margin: 0 -24px -24px -24px;
+    padding: 20px 24px;
+    background: #f9fafb;
+}
+
+.owwc-uppercase {
+    text-transform: uppercase;
+}
+
+.owwc-btn-secondary {
+    background: #fff;
+    color: var(--owwc-admin-text-main);
+    border: 1px solid var(--owwc-admin-border);
+}
+
+.owwc-btn-secondary:hover {
+    background: #f3f4f6;
+    color: var(--owwc-admin-text-main);
+}
+
+@keyframes owwc-modal-fade {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Responsive Adjustments */
 @media (max-width: 900px) {
     .owwc-admin-split {
@@ -254,5 +392,10 @@
         flex: none;
         width: 100%;
         position: static;
+    }
+
+    .owwc-admin-modal-content {
+        max-width: 90%;
+        margin: 20px;
     }
 }

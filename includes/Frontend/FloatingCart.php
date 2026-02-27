@@ -21,8 +21,42 @@ class FloatingCart {
             return;
         }
 
-        // Jangan merender di halaman Admin
+        // 1. Jangan merender di halaman Admin
         if ( is_admin() ) {
+            return;
+        }
+
+        // 2. Jangan merender jika Page ID My Account/Checkout sudah diset
+        $myaccount_page_id = (int) get_option('owwc_page_myaccount_id');
+        $checkout_page_id  = (int) get_option('owwc_page_checkout_id');
+        
+        if ( is_page($myaccount_page_id) || is_page($checkout_page_id) ) {
+            return;
+        }
+
+        // 3. Fallback: Cek konten post untuk shortcode
+        global $post;
+        if ( is_singular() && $post ) {
+            if ( 
+                strpos( $post->post_content, '[owwcommerce_my_account]' ) !== false ||
+                strpos( $post->post_content, '[owwcommerce_checkout]' )   !== false
+            ) {
+                return;
+            }
+        }
+
+        // 4. Fallback Terakhir: Cek URI (misal jika user belum set setting tapi slug-nya /my-account)
+        $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+        // Ambil slug dari ID jika ada
+        $myaccount_slug = $myaccount_page_id ? get_post_field('post_name', $myaccount_page_id) : 'my-account';
+        $checkout_slug  = $checkout_page_id ? get_post_field('post_name', $checkout_page_id) : 'checkout';
+
+        if ( 
+            strpos($request_uri, $myaccount_slug) === 0 || 
+            strpos($request_uri, $checkout_slug) === 0 ||
+            strpos($request_uri, 'my-account') !== false ||
+            strpos($request_uri, 'checkout') !== false
+        ) {
             return;
         }
 

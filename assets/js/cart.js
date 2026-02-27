@@ -17,6 +17,23 @@ class OwwCommerceCart {
         this.createToastContainer();
         this.bindEvents();
         this.refreshCartUI();
+        window.owwcFormatPrice = this.formatPrice.bind(this);
+    }
+
+    /**
+     * Format price berdasarkan owwcSettings.
+     * @param {number} price 
+     */
+    formatPrice(price) {
+        const symbol = owwcSettings.currencySymbol || 'Rp';
+        const thousandSep = owwcSettings.thousandSep || '.';
+        const decimalSep = owwcSettings.decimalSep || ',';
+
+        // Format angka dengan pemisah ribuan & desimal (tanpa sen/desimal untuk saat ini)
+        let parts = Number(price).toFixed(0).split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSep);
+
+        return `${symbol} ${parts.join(decimalSep)}`;
     }
 
     /* ==============================================================
@@ -74,7 +91,7 @@ class OwwCommerceCart {
         }
     }
 
-    async addToCart(productId, qty = 1) {
+    async addToCart(productId, qty = 1, variationId = 0) {
         try {
             const res = await fetch(this.apiBase, {
                 method: 'POST',
@@ -82,7 +99,7 @@ class OwwCommerceCart {
                     'X-WP-Nonce': this.nonce,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ product_id: productId, qty })
+                body: JSON.stringify({ product_id: productId, variation_id: variationId, qty })
             });
             const data = await res.json();
             this.refreshCartUI(data);
@@ -99,9 +116,9 @@ class OwwCommerceCart {
         }
     }
 
-    async removeFromCart(productId) {
+    async removeFromCart(key) {
         try {
-            const res = await fetch(`${this.apiBase}/${productId}`, {
+            const res = await fetch(`${this.apiBase}/${key}`, {
                 method: 'DELETE',
                 headers: { 'X-WP-Nonce': this.nonce }
             });
@@ -148,17 +165,19 @@ class OwwCommerceCart {
             if (addBtn) {
                 e.preventDefault();
                 const productId = addBtn.dataset.productId;
+                const variationId = parseInt(addBtn.dataset.variationId || 0, 10);
                 const qty = parseInt(addBtn.dataset.qty || 1, 10);
-                const origText = addBtn.textContent;
+                const origText = addBtn.querySelector('.btn-text') ? addBtn.querySelector('.btn-text').textContent : addBtn.textContent;
 
-                addBtn.textContent = 'Menambahkan...';
+                const btnLabel = addBtn.querySelector('.btn-text') || addBtn;
+                btnLabel.textContent = 'Menambahkan...';
                 addBtn.disabled = true;
 
                 // Tampilkan spinner jika ada
                 const spinner = addBtn.querySelector('.owwc-spinner');
                 if (spinner) spinner.style.display = 'inline-block';
 
-                await this.addToCart(productId, qty);
+                await this.addToCart(productId, qty, variationId);
 
                 addBtn.textContent = '✓ Ditambahkan';
                 if (spinner) spinner.style.display = 'none';
@@ -173,10 +192,10 @@ class OwwCommerceCart {
             const removeBtn = e.target.closest('.owwc-cart-item-remove');
             if (removeBtn) {
                 e.preventDefault();
-                const productId = removeBtn.dataset.productId;
+                const key = removeBtn.dataset.cartKey;
                 removeBtn.style.opacity = '0.5';
                 removeBtn.style.pointerEvents = 'none';
-                await this.removeFromCart(productId);
+                await this.removeFromCart(key);
             }
         });
     }
@@ -205,7 +224,7 @@ class OwwCommerceCart {
         // --- Tampilkan summary ---
         if (summaryBox && totalSpan) {
             summaryBox.style.display = 'block';
-            totalSpan.textContent = `Rp${Number(cartData.total).toLocaleString('id-ID')}`;
+            totalSpan.textContent = this.formatPrice(cartData.total);
         }
     }
 
@@ -230,12 +249,12 @@ class OwwCommerceCart {
                         </div>
                     </td>
                     <td class="owwc-cart-col-name">${item.title}</td>
-                    <td class="owwc-cart-col-price">Rp${price}</td>
+                    <td class="owwc-cart-col-price">${this.formatPrice(item.price)}</td>
                     <td class="owwc-cart-col-qty">${item.qty}x</td>
-                    <td class="owwc-cart-col-subtotal">Rp${subtotal}</td>
+                    <td class="owwc-cart-col-subtotal">${this.formatPrice(item.price * item.qty)}</td>
                     <td class="owwc-cart-col-remove">
                         <button class="owwc-cart-item-remove"
-                                data-product-id="${item.product_id}"
+                                data-cart-key="${item.key}"
                                 aria-label="Hapus ${item.title}">
                             ×
                         </button>
