@@ -28,36 +28,36 @@ if ( ! $order ) {
 get_header(); 
 ?>
 
-<div class="owwc-frontend-wrap" style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
+<div class="owwc-order-received-wrap">
     
-    <div style="text-align: center; margin-bottom: 40px;">
-        <svg style="width: 64px; height: 64px; color: #10b981; margin: 0 auto 15px auto;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <h1 style="font-size: 28px; margin-bottom: 10px; color: #111;">Terima Kasih Atas Pesanan Anda!</h1>
-        <p style="color: #666; font-size: 16px;">Pesanan Anda telah kami terima dan sedang menunggu proses.</p>
+    <div class="owwc-or-header">
+        <svg class="owwc-or-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <h1 class="owwc-or-title">Terima Kasih Atas Pesanan Anda!</h1>
+        <p class="owwc-or-subtitle">Pesanan Anda telah kami terima dan sedang menunggu proses.</p>
     </div>
 
-    <div style="background: #fafafa; border: 1px solid #eaeaea; border-radius: 8px; padding: 30px; margin-bottom: 30px;">
-        <h2 style="font-size: 18px; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #eaeaea; padding-bottom: 10px;">Informasi Pesanan</h2>
+    <div class="owwc-or-info-box">
+        <h2 class="owwc-or-info-title">Informasi Pesanan</h2>
         
-        <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <ul class="owwc-or-details-list">
             <li>
-                <span style="display: block; font-size: 13px; color: #666; margin-bottom: 4px;">Nomor Pesanan:</span>
-                <strong style="font-size: 16px; color: #111;">#<?php echo esc_html( $order->id ); ?></strong>
+                <span class="owwc-or-detail-label">Nomor Pesanan:</span>
+                <strong class="owwc-or-detail-value">#<?php echo esc_html( $order->id ); ?></strong>
             </li>
             <li>
-                <span style="display: block; font-size: 13px; color: #666; margin-bottom: 4px;">Tanggal:</span>
-                <strong style="font-size: 16px; color: #111;"><?php echo wp_date( 'd F Y', strtotime( $order->created_at ) ); ?></strong>
+                <span class="owwc-or-detail-label">Tanggal:</span>
+                <strong class="owwc-or-detail-value"><?php echo wp_date( 'd F Y', strtotime( $order->created_at ) ); ?></strong>
             </li>
             <li>
-                <span style="display: block; font-size: 13px; color: #666; margin-bottom: 4px;">Total Tagihan:</span>
-                <strong style="font-size: 16px; color: var(--owwc-primary);"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $order->total_amount ) ); ?></strong>
+                <span class="owwc-or-detail-label">Total Tagihan:</span>
+                <strong class="owwc-or-detail-value owwc-text-primary"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $order->total_amount ) ); ?></strong>
             </li>
             <li>
-                <span style="display: block; font-size: 13px; color: #666; margin-bottom: 4px;">Metode Pembayaran:</span>
-                <strong style="font-size: 16px; color: #111;"><?php echo esc_html( strtoupper( $order->payment_method ) ); ?></strong>
+                <span class="owwc-or-detail-label">Metode Pembayaran:</span>
+                <strong class="owwc-or-detail-value"><?php echo esc_html( strtoupper( $order->payment_method ) ); ?></strong>
             </li>
             <li>
-                <span style="display: block; font-size: 13px; color: #666; margin-bottom: 4px;">Status Pesanan:</span>
+                <span class="owwc-or-detail-label">Status Pesanan:</span>
                 <?php
                 $status_labels = [
                     'pending'               => 'Menunggu Pembayaran',
@@ -91,12 +91,12 @@ get_header();
             $bacs_instructions = get_option( 'owwc_bacs_instructions', 'Silakan transfer sejumlah total tagihan ke rekening berikut:' );
             $bacs_account      = get_option( 'owwc_bacs_account', "Bank BCA\nNo. Rek: 1234567890\nA.n: PT OwwCommerce Indonesia" );
         ?>
-            <div style="background: #fff; border: 1px solid var(--owwc-primary); border-left: 4px solid var(--owwc-primary); padding: 20px; border-radius: 4px; margin-top: 20px;">
-                <h3 style="margin-top: 0; font-size: 16px; color: var(--owwc-primary);">Instruksi Transfer Bank</h3>
-                <p style="margin-bottom: 10px; font-size: 14px; color: #555;"><?php echo esc_html( $bacs_instructions ); ?></p>
-                <p style="margin-bottom: 5px; font-size: 14px; color: #555;">Jumlah: <strong><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $order->total_amount ) ); ?></strong></p>
-                <pre style="margin-bottom: 0; font-family: monospace; font-size: 15px; background: #f9f9f9; padding: 12px; border-radius: 4px; white-space: pre-wrap; line-height: 1.6;"><?php echo esc_html( $bacs_account ); ?></pre>
-                <p style="margin-top: 15px; margin-bottom: 0; font-size: 13px; color: #888;">* Jaga kerahasiaan bukti transfer Anda. Pesanan akan diproses setelah dana masuk.</p>
+            <div class="owwc-bacs-instructions-box">
+                <h3 class="owwc-bacs-title">Instruksi Transfer Bank</h3>
+                <p class="owwc-bacs-desc"><?php echo esc_html( $bacs_instructions ); ?></p>
+                <p class="owwc-bacs-amount">Jumlah: <strong><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $order->total_amount ) ); ?></strong></p>
+                <pre class="owwc-bacs-account"><?php echo esc_html( $bacs_account ); ?></pre>
+                <p class="owwc-bacs-note">* Jaga kerahasiaan bukti transfer Anda. Pesanan akan diproses setelah dana masuk.</p>
             </div>
 
             <!-- Form Konfirmasi Pembayaran -->
@@ -144,7 +144,7 @@ get_header();
                             </a>
                         <?php endif; ?>
                     </div>
-                    <div id="owwc-confirm-message" style="margin-top: 15px; display: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 500;"></div>
+                    <div id="owwc-confirm-message" class="owwc-confirm-msg"></div>
                 </div>
 
                 <script>
@@ -161,12 +161,10 @@ get_header();
                             if (this.files.length > 0) {
                                 filenameDisplay.innerText = 'File terpilih: ' + this.files[0].name;
                                 filenameDisplay.style.display = 'block';
-                                fileDummy.style.borderColor = 'var(--owwc-primary)';
-                                fileDummy.style.background = '#fefce8';
+                                fileDummy.classList.add('has-file');
                             } else {
                                 filenameDisplay.style.display = 'none';
-                                fileDummy.style.borderColor = '#ddd';
-                                fileDummy.style.background = '#fafafa';
+                                fileDummy.classList.remove('has-file');
                             }
                         });
                     }
@@ -176,9 +174,7 @@ get_header();
                             if (proofInput.files.length === 0) {
                                 msgBox.style.display = 'block';
                                 msgBox.innerText = 'Silakan pilih file bukti pembayaran terlebih dahulu.';
-                                msgBox.style.background = '#fef2f2';
-                                msgBox.style.color = '#991b1b';
-                                msgBox.style.border = '1px solid #ef4444';
+                                msgBox.className = 'owwc-confirm-msg error';
                                 return;
                             }
 
@@ -204,28 +200,24 @@ get_header();
                                 msgBox.style.display = 'block';
                                 if (response.ok && data.success) {
                                     msgBox.innerText = data.message;
-                                    msgBox.style.background = '#ecfdf5';
-                                    msgBox.style.color = '#065f46';
-                                    msgBox.style.border = '1px solid #10b981';
+                                    msgBox.className = 'owwc-confirm-msg success';
                                     
                                     // Sembunyikan form setelah sukses
                                     setTimeout(() => {
                                         document.getElementById('owwc-confirmation-section').innerHTML = `
-                                            <div style="text-align: center; padding: 30px;">
-                                                <div style="width: 60px; height: 60px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
-                                                    <svg style="width: 32px; height: 32px; color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                            <div class="owwc-confirmation-success-state">
+                                                <div class="owwc-cs-icon">
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                                                 </div>
-                                                <p style="font-size: 18px; font-weight: 700; color: #111; margin: 0;">Konfirmasi Berhasil!</p>
-                                                <p style="font-size: 14px; color: #666; margin-top: 8px;">Status Anda: <span class="owwc-badge processing">Menunggu Konfirmasi</span></p>
-                                                <p style="font-size: 13px; color: #888; margin-top: 15px; line-height: 1.5;">Tim kami akan segera memverifikasi pembayaran Anda. Terima kasih telah berbelanja!</p>
+                                                <p class="owwc-cs-title">Konfirmasi Berhasil!</p>
+                                                <p class="owwc-cs-subtitle">Status Anda: <span class="owwc-badge processing">Menunggu Konfirmasi</span></p>
+                                                <p class="owwc-cs-desc">Tim kami akan segera memverifikasi pembayaran Anda. Terima kasih telah berbelanja!</p>
                                             </div>
                                         `;
                                     }, 1500);
                                 } else {
                                     msgBox.innerText = data.message || 'Gagal mengirim konfirmasi.';
-                                    msgBox.style.background = '#fef2f2';
-                                    msgBox.style.color = '#991b1b';
-                                    msgBox.style.border = '1px solid #ef4444';
+                                    msgBox.className = 'owwc-confirm-msg error';
                                     btn.disabled = false;
                                     btn.innerText = originalText;
                                     btn.style.opacity = '1';
@@ -234,8 +226,7 @@ get_header();
                                 console.error('Confirmation error:', error);
                                 msgBox.style.display = 'block';
                                 msgBox.innerText = 'Terjadi kesalahan jaringan.';
-                                msgBox.style.background = '#fef2f2';
-                                msgBox.style.color = '#991b1b';
+                                msgBox.className = 'owwc-confirm-msg error';
                                 btn.disabled = false;
                                 btn.innerText = originalText;
                                 btn.style.opacity = '1';
@@ -247,15 +238,15 @@ get_header();
             <?php endif; ?>
 
         <?php elseif ( $order->payment_method === 'cod' ) : ?>
-            <div style="background: #fff; border: 1px solid #10b981; border-left: 4px solid #10b981; padding: 20px; border-radius: 4px; margin-top: 20px;">
-                <h3 style="margin-top: 0; font-size: 16px; color: #10b981;">Instruksi COD (Bayar di Tempat)</h3>
-                <p style="margin-bottom: 0; font-size: 14px; color: #555;">Mohon siapkan uang tunai sejumlah <strong><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $order->total_amount ) ); ?></strong> saat kurir kami tiba di alamat Anda.</p>
+            <div class="owwc-cod-instructions-box">
+                <h3 class="owwc-cod-title">Instruksi COD (Bayar di Tempat)</h3>
+                <p class="owwc-cod-desc">Mohon siapkan uang tunai sejumlah <strong><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $order->total_amount ) ); ?></strong> saat kurir kami tiba di alamat Anda.</p>
             </div>
         <?php endif; ?>
     </div>
 
-    <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
-        <a href="<?php echo esc_url( home_url() ); ?>" class="owwc-btn" style="padding: 12px 24px; text-decoration: none;">Kembali ke Beranda</a>
+    <div class="owwc-or-footer">
+        <a href="<?php echo esc_url( home_url() ); ?>" class="owwc-btn">Kembali ke Beranda</a>
     </div>
 
 </div>

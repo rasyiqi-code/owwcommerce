@@ -39,9 +39,9 @@ $shop_url     = $shop_page_id ? get_permalink( $shop_page_id ) : site_url( '/tok
     -->
     <div id="owwc-cart-content">
         <!-- Loading skeleton: diganti oleh JS saat data cart dimuat -->
-        <div class="owwc-skeleton owwc-skeleton--box" style="height: 80px; margin-bottom: 12px;"></div>
-        <div class="owwc-skeleton owwc-skeleton--box" style="height: 80px; margin-bottom: 12px;"></div>
-        <div class="owwc-skeleton owwc-skeleton--box" style="height: 80px;"></div>
+        <div class="owwc-skeleton owwc-skeleton--box owwc-skeleton-cart-row"></div>
+        <div class="owwc-skeleton owwc-skeleton--box owwc-skeleton-cart-row"></div>
+        <div class="owwc-skeleton owwc-skeleton--box owwc-skeleton-cart-row"></div>
     </div>
 
     <!-- Summary & tombol checkout — ditampilkan oleh JS ketika cart berisi item -->

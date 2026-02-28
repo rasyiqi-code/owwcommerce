@@ -48,98 +48,7 @@ if ( $user_id ) {
 }
 ?>
 
-<style>
-    .owwc-checkout-login-prompt {
-        background: #fff;
-        border: 1px solid #f0f0f0;
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-        animation: slideDown 0.5s ease-out;
-    }
-    @keyframes slideDown {
-        from { transform: translateY(-20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-    .owwc-clp-content { display: flex; align-items: center; gap: 20px; }
-    .owwc-clp-icon {
-        width: 50px;
-        height: 50px;
-        background: #fafafa;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #D4A843;
-    }
-    .owwc-clp-text h4 { margin: 0 0 5px; font-size: 16px; font-weight: 800; color: #111; }
-    .owwc-clp-text p { margin: 0; font-size: 14px; color: #666; }
-    .owwc-clp-actions { display: flex; gap: 12px; }
-    .owwc-clp-btn {
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-        text-decoration: none;
-        display: inline-block;
-        border: none;
-    }
-    .owwc-clp-btn--login { background: #111; color: #fff; }
-    .owwc-clp-btn--login:hover { background: #D4A843; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212,168,67,0.3); }
-    .owwc-clp-btn--guest { background: #f3f4f6; color: #444; }
-    .owwc-clp-btn--guest:hover { background: #e5e7eb; }
-
-    @media (max-width: 768px) {
-        .owwc-checkout-login-prompt { flex-direction: column; text-align: center; }
-        .owwc-clp-content { flex-direction: column; }
-        .owwc-clp-actions { width: 100%; flex-direction: column; }
-        .owwc-clp-btn { width: 100%; box-sizing: border-box; }
-    }
-
-    /* Profile Info Card & Warning */
-    .owwc-profile-info-card {
-        background: #fafafa;
-        border: 1px solid #eee;
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 25px;
-        position: relative;
-    }
-    .owwc-profile-info-card p { margin: 0; line-height: 1.6; color: #444; font-size: 14px; }
-    .owwc-profile-info-card strong { color: #111; display: block; margin-bottom: 5px; font-size: 15px; }
-    .owwc-profile-info-card .edit-btn {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        color: var(--owwc-primary);
-        text-decoration: none;
-        border-bottom: 1px dashed;
-    }
-
-    .owwc-checkout-warning {
-        background: #fffbeb;
-        border: 1px solid #fef3c7;
-        color: #92400e;
-        padding: 15px 20px;
-        border-radius: 12px;
-        font-size: 13px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-    .owwc-checkout-warning svg { color: #d97706; }
-</style>
+// Blank - Styles dipindahkan ke stylesheet eksternal
 
 <div class="owwc-checkout-container">
 
@@ -322,7 +231,7 @@ if ( $user_id ) {
                     Buat Pesanan
                 </button>
 
-                <div id="owwc-checkout-error" class="owwc-checkout-error" style="display: none;"></div>
+                <div id="owwc-checkout-error" class="owwc-checkout-error owwc-checkout-error-message"></div>
             </form>
         </div>
 
@@ -331,12 +240,12 @@ if ( $user_id ) {
             <h3>Pesanan Anda</h3>
             
             <!-- Coupon Section -->
-            <div class="owwc-coupon-wrapper" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dotted #ccc;">
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" id="owwc-coupon-code" class="owwc-input" placeholder="Kode Kupon" style="margin-bottom: 0;">
-                    <button type="button" id="owwc-apply-coupon" class="owwc-btn" style="padding: 10px 15px; font-size: 13px;">Gunakan</button>
+            <div class="owwc-coupon-wrapper owwc-coupon-section">
+                <div class="owwc-coupon-controls">
+                    <input type="text" id="owwc-coupon-code" class="owwc-input owwc-coupon-input" placeholder="Kode Kupon">
+                    <button type="button" id="owwc-apply-coupon" class="owwc-btn owwc-coupon-btn">Gunakan</button>
                 </div>
-                <div id="owwc-coupon-message" style="font-size: 12px; margin-top: 5px; display: none;"></div>
+                <div id="owwc-coupon-message" class="owwc-coupon-msg"></div>
             </div>
 
             <div id="owwc-checkout-cart-review">

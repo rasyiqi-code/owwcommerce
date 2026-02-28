@@ -122,9 +122,9 @@ class Shortcodes {
         }
 
         // Render simple icon SVG dengan badge
-        return '<a href="' . $cart_page_url . '" class="owwc-cart-icon-link" aria-label="Lihat Keranjang Belanja" style="position: relative; display: inline-flex; align-items: center; text-decoration: none; color: inherit; padding: 5px;">
+        return '<a href="' . $cart_page_url . '" class="owwc-cart-icon-link" aria-label="Lihat Keranjang Belanja">
             ' . $svg_content . '
-            <span class="owwc-cart-badge owwc-cart-count" style="position: absolute; top: -5px; right: -8px; background: var(--owwc-primary, #4F46E5); color: white; border-radius: 12px; padding: 2px 6px; font-size: 11px; font-weight: bold; line-height: 1; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s;">
+            <span class="owwc-cart-badge owwc-cart-count">
                 0
             </span>
         </a>';

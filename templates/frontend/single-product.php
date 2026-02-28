@@ -220,14 +220,14 @@ get_header(); ?>
         <span class="owwc-mobile-price-label">Harga</span>
         <div class="owwc-mobile-price-value owwc-product-price">
             <?php if ( $product->sale_price ) : ?>
-                <del style="font-size: 12px;"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></del>
+                <del class="owwc-price-old"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></del>
                 <ins><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->sale_price ) ); ?></ins>
             <?php else : ?>
                 <span><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></span>
             <?php endif; ?>
         </div>
     </div>
-    <button id="owwc-mobile-buy-trigger" class="owwc-add-to-cart-btn" style="flex: 0 0 60%; padding: 12px;">
+    <button id="owwc-mobile-buy-trigger" class="owwc-add-to-cart-btn owwc-mobile-buy-btn">
         Beli Sekarang
     </button>
 </div>

@@ -166,7 +166,8 @@ class Plugin {
                         strpos( $content, '[owwcommerce_shop]' )     !== false ||
                         strpos( $content, '[owwcommerce_checkout]' ) !== false ||
                         strpos( $content, '[owwcommerce_cart]' )     !== false ||
-                        strpos( $content, '[owwcommerce_single_product]' ) !== false
+                        strpos( $content, '[owwcommerce_single_product]' ) !== false ||
+                        strpos( $content, '[owwcommerce_my_account]' ) !== false
                     ) {
                         $is_owwcommerce_page = true;
                     }

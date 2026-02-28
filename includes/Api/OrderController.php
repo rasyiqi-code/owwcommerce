@@ -7,6 +7,7 @@ use WP_Error;
 use OwwCommerce\Core\Container;
 use OwwCommerce\Repositories\OrderRepository;
 use OwwCommerce\Repositories\ProductRepository;
+use OwwCommerce\Repositories\CustomerRepository;
 use OwwCommerce\Emails\EmailSender;
 
 /**
@@ -22,12 +23,14 @@ class OrderController extends WP_REST_Controller {
 
     private OrderRepository $order_repo;
     private ProductRepository $product_repo;
+    private CustomerRepository $customer_repo;
 
     public function __construct( Container $container ) {
-        $this->namespace    = 'owwc/v1';
-        $this->rest_base    = 'orders';
-        $this->order_repo   = new OrderRepository();
-        $this->product_repo = new ProductRepository();
+        $this->namespace     = 'owwc/v1';
+        $this->rest_base     = 'orders';
+        $this->order_repo    = new OrderRepository();
+        $this->product_repo  = new ProductRepository();
+        $this->customer_repo = new CustomerRepository();
 
         add_action( 'rest_api_init', [ $this, 'register_routes' ] );
     }
@@ -107,9 +110,13 @@ class OrderController extends WP_REST_Controller {
             return new WP_Error( 'not_found', 'Pesanan tidak ditemukan.', [ 'status' => 404 ] );
         }
 
+        $customer = $this->customer_repo->find( $order->customer_id );
+
         // Permission check: Admin OR Owner of the order
-        if ( ! current_user_can( 'manage_options' ) && (int) $order->customer_id !== get_current_user_id() ) {
-            return new WP_Error( 'forbidden', 'Anda tidak diizinkan melihat pesanan ini.', [ 'status' => 403 ] );
+        if ( ! current_user_can( 'manage_options' ) ) {
+            if ( ! $customer || (int) $customer['wp_user_id'] !== get_current_user_id() ) {
+                return new WP_Error( 'forbidden', 'Anda tidak diizinkan melihat pesanan ini.', [ 'status' => 403 ] );
+            }
         }
 
         $order_data = $order->to_array();

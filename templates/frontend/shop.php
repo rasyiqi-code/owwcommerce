@@ -54,13 +54,13 @@ $categories = $category_repo->get_all();
     </div>
 
     <!-- Unified Search + External Sorting -->
-    <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 30px; flex-wrap: wrap;">
+    <div class="owwc-shop-controls-wrapper">
         
         <!-- Unified Compact Filter Bar (Search & Category) -->
-        <div class="owwc-shop-filters" style="background: var(--owwc-surface); padding: 6px; border-radius: var(--owwc-radius-full); border: 1px solid var(--owwc-border); box-shadow: var(--owwc-shadow-sm); display: flex; align-items: center; flex: 1; min-width: 300px;">
-            <form action="" method="GET" style="display: flex; width: 100%; align-items: center; gap: 8px;">
+        <div class="owwc-shop-filters owwc-shop-filter-bar">
+            <form action="" method="GET" class="owwc-shop-filter-form">
                 <!-- Search Icon -->
-                <div style="padding-left: 15px; color: var(--owwc-text-light); flex-shrink: 0;">
+                <div class="owwc-shop-search-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -68,12 +68,12 @@ $categories = $category_repo->get_all();
                 </div>
 
                 <!-- Search Input -->
-                <input type="text" name="s" value="<?php echo esc_attr( $search_query ); ?>" placeholder="Cari..." class="owwc-input" style="border: none; background: transparent; box-shadow: none; padding: 10px 5px; flex: 2; font-size: 14px; min-width: 100px;">
+                <input type="text" name="s" value="<?php echo esc_attr( $search_query ); ?>" placeholder="Cari..." class="owwc-input owwc-shop-search-input">
 
-                <div style="border-right: 1px solid var(--owwc-border); height: 24px;"></div>
+                <div class="owwc-shop-filter-divider"></div>
                 
                 <!-- Category Filter -->
-                <select name="category" class="owwc-select" style="border: none; background: transparent; box-shadow: none; width: auto; min-width: 120px; font-size: 13px; font-weight: 600; cursor: pointer; padding: 0 10px;">
+                <select name="category" class="owwc-select owwc-shop-category-select">
                     <option value="">Semua Kategori</option>
                     <?php foreach ( $categories as $cat ) : ?>
                         <option value="<?php echo esc_attr( $cat->slug ); ?>" <?php selected( $cat_slug, $cat->slug ); ?>>
@@ -85,7 +85,7 @@ $categories = $category_repo->get_all();
                 <!-- Hidden orderby to keep current sort while searching/category change if it were stay, but here we submit the form -->
                 <input type="hidden" name="orderby" value="<?php echo esc_attr( $orderby ); ?>">
 
-                <button type="submit" class="owwc-btn" style="border-radius: var(--owwc-radius-full); height: 40px; width: 40px; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" title="Cari">
+                <button type="submit" class="owwc-btn owwc-shop-search-btn" title="Cari">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
@@ -94,7 +94,7 @@ $categories = $category_repo->get_all();
         </div>
 
         <!-- External Sorting Button Group -->
-        <div class="owwc-sort-group" style="display: flex; background: var(--owwc-surface); padding: 5px; border-radius: var(--owwc-radius-full); border: 1px solid var(--owwc-border); box-shadow: var(--owwc-shadow-sm); gap: 2px;">
+        <div class="owwc-sort-group owwc-shop-sort-group">
             <?php
             $sort_options = [
                 'newest'       => [ 'label' => 'Terbaru', 'icon' => 'clock' ],
@@ -109,8 +109,7 @@ $categories = $category_repo->get_all();
             ?>
                 <a href="<?php echo esc_url( $url ); ?>" 
                    class="owwc-sort-btn <?php echo $active ? 'is-active' : ''; ?>" 
-                   title="<?php echo esc_attr( $opt['label'] ); ?>"
-                   style="height: 38px; width: 38px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; color: <?php echo $active ? 'var(--owwc-surface)' : 'var(--owwc-text-light)'; ?>; background: <?php echo $active ? 'var(--owwc-primary)' : 'transparent'; ?>; transition: all 0.2s;">
+                   title="<?php echo esc_attr( $opt['label'] ); ?>">
                     <?php if ( $opt['icon'] === 'clock' ) : ?>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     <?php elseif ( $opt['icon'] === 'sort-alpha-down' ) : ?>
@@ -127,13 +126,13 @@ $categories = $category_repo->get_all();
     </div>
     <!-- Active Filters Tags -->
     <?php if ( ! empty( $search_query ) || ! empty( $cat_slug ) ) : ?>
-        <div class="owwc-active-filters" style="display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; align-items: center;">
-            <span style="font-size: 12px; font-weight: 700; color: var(--owwc-text-light); text-transform: uppercase;">Filter Aktif:</span>
+        <div class="owwc-active-filters owwc-active-filter-bar">
+            <span class="owwc-filter-label">Filter Aktif:</span>
             
             <?php if ( ! empty( $search_query ) ) : ?>
-                <div class="owwc-filter-tag" style="background: var(--owwc-bg); border: 1px solid var(--owwc-border); padding: 4px 12px; border-radius: var(--owwc-radius-full); font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                <div class="owwc-filter-tag">
                     <span>"<?php echo esc_html( $search_query ); ?>"</span>
-                    <a href="<?php echo esc_url( remove_query_arg( 's' ) ); ?>" style="color: var(--owwc-danger); text-decoration: none; font-weight: bold; font-size: 14px; line-height: 1;">&times;</a>
+                    <a href="<?php echo esc_url( remove_query_arg( 's' ) ); ?>" class="owwc-filter-remove">&times;</a>
                 </div>
             <?php endif; ?>
 
@@ -141,9 +140,9 @@ $categories = $category_repo->get_all();
                 $active_cat = array_filter( $categories, fn($c) => $c->slug === $cat_slug );
                 $cat_name = ! empty( $active_cat ) ? reset( $active_cat )->name : $cat_slug;
             ?>
-                <div class="owwc-filter-tag" style="background: var(--owwc-bg); border: 1px solid var(--owwc-border); padding: 4px 12px; border-radius: var(--owwc-radius-full); font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                <div class="owwc-filter-tag">
                     <span>Kat: <?php echo esc_html( $cat_name ); ?></span>
-                    <a href="<?php echo esc_url( remove_query_arg( 'category' ) ); ?>" style="color: var(--owwc-danger); text-decoration: none; font-weight: bold; font-size: 14px; line-height: 1;">&times;</a>
+                    <a href="<?php echo esc_url( remove_query_arg( 'category' ) ); ?>" class="owwc-filter-remove">&times;</a>
                 </div>
             <?php endif; ?>
 
@@ -157,13 +156,13 @@ $categories = $category_repo->get_all();
                 ];
                 $sort_label = $sort_labels[$orderby] ?? $orderby;
             ?>
-                <div class="owwc-filter-tag" style="background: var(--owwc-bg); border: 1px solid var(--owwc-border); padding: 4px 12px; border-radius: var(--owwc-radius-full); font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                <div class="owwc-filter-tag">
                     <span>Urut: <?php echo esc_html( $sort_label ); ?></span>
-                    <a href="<?php echo esc_url( remove_query_arg( 'orderby' ) ); ?>" style="color: var(--owwc-danger); text-decoration: none; font-weight: bold; font-size: 14px; line-height: 1;">&times;</a>
+                    <a href="<?php echo esc_url( remove_query_arg( 'orderby' ) ); ?>" class="owwc-filter-remove">&times;</a>
                 </div>
             <?php endif; ?>
 
-            <a href="<?php echo esc_url( remove_query_arg( ['s', 'category', 'orderby'] ) ); ?>" style="font-size: 11px; color: var(--owwc-text-muted); text-decoration: underline;">Hapus Semua</a>
+            <a href="<?php echo esc_url( remove_query_arg( ['s', 'category', 'orderby'] ) ); ?>" class="owwc-filter-clear">Hapus Semua</a>
         </div>
     <?php endif; ?>
 

@@ -139,7 +139,15 @@ class CheckoutController extends WP_REST_Controller {
 
         if ( $existing_customer ) {
             $customer_id = (int) $existing_customer['id'];
-            $this->customer_repo->update( $customer_id, $customer_data );
+            
+            // Authorization Check: prevent IDOR when updating existing customer data
+            $is_owner = is_user_logged_in() && (int) $existing_customer['wp_user_id'] === get_current_user_id();
+            
+            // Only update customer data if the user is logged in and owns the email, 
+            // OR if it's a completely guest account (no wp_user_id associated) and no one is logged in
+            if ( $is_owner || ( empty( $existing_customer['wp_user_id'] ) && ! is_user_logged_in() ) ) {
+                $this->customer_repo->update( $customer_id, $customer_data );
+            }
         } else if ( ! empty( $customer_email ) ) {
             $customer_id = $this->customer_repo->create( $customer_data );
         }
@@ -259,6 +267,7 @@ class CheckoutController extends WP_REST_Controller {
         $data     = $request->get_params(); // get_params() includes $_FILES for multipart
         $order_id = (int) ( $data['order_id'] ?? 0 );
         $note     = sanitize_textarea_field( $data['note'] ?? '' );
+        $email    = sanitize_email( $data['email'] ?? '' );
         $proof_url = null;
 
         if ( ! $order_id ) {
@@ -268,6 +277,20 @@ class CheckoutController extends WP_REST_Controller {
         $order = $this->order_repo->find( $order_id );
         if ( ! $order ) {
             return new WP_Error( 'not_found', 'Pesanan tidak ditemukan.', [ 'status' => 404 ] );
+        }
+        
+        // Authorization check: User must own the order or provide correct billing email
+        $customer = $this->customer_repo->find( $order->customer_id );
+        $is_authorized = false;
+        
+        if ( is_user_logged_in() && $customer && (int) $customer['wp_user_id'] === get_current_user_id() ) {
+            $is_authorized = true; // Logged in and owns the order
+        } else if ( ! empty( $email ) && $customer && strtolower( $customer['email'] ) === strtolower( $email ) ) {
+            $is_authorized = true; // Guest order confirmation via email check
+        }
+        
+        if ( ! current_user_can( 'manage_options' ) && ! $is_authorized ) {
+             return new WP_Error( 'forbidden', 'Anda tidak diizinkan mengubah pesanan ini.', [ 'status' => 403 ] );
         }
 
         // Hanya izinkan konfirmasi jika status masih pending/on-hold
