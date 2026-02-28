@@ -186,9 +186,7 @@ class CheckoutController extends WP_REST_Controller {
             if ( $coupon && $coupon->is_valid() ) {
                 $discount_total = $coupon->calculate_discount( $total_amount );
                 $total_amount  = max( 0, $total_amount - $discount_total );
-                
-                // Increment usage
-                $coupon_repo->increment_usage( $coupon->id );
+                // Increment usage moved to after successful order creation
             }
         }
 
@@ -210,7 +208,15 @@ class CheckoutController extends WP_REST_Controller {
 
             // === STEP 6: Kurangi stok produk ===
             foreach ( $order_items as $oi ) {
-                $this->product_repo->reduce_stock( $oi->product_id, $oi->qty );
+                $reduced = $this->product_repo->reduce_stock( $oi->product_id, $oi->qty );
+                if ( ! $reduced ) {
+                    throw new \Exception( 'Stok produk tidak mencukupi saat proses finalisasi.' );
+                }
+            }
+
+            // === STEP 6.5: Increment usage kupon jika ada ===
+            if ( ! empty( $coupon_code ) && isset($coupon) && $coupon->id ) {
+                $coupon_repo->increment_usage( $coupon->id );
             }
 
             // Update total_spent customer
@@ -303,7 +309,15 @@ class CheckoutController extends WP_REST_Controller {
             require_once ABSPATH . 'wp-admin/includes/file.php';
             
             $uploaded_file = $_FILES['proof'];
-            $upload_overrides = [ 'test_form' => false ];
+            $upload_overrides = [ 
+                'test_form' => false,
+                'mimes'     => [
+                    'jpg|jpeg|jpe' => 'image/jpeg',
+                    'gif'          => 'image/gif',
+                    'png'          => 'image/png',
+                    'webp'         => 'image/webp',
+                ],
+            ];
             
             $movefile = wp_handle_upload( $uploaded_file, $upload_overrides );
 

@@ -3,7 +3,7 @@
  * Plugin Name: OwwCommerce
  * Plugin URI: https://example.com/owwcommerce
  * Description: The Zero-Bloatware E-Commerce Engine for WordPress.
- * Version: 1.1.2
+ * Version: 1.3.0
  * Requires at least: 6.0
  * Requires PHP: 8.1
  * Author: OwwCommerce Team

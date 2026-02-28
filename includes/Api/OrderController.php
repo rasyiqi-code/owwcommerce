@@ -114,7 +114,20 @@ class OrderController extends WP_REST_Controller {
 
         // Permission check: Admin OR Owner of the order
         if ( ! current_user_can( 'manage_options' ) ) {
-            if ( ! $customer || (int) $customer['wp_user_id'] !== get_current_user_id() ) {
+            $is_owner = false;
+            
+            if ( is_user_logged_in() ) {
+                // Logged in user must match the wp_user_id
+                $is_owner = $customer && (int) $customer['wp_user_id'] === get_current_user_id();
+            } else {
+                // For non-logged in (guest) requests, we strictly deny access via this general endpoint 
+                // UNLESS there is a secure way to verify guest ownership (e.g., via a secure token).
+                // In OwwCommerce, guest view is handled by 'Order Received' page logic, 
+                // but this API endpoint should NOT leak guest data to anyone.
+                $is_owner = false; 
+            }
+
+            if ( ! $is_owner ) {
                 return new WP_Error( 'forbidden', 'Anda tidak diizinkan melihat pesanan ini.', [ 'status' => 403 ] );
             }
         }
