@@ -7,6 +7,7 @@ namespace OwwCommerce\Core;
 use OwwCommerce\Frontend\Router;
 use OwwCommerce\Frontend\Shortcodes;
 use OwwCommerce\Frontend\FloatingCart;
+use OwwCommerce\Frontend\Customizer;
 
 class Plugin {
 
@@ -122,6 +123,7 @@ class Plugin {
         // Inisialisasi Shortcodes & Floating Cart UI
         new Shortcodes();
         new FloatingCart();
+        new Customizer();
 
         // Frontend Scripts
         add_action('wp_enqueue_scripts', function() {

@@ -194,53 +194,209 @@
 }
 
 /* ==============================================================
-   SHOP PAGE — Grid Produk
+   SHOP PAGE — Hero & Header
    ============================================================== */
+
+.owwc-shop-hero {
+    position: relative;
+    background: linear-gradient(135deg, #26a69a 0%, #009688 100%);
+    /* Teal gradient */
+    padding: 60px 20px 80px;
+    border-radius: var(--owwc-radius-md);
+    margin-bottom: 40px;
+    overflow: visible;
+    /* FIXED: allow search bar to overflow */
+    text-align: center;
+    color: #fff;
+}
+
+/* Background blobs to mimic the reference */
+.owwc-shop-hero::before,
+.owwc-shop-hero::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    /* Ensure blobs don't interfere with clicks */
+}
+
+.owwc-shop-hero::before {
+    top: -100px;
+    left: -100px;
+}
+
+.owwc-shop-hero::after {
+    bottom: -100px;
+    right: -100px;
+}
+
+.owwc-shop-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.owwc-shop-hero .owwc-breadcrumb {
+    justify-content: center;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.owwc-shop-hero .owwc-breadcrumb a,
+.owwc-shop-hero .owwc-breadcrumb .owwc-breadcrumb-current,
+.owwc-shop-hero .owwc-breadcrumb .owwc-breadcrumb-sep {
+    color: #fff !important;
+}
+
+.owwc-hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -1.5px;
+}
+
+.owwc-hero-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Floating Search Bar */
+.owwc-shop-search-floating {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    width: 90%;
+    max-width: 700px;
+    z-index: 20;
+    /* Increased to ensure it's above everything */
+}
+
+.owwc-shop-search-form {
+    background: #fff;
+    padding: 6px;
+    border-radius: var(--owwc-radius-full);
+    display: flex;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.owwc-shop-search-input-new {
+    flex: 1;
+    border: none !important;
+    background: transparent !important;
+    padding: 10px 20px !important;
+    font-size: 15px !important;
+    color: var(--owwc-text-main) !important;
+}
+
+.owwc-shop-search-input-new:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.owwc-shop-search-submit {
+    background: #c61111;
+    /* Red button like reference */
+    color: #fff;
+    border: none;
+    border-radius: var(--owwc-radius-full);
+    padding: 0 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--owwc-transition);
+}
+
+.owwc-shop-search-submit:hover {
+    background: #a00d0d;
+    transform: scale(1.02);
+}
+
+/* Category Tags */
+.owwc-category-tags-container {
+    margin-bottom: 30px;
+    padding-top: 25px;
+}
+
+.owwc-category-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.owwc-cat-tag {
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--owwc-text-muted);
+    padding: 8px 20px;
+    border-radius: var(--owwc-radius-full);
+    transition: var(--owwc-transition);
+}
+
+.owwc-cat-tag:hover {
+    color: var(--owwc-primary);
+}
+
+.owwc-cat-tag.is-active {
+    background: #4285f4;
+    /* Blue active tag like reference */
+    color: #fff !important;
+    box-shadow: 0 6px 12px rgba(66, 133, 244, 0.25);
+}
+
+/* Search result info */
+.owwc-search-result-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+/* Shop Container Adjustments */
 .owwc-shop-container {
     max-width: 1300px;
-    /* Sedikit lebih lebar agar tidak kaku */
     margin: 0 auto;
-    padding: var(--owwc-space-xl) var(--owwc-space-lg);
-    min-height: 400px;
+    padding: 20px;
+    min-width: 0;
+    /* Ensure no overflow-x */
 }
 
 @media (max-width: 768px) {
     .owwc-shop-container {
-        padding: var(--owwc-space-lg) 2px;
-        /* Sangat minim padding samping agar produk ke tepi layar */
+        padding: 0;
+        /* Remove container padding to allow hero to be full-width */
     }
-}
 
-/* Sembunyikan judul bawaan tema jika filter PHP gagal menjangkaunya */
-.owwc-shop-container~h1,
-.owwc-shop-container prev h1,
-body.owwc-page .entry-title,
-body.owwc-page .page-title,
-body.owwc-page .post-title {
-    display: none !important;
-}
+    .owwc-shop-hero {
+        border-radius: 0;
+        /* Full-width looks better without rounded corners on mobile */
+        margin-bottom: 25px;
+        padding: 40px 15px 60px;
+    }
 
-.owwc-shop-header {
-    margin-bottom: var(--owwc-space-lg);
-    padding: var(--owwc-space-lg) 0;
-    border-bottom: 2px solid var(--owwc-border);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-}
+    .owwc-category-tags-container,
+    .owwc-products-grid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 
-.owwc-shop-header .owwc-section-title {
-    font-size: 1.75rem;
-    font-weight: 800;
-    margin: 0;
-    line-height: 1;
-    letter-spacing: -0.02em;
-}
+    .owwc-hero-title {
+        font-size: 2.2rem;
+    }
 
-.owwc-shop-header .owwc-section-subtitle {
-    color: var(--owwc-text-muted);
-    font-size: var(--owwc-font-size-sm);
-    margin: 0;
+    .owwc-shop-search-submit {
+        padding: 0 20px;
+    }
 }
 
 .owwc-products-grid {
