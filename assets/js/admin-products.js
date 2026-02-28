@@ -140,6 +140,91 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         fetchProducts();
+
+        // Bulk Stock Update Logic
+        const bulkStockBtn = document.getElementById('owwc-bulk-stock-btn');
+        let isBulkMode = false;
+
+        if (bulkStockBtn) {
+            bulkStockBtn.addEventListener('click', async () => {
+                if (!isBulkMode) {
+                    // Masuk ke mode edit
+                    isBulkMode = true;
+                    bulkStockBtn.textContent = 'Simpan Stok';
+                    bulkStockBtn.classList.remove('owwc-btn-secondary');
+                    bulkStockBtn.classList.add('owwc-admin-btn'); // Primary color
+
+                    document.querySelectorAll('.owwc-badge').forEach(badge => {
+                        const td = badge.closest('td');
+                        const tr = td.closest('tr');
+                        const deleteBtn = tr.querySelector('.owwc-btn-delete');
+                        const editLink = tr.querySelector('a[href*="id="]');
+
+                        const prodId = deleteBtn ? deleteBtn.getAttribute('data-id') :
+                            (editLink ? editLink.href.split('id=')[1].split('&')[0] : null);
+
+                        console.log("Bulk Edit Mode - Found Prod ID:", prodId);
+
+                        if (!prodId) return;
+
+                        const currentStock = badge.textContent.trim().split(' ')[0];
+                        td.innerHTML = `<input type="number" class="owwc-admin-input bulk-stock-input" data-id="${prodId}" value="${currentStock === 'Out' ? 0 : currentStock}" style="width: 80px; padding: 4px 8px;">`;
+                    });
+                } else {
+                    // Simpan data
+                    const inputs = document.querySelectorAll('.bulk-stock-input');
+                    const updateData = [];
+
+                    inputs.forEach(input => {
+                        const id = input.getAttribute('data-id');
+                        if (id) {
+                            updateData.push({
+                                id: parseInt(id),
+                                stock: parseInt(input.value)
+                            });
+                        }
+                    });
+
+                    if (updateData.length === 0) {
+                        alert('Tidak ada data produk yang ditemukan untuk diperbarui.');
+                        bulkStockBtn.disabled = false;
+                        bulkStockBtn.textContent = 'Simpan Stok';
+                        return;
+                    }
+
+                    bulkStockBtn.disabled = true;
+                    bulkStockBtn.textContent = 'Menyimpan...';
+
+                    try {
+                        const res = await fetch(`${apiBase}/bulk-update-stock`, {
+                            method: 'POST',
+                            headers: {
+                                'X-WP-Nonce': nonce,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updateData)
+                        });
+
+                        if (res.ok) {
+                            alert('Stok berhasil diperbarui secara massal!');
+                            isBulkMode = false;
+                            bulkStockBtn.textContent = 'Update Stok Massal';
+                            bulkStockBtn.classList.add('owwc-btn-secondary');
+                            bulkStockBtn.disabled = false;
+                            fetchProducts(currentPage);
+                        } else {
+                            alert('Gagal memperbarui stok.');
+                            bulkStockBtn.disabled = false;
+                            bulkStockBtn.textContent = 'Simpan Stok';
+                        }
+                    } catch (e) {
+                        alert('Terjadi kesalahan jaringan.');
+                        bulkStockBtn.disabled = false;
+                        bulkStockBtn.textContent = 'Simpan Stok';
+                    }
+                }
+            });
+        }
     }
 
 
@@ -405,6 +490,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         renderSelectedAttributes();
                     }
 
+                    if (product.upsell_ids) {
+                        document.getElementById('prod-upsells').value = product.upsell_ids;
+                    }
+                    if (product.cross_sell_ids) {
+                        document.getElementById('prod-cross-sells').value = product.cross_sell_ids;
+                    }
+
                     if (product.image_url) {
                         document.getElementById('prod-image').value = product.image_url;
                         const previewWrap = document.getElementById('prod-image-preview');
@@ -445,6 +537,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const stock = document.getElementById('prod-stock').value || 0;
             const status = document.getElementById('prod-status').value || 'publish';
             const imageUrl = document.getElementById('prod-image')?.value || '';
+            const upsellIds = document.getElementById('prod-upsells')?.value || '';
+            const crossSellIds = document.getElementById('prod-cross-sells')?.value || '';
             const msgEl = document.getElementById('prod-form-message');
 
             if (!title) return;
@@ -473,6 +567,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         type: prodType.value,
                         image_url: imageUrl,
                         gallery_ids: document.getElementById('prod-gallery')?.value ? document.getElementById('prod-gallery').value.split(',') : [],
+                        upsell_ids: upsellIds,
+                        cross_sell_ids: crossSellIds,
                         variations: currentVariations
                     })
                 });

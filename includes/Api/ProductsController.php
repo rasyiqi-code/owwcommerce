@@ -73,6 +73,22 @@ class ProductsController extends WP_REST_Controller {
                 'permission_callback' => [ $this, 'delete_item_permissions_check' ],
             ],
         ] );
+
+        register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<id>\d+)/recommendations', [
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'get_recommendations' ],
+                'permission_callback' => '__return_true',
+            ],
+        ] );
+
+        register_rest_route( $this->namespace, '/' . $this->rest_base . '/bulk-update-stock', [
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [ $this, 'bulk_update_stock' ],
+                'permission_callback' => [ $this, 'update_item_permissions_check' ],
+            ],
+        ] );
     }
 
     public function get_items_permissions_check( $request ) {
@@ -147,6 +163,8 @@ class ProductsController extends WP_REST_Controller {
             'stock_qty'   => intval( $data['stock_qty'] ?? 0 ),
             'image_url'   => esc_url_raw( $data['image_url'] ?? '' ) ?: null,
             'gallery_ids' => isset( $data['gallery_ids'] ) ? array_map( 'intval', (array) $data['gallery_ids'] ) : [],
+            'upsell_ids'  => sanitize_text_field( $data['upsell_ids'] ?? '' ) ?: null,
+            'cross_sell_ids' => sanitize_text_field( $data['cross_sell_ids'] ?? '' ) ?: null,
         ] );
 
         // Handle variations if type is variable
@@ -185,6 +203,8 @@ class ProductsController extends WP_REST_Controller {
         if ( isset( $data['stock_qty'] ) )   $product->stock_qty   = intval( $data['stock_qty'] );
         if ( isset( $data['image_url'] ) )   $product->image_url   = esc_url_raw( $data['image_url'] ) ?: null;
         if ( isset( $data['gallery_ids'] ) ) $product->gallery_ids = array_map( 'intval', (array) $data['gallery_ids'] );
+        if ( isset( $data['upsell_ids'] ) )  $product->upsell_ids  = sanitize_text_field( $data['upsell_ids'] ) ?: null;
+        if ( isset( $data['cross_sell_ids'] ) ) $product->cross_sell_ids = sanitize_text_field( $data['cross_sell_ids'] ) ?: null;
 
         if ( $product->type === 'variable' && isset( $data['variations'] ) && is_array( $data['variations'] ) ) {
             $product->variations = [];
@@ -207,5 +227,83 @@ class ProductsController extends WP_REST_Controller {
         }
 
         return rest_ensure_response( [ 'deleted' => true, 'id' => $id ] );
+    }
+
+    public function bulk_update_stock( $request ) {
+        $data = $request->get_json_params();
+
+        if ( ! is_array( $data ) ) {
+            return new WP_Error( 'rest_invalid_data', 'Expected an array of objects.', [ 'status' => 400 ] );
+        }
+
+        $updated_count = 0;
+        foreach ( $data as $item ) {
+            $id    = (int) ( $item['id'] ?? 0 );
+            $stock = (int) ( $item['stock'] ?? 0 );
+
+            if ( $id <= 0 ) continue;
+
+            $product = $this->repository->find( $id );
+            if ( $product ) {
+                error_log( "OwwCommerce: Updating stock for product $id to $stock" );
+                $product->stock_qty = $stock; 
+                $this->repository->save( $product );
+                $updated_count++;
+            }
+        }
+
+        return rest_ensure_response( [
+            'success' => true,
+            'updated' => $updated_count,
+        ] );
+    }
+
+    public function get_recommendations( $request ) {
+        $id = (int) $request['id'];
+        $product = $this->repository->find( $id );
+
+        if ( ! $product ) {
+            return new WP_Error( 'rest_not_found', 'Product not found.', [ 'status' => 404 ] );
+        }
+
+        // 1. Ambil Upsells
+        $upsells = [];
+        if ( ! empty( $product->upsell_ids ) ) {
+            $ids = array_map( 'intval', explode( ',', $product->upsell_ids ) );
+            foreach ( $ids as $u_id ) {
+                $p = $this->repository->find( $u_id );
+                if ( $p ) $upsells[] = $p->to_array();
+            }
+        }
+        
+        // Fallback ke Algoritma jika manual masih kurang
+        if ( count( $upsells ) < 4 ) {
+            $auto_upsells = $this->repository->get_related_products( $id, 'upsell', 4 - count( $upsells ) );
+            foreach ( $auto_upsells as $p ) {
+                $upsells[] = $p->to_array();
+            }
+        }
+
+        // 2. Ambil Cross-sells
+        $cross_sells = [];
+        if ( ! empty( $product->cross_sell_ids ) ) {
+            $ids = array_map( 'intval', explode( ',', $product->cross_sell_ids ) );
+            foreach ( $ids as $c_id ) {
+                $p = $this->repository->find( $c_id );
+                if ( $p ) $cross_sells[] = $p->to_array();
+            }
+        }
+
+        if ( count( $cross_sells ) < 4 ) {
+            $auto_cross = $this->repository->get_related_products( $id, 'cross-sell', 4 - count( $cross_sells ) );
+            foreach ( $auto_cross as $p ) {
+                $cross_sells[] = $p->to_array();
+            }
+        }
+
+        return rest_ensure_response( [
+            'upsells'    => $upsells,
+            'cross_sells' => $cross_sells,
+        ] );
     }
 }

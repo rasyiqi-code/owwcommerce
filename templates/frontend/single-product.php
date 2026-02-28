@@ -212,6 +212,16 @@ get_header(); ?>
             </p>
         </div>
     </div>
+
+    <!-- Smart Recommendations Section -->
+    <div id="owwc-product-recommendations" class="owwc-recommendations-section" style="margin-top: 60px;">
+        <div id="owwc-upsells-wrap" style="display: none; margin-bottom: 40px;">
+            <h2 style="font-size: 20px; margin-bottom: 24px;">Anda Mungkin Juga Suka</h2>
+            <div id="owwc-upsells-list" class="owwc-products-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+                <!-- Diisi via JS -->
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Sticky Mobile Action Bar -->
@@ -361,7 +371,51 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.disabled = true;
         btn.querySelector('.btn-text').textContent = 'Pilih Variasi';
     }
+
+    // Load Smart Recommendations
+    const loadRecommendations = async () => {
+        try {
+            const apiRecBase = `<?php echo esc_url_raw( rest_url( 'owwc/v1/products/' . $product->id . '/recommendations' ) ); ?>`;
+            const res = await fetch(apiRecBase);
+            const data = await res.json();
+
+            if (data.upsells && data.upsells.length > 0) {
+                const upsellWrap = document.getElementById('owwc-upsells-wrap');
+                const upsellList = document.getElementById('owwc-upsells-list');
+                
+                upsellWrap.style.display = 'block';
+                upsellList.innerHTML = data.upsells.map(p => `
+                    <div class="owwc-product-card" style="border: 1px solid #eee; border-radius: 8px; padding: 15px; text-align: center;">
+                        <a href="${owwcSettings.homeUrl}${owwcSettings.productBase}/${p.slug}" style="text-decoration: none; color: inherit;">
+                            <img src="${p.image_url || ''}" style="width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 4px; margin-bottom: 10px;">
+                            <h3 style="font-size: 14px; margin-bottom: 8px;">${p.title}</h3>
+                            <div class="owwc-product-price" style="font-weight: 600; color: var(--owwc-admin-primary, #d4af37);">
+                                ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p.price).replace('IDR', 'Rp')}
+                            </div>
+                        </a>
+                    </div>
+                `).join('');
+            }
+        } catch (e) {
+            console.error("Gagal memuat rekomendasi:", e);
+        }
+    };
+
+    loadRecommendations();
 });
 </script>
+
+<style>
+.owwc-recommendations-section h2 { 
+    border-bottom: 2px solid #eee; 
+    padding-bottom: 10px;
+    display: inline-block;
+}
+.owwc-product-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+</style>
 
 <?php get_footer(); ?>

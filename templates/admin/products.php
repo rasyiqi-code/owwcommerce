@@ -1,7 +1,10 @@
 <div class="owwc-admin-wrap">
     <div class="owwc-admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h1><?php esc_html_e( 'Katalog Produk', 'owwcommerce' ); ?></h1>
-        <a href="?page=owwc-products&action=add" class="owwc-admin-btn" style="text-decoration: none;">Tambah Produk Baru</a>
+        <div style="display: flex; gap: 10px;">
+            <button id="owwc-bulk-stock-btn" class="owwc-admin-btn owwc-btn-secondary">Update Stok Massal</button>
+            <a href="?page=owwc-products&action=add" class="owwc-admin-btn" style="text-decoration: none;">Tambah Produk Baru</a>
+        </div>
     </div>
     
     <!-- Render Table via Javascript API -->

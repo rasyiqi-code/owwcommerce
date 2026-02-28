@@ -25,35 +25,60 @@ class ProductRepository {
         global $wpdb;
 
         $data = [
-            'title'       => $product->title,
-            'slug'        => $product->slug ?: sanitize_title( $product->title ),
-            'description' => $product->description,
-            'type'        => $product->type,
-            'status'      => $product->status,
-            'price'       => $product->price,
-            'sale_price'  => $product->sale_price,
-            'sku'         => $product->sku,
-            'image_url'   => $product->image_url,
-            'gallery_ids' => ! empty( $product->gallery_ids ) ? implode( ',', $product->gallery_ids ) : null,
-            'sales_count' => $product->sales_count,
-            'stock_qty'   => $product->stock_qty,
+            'title'          => $product->title,
+            'slug'           => $product->slug ?: sanitize_title( $product->title ),
+            'description'    => $product->description,
+            'type'           => $product->type,
+            'status'         => $product->status,
+            'price'          => $product->price,
+            'sale_price'     => $product->sale_price,
+            'sku'            => $product->sku,
+            'image_url'      => $product->image_url,
+            'gallery_ids'    => ! empty( $product->gallery_ids ) ? implode( ',', $product->gallery_ids ) : null,
+            'upsell_ids'     => $product->upsell_ids,
+            'cross_sell_ids' => $product->cross_sell_ids,
+            'sales_count'    => $product->sales_count,
+            'stock_qty'      => $product->stock_qty,
         ];
 
-        $format = [ '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%d', '%d', '%d' ];
+        // Format placeholders (harus 14 sesuai urutan $data)
+        $format = [ 
+            '%s', // title
+            '%s', // slug
+            '%s', // description
+            '%s', // type
+            '%s', // status
+            '%f', // price
+            '%f', // sale_price
+            '%s', // sku
+            '%s', // image_url
+            '%s', // gallery_ids
+            '%s', // upsell_ids
+            '%s', // cross_sell_ids
+            '%d', // sales_count
+            '%d'  // stock_qty
+        ];
 
         if ( $product->id ) {
-            $wpdb->update( $this->table_name, $data, [ 'id' => $product->id ], $format, [ '%d' ] );
+            $updated = $wpdb->update( $this->table_name, $data, [ 'id' => $product->id ], $format, [ '%d' ] );
+            if ( $updated === false ) {
+                error_log( "OwwCommerce SQL Error (Update): " . $wpdb->last_error );
+            }
         } else {
-            $wpdb->insert( $this->table_name, $data, $format );
+            $inserted = $wpdb->insert( $this->table_name, $data, $format );
+            if ( $inserted === false ) {
+                error_log( "OwwCommerce SQL Error (Insert): " . $wpdb->last_error );
+            }
             $product->id = $wpdb->insert_id;
         }
 
         // Simpan Variasi jika tipe produk adalah Variable
-        if ( $product->type === 'variable' && ! empty( $product->variations ) ) {
+        if ( ! empty( $product->type ) && $product->type === 'variable' && ! empty( $product->variations ) ) {
             $this->save_variations( $product->id, $product->variations );
         }
 
-        return $this->find( $product->id );
+        $saved = $this->find( $product->id );
+        return $saved ?: $product;
     }
 
     /**
@@ -198,6 +223,60 @@ class ProductRepository {
         ) );
 
         return (bool) $result;
+    }
+
+    /**
+     * Mendapatkan rekomendasi produk otomatis (Smart Algorithms).
+     * 
+     * @param int    $product_id ID produk saat ini
+     * @param string $type       'upsell' (lebih mahal) atau 'cross-sell' (serupa/lebih murah)
+     * @param int    $limit      Jumlah produk yang diambil
+     * @return array Array of Product objects
+     */
+    public function get_related_products( int $product_id, string $type = 'cross-sell', int $limit = 4 ): array {
+        global $wpdb;
+
+        // 1. Dapatkan kategori produk saat ini
+        $table_rel = $wpdb->prefix . 'oww_product_category_rel';
+        $category_ids = $wpdb->get_col( $wpdb->prepare( 
+            "SELECT category_id FROM {$table_rel} WHERE product_id = %d", 
+            $product_id 
+        ) );
+
+        if ( empty( $category_ids ) ) return [];
+
+        // 2. Dapatkan data produk saat ini untuk referensi harga
+        $current_product = $this->find( $product_id );
+        if ( ! $current_product ) return [];
+        $price = $current_product->price;
+
+        $category_placeholder = implode( ',', array_fill( 0, count( $category_ids ), '%d' ) );
+        
+        $sql = "SELECT DISTINCT p.* FROM {$this->table_name} p 
+                JOIN {$table_rel} rel ON p.id = rel.product_id 
+                WHERE p.id != %d 
+                AND p.status = 'publish' 
+                AND rel.category_id IN ($category_placeholder)";
+        
+        $params = array_merge( [ $product_id ], $category_ids );
+
+        if ( $type === 'upsell' ) {
+            // Upsell: Harga di atas produk saat ini (max 200% harga asal)
+            $sql .= " AND p.price > %f AND p.price <= %f";
+            $sql .= " ORDER BY p.price ASC, p.sales_count DESC";
+            $params[] = $price;
+            $params[] = $price * 2;
+        } else {
+            // Cross-sell: Harga serupa atau lebih murah
+            $sql .= " ORDER BY p.sales_count DESC, RAND()";
+        }
+
+        $sql .= " LIMIT %d";
+        $params[] = $limit;
+
+        $results = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
+
+        return array_map( fn( $row ) => new Product( $row ), $results );
     }
 
     /**

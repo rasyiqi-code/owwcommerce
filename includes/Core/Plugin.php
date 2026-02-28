@@ -69,6 +69,7 @@ class Plugin {
         $this->container->register( 'api_migration', fn() => new \OwwCommerce\Api\MigrationController(), true );
         $this->container->register( 'api_attributes', fn() => new \OwwCommerce\Api\AttributeController(), true );
         $this->container->register( 'api_dashboard', fn() => new \OwwCommerce\Api\DashboardController(), true );
+        $this->container->register( 'api_import', fn() => new \OwwCommerce\Api\ImportController(), true );
         
         // Registrasi Repositories
         $this->container->register( 'product_repository', fn() => new \OwwCommerce\Repositories\ProductRepository(), true );
@@ -102,6 +103,7 @@ class Plugin {
         $this->container->get( 'api_migration' );
         $this->container->get( 'api_attributes' );
         $this->container->get( 'api_dashboard' );
+        $this->container->get( 'api_import' );
 
         // Daftarkan Admin Menu jika sedang berada di dashboard wp-admin
         if ( is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {

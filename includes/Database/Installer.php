@@ -28,6 +28,8 @@ class Installer {
             stock_qty int(11) NOT NULL DEFAULT '0',
             image_url varchar(500) DEFAULT NULL,
             gallery_ids text DEFAULT NULL,
+            upsell_ids text DEFAULT NULL,
+            cross_sell_ids text DEFAULT NULL,
             sales_count int(11) NOT NULL DEFAULT '0',
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -218,6 +218,15 @@ class Menu {
             [ $this, 'render_migration' ]
         );
 
+        add_submenu_page(
+            'owwcommerce',
+            __( 'Export/Import', 'owwcommerce' ),
+            __( 'Export/Import', 'owwcommerce' ),
+            'manage_options',
+            'owwc-import',
+            [ $this, 'render_import' ]
+        );
+
         // Halaman hidden untuk detail pesanan (tidak tampil di menu)
         add_submenu_page(
             null, // Parent null = hidden dari menu
@@ -391,6 +400,12 @@ class Menu {
      */
     public function render_migration() {
         $template_path = OWWCOMMERCE_PLUGIN_DIR . 'templates/admin/migration.php';
+        if ( file_exists( $template_path ) ) {
+            include $template_path;
+        }
+    }
+    public function render_import() {
+        $template_path = OWWCOMMERCE_PLUGIN_DIR . 'templates/admin/import.php';
         if ( file_exists( $template_path ) ) {
             include $template_path;
         }

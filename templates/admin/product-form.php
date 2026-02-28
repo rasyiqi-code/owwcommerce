@@ -62,6 +62,7 @@
                         <div class="owwc-tabs" style="display: flex; gap: 20px; border-bottom: 1px solid var(--owwc-admin-border); margin-bottom: 20px;">
                             <a href="#" class="owwc-tab-link active" data-target="owwc-tab-attributes" style="padding-bottom: 10px; text-decoration: none; color: inherit; font-weight: 600; border-bottom: 2px solid var(--owwc-admin-primary);">Atribut</a>
                             <a href="#" class="owwc-tab-link" data-target="owwc-tab-variations" style="padding-bottom: 10px; text-decoration: none; color: #666; font-weight: 600;">Variasi</a>
+                            <a href="#" class="owwc-tab-link" data-target="owwc-tab-linked" style="padding-bottom: 10px; text-decoration: none; color: #666; font-weight: 600;">Linked Products</a>
                         </div>
 
                         <!-- Tab Atribut -->
@@ -93,6 +94,20 @@
                             <div id="owwc-variations-list">
                                 <!-- List variasi muncul di sini -->
                                 <p style="text-align: center; padding: 20px; color: #999; border: 1px dashed #ddd; border-radius: 4px;">Tambahkan atribut terlebih dahulu, lalu klik "Generate" untuk membuat variasi.</p>
+                            </div>
+                        </div>
+
+                        <!-- Tab Linked Products -->
+                        <div id="owwc-tab-linked" class="owwc-tab-content" style="display: none;">
+                            <div class="form-field" style="margin-bottom: 20px;">
+                                <label for="prod-upsells">Upsells</label>
+                                <input type="text" id="prod-upsells" class="owwc-admin-input" placeholder="ID produk dipisahkan koma (misal: 12, 15)">
+                                <p style="font-size: 12px; color: #666;">Produk yang Anda rekomendasikan sebagai pengganti produk saat ini (biasanya lebih mahal atau berkualitas lebih baik).</p>
+                            </div>
+                            <div class="form-field">
+                                <label for="prod-cross-sells">Cross-sells</label>
+                                <input type="text" id="prod-cross-sells" class="owwc-admin-input" placeholder="ID produk dipisahkan koma (misal: 8, 21)">
+                                <p style="font-size: 12px; color: #666;">Produk yang Anda promosikan di keranjang belanja berdasarkan produk saat ini.</p>
                             </div>
                         </div>
                     </div>
