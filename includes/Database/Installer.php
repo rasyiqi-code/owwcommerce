@@ -173,6 +173,24 @@ class Installer {
             KEY sku (sku)
         ) $collate;";
 
+        // Tabel: wp_oww_reviews
+        $table_reviews = $wpdb->prefix . 'oww_reviews';
+        $sql_reviews = "CREATE TABLE $table_reviews (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            product_id bigint(20) unsigned NOT NULL,
+            customer_id bigint(20) unsigned DEFAULT NULL,
+            rating tinyint(1) NOT NULL DEFAULT '5',
+            comment text NOT NULL,
+            author_name varchar(100) DEFAULT NULL,
+            author_email varchar(100) DEFAULT NULL,
+            status varchar(20) NOT NULL DEFAULT 'approved',
+            created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            PRIMARY KEY  (id),
+            KEY product_id (product_id),
+            KEY customer_id (customer_id),
+            KEY status (status)
+        ) $collate;";
+
         dbDelta( $sql_products );
         dbDelta( $sql_customers );
         dbDelta( $sql_orders );
@@ -183,6 +201,7 @@ class Installer {
         dbDelta( $sql_attributes );
         dbDelta( $sql_attribute_terms );
         dbDelta( $sql_variations );
+        dbDelta( $sql_reviews );
 
         update_option( 'owwcommerce_db_version', OWWCOMMERCE_VERSION );
         flush_rewrite_rules();

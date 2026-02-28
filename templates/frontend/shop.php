@@ -21,18 +21,20 @@ if ( ! $category_repo ) {
     $category_repo = new \OwwCommerce\Repositories\CategoryRepository();
 }
 
-// Ambil parameter filter dari URL
-$search_query = sanitize_text_field( $_GET['s'] ?? '' );
+// Ambil parameter filter dari URL (Gunakan 'q' sebagai pengganti 's' agar tidak konflik dengan WP)
+$search_query = sanitize_text_field( $_GET['q'] ?? '' );
 $cat_slug     = sanitize_text_field( $_GET['category'] ?? '' );
 $orderby      = sanitize_text_field( $_GET['orderby'] ?? 'newest' );
 
 $filters = [
-    's'        => $search_query,
+    's'        => $search_query, // Repositori mengharapkan 's', kita mapping dari $search_query (yang diambil dari $_GET['q'])
     'category' => $cat_slug,
     'orderby'  => $orderby,
 ];
 
-$products   = $product_repo->get_all( 50, 0, $filters );
+$products_per_page = 10;
+$products   = $product_repo->get_all( $products_per_page, 0, $filters );
+$total_products = $product_repo->count(); // Idealnya count dengan filter
 $categories = $category_repo->get_all();
 ?>
 
@@ -67,8 +69,8 @@ $categories = $category_repo->get_all();
                     </svg>
                 </div>
 
-                <!-- Search Input -->
-                <input type="text" name="s" value="<?php echo esc_attr( $search_query ); ?>" placeholder="Cari..." class="owwc-input owwc-shop-search-input">
+                <!-- Search Input (name="q") -->
+                <input type="text" name="q" value="<?php echo esc_attr( $search_query ); ?>" placeholder="Cari..." class="owwc-input owwc-shop-search-input">
 
                 <div class="owwc-shop-filter-divider"></div>
                 
@@ -105,7 +107,12 @@ $categories = $category_repo->get_all();
 
             foreach ( $sort_options as $key => $opt ) : 
                 $active = ( $orderby === $key );
-                $url = add_query_arg( 'orderby', $key );
+                // Sinkronisasi filter saat sorting: pertahankan pencarian dan kategori
+                $url = add_query_arg( [
+                    'orderby'  => $key,
+                    'q'        => $search_query ?: null,
+                    'category' => $cat_slug ?: null
+                ] );
             ?>
                 <a href="<?php echo esc_url( $url ); ?>" 
                    class="owwc-sort-btn <?php echo $active ? 'is-active' : ''; ?>" 
@@ -132,7 +139,7 @@ $categories = $category_repo->get_all();
             <?php if ( ! empty( $search_query ) ) : ?>
                 <div class="owwc-filter-tag">
                     <span>"<?php echo esc_html( $search_query ); ?>"</span>
-                    <a href="<?php echo esc_url( remove_query_arg( 's' ) ); ?>" class="owwc-filter-remove">&times;</a>
+                    <a href="<?php echo esc_url( remove_query_arg( 'q' ) ); ?>" class="owwc-filter-remove">&times;</a>
                 </div>
             <?php endif; ?>
 
@@ -162,86 +169,30 @@ $categories = $category_repo->get_all();
                 </div>
             <?php endif; ?>
 
-            <a href="<?php echo esc_url( remove_query_arg( ['s', 'category', 'orderby'] ) ); ?>" class="owwc-filter-clear">Hapus Semua</a>
+            <a href="<?php echo esc_url( remove_query_arg( ['q', 'category', 'orderby'] ) ); ?>" class="owwc-filter-clear">Hapus Semua</a>
         </div>
     <?php endif; ?>
 
     <?php if ( ! empty( $products ) ) : ?>
-        <div class="owwc-products-grid">
+        <div class="owwc-products-grid" id="owwc-products-grid">
             <?php foreach ( $products as $product ) : 
-                // Simple heuristic for demo: dynamic background based on product name/id if not in DB
-                $hover_bg = '#f9f9f9'; // Default light
-                if ( stripos($product->title, 'car') !== false ) $hover_bg = '#FFF9E3'; // Light yellow
-                if ( stripos($product->title, 'glass') !== false ) $hover_bg = '#F0F4F8'; // Light blue/grey
-            ?>
-                <div class="owwc-product-card" style="--owwc-card-hover-bg: <?php echo esc_attr($hover_bg); ?>">
-                    <div class="owwc-product-card-inner">
-                        <a href="<?php echo esc_url( \OwwCommerce\Frontend\Router::get_product_link( $product->slug ) ); ?>" class="owwc-product-link" aria-label="Lihat <?php echo esc_attr( $product->title ); ?>">
-                            <?php if ( ! empty( $product->image_url ) ) : ?>
-                                <div class="owwc-product-image">
-                                    <img src="<?php echo esc_url( $product->image_url ); ?>"
-                                         alt="<?php echo esc_attr( $product->title ); ?>"
-                                         loading="lazy"
-                                         width="300" height="300">
-                                </div>
-                            <?php else : ?>
-                                <!-- Placeholder jika belum ada gambar -->
-                                <div class="owwc-product-image-placeholder">
-                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                        <polyline points="21 15 16 10 5 21"></polyline>
-                                    </svg>
-                                </div>
-                            <?php endif; ?>
-                        </a>
-
-                        <!-- Badges Container -->
-                        <div class="owwc-product-badges">
-                            <?php if ( $product->sale_price ) : ?>
-                                <span class="owwc-badge owwc-badge--sale">SALE</span>
-                            <?php endif; ?>
-                            <?php if ( $product->sales_count > 10 ) : ?>
-                                <span class="owwc-badge owwc-badge--hot">TERLARIS</span>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Hover Overlay Cart Button -->
-                        <button
-                            class="owwc-add-to-cart-btn owwc-btn-hover-icon"
-                            data-product-id="<?php echo esc_attr( $product->id ); ?>"
-                            data-qty="1"
-                            title="Tambah ke Keranjang"
-                            aria-label="Tambah ke Keranjang">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="9" cy="21" r="1"></circle>
-                                <circle cx="20" cy="21" r="1"></circle>
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="owwc-product-info">
-                        <h2 class="owwc-product-title">
-                            <a href="<?php echo esc_url( \OwwCommerce\Frontend\Router::get_product_link( $product->slug ) ); ?>">
-                                <?php echo esc_html( $product->title ); ?>
-                            </a>
-                        </h2>
-
-                        <div class="owwc-product-price">
-                            <?php if ( $product->sale_price ) : ?>
-                                <div class="owwc-price-sale">
-                                    <del class="owwc-price-old"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></del>
-                                    <ins class="owwc-price-current"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->sale_price ) ); ?></ins>
-                                </div>
-                            <?php else : ?>
-                                <span class="owwc-price-current"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></span>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+                include OWWCOMMERCE_PLUGIN_DIR . 'templates/frontend/parts/product-card.php';
+            endforeach; ?>
         </div>
+
+        <?php if ( count( $products ) < $total_products ) : ?>
+            <div class="owwc-load-more-container">
+                <button id="owwc-load-more" class="owwc-load-more-btn" 
+                        data-page="1" 
+                        data-q="<?php echo esc_attr( $search_query ); ?>"
+                        data-category="<?php echo esc_attr( $cat_slug ); ?>"
+                        data-orderby="<?php echo esc_attr( $orderby ); ?>">
+                    <span>Muat Lebih Banyak</span>
+                    <div class="owwc-loader" style="display: none;"></div>
+                </button>
+            </div>
+        <?php endif; ?>
+
     <?php else : ?>
         <div class="owwc-shop-empty">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">

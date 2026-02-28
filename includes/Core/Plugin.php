@@ -70,6 +70,7 @@ class Plugin {
         $this->container->register( 'api_attributes', fn() => new \OwwCommerce\Api\AttributeController(), true );
         $this->container->register( 'api_dashboard', fn() => new \OwwCommerce\Api\DashboardController(), true );
         $this->container->register( 'api_import', fn() => new \OwwCommerce\Api\ImportController(), true );
+        $this->container->register( 'api_reviews', fn() => new \OwwCommerce\Api\ReviewsController(), true );
         
         // Registrasi Repositories
         $this->container->register( 'product_repository', fn() => new \OwwCommerce\Repositories\ProductRepository(), true );
@@ -104,6 +105,7 @@ class Plugin {
         $this->container->get( 'api_attributes' );
         $this->container->get( 'api_dashboard' );
         $this->container->get( 'api_import' );
+        $this->container->get( 'api_reviews' );
 
         // Daftarkan Admin Menu jika sedang berada di dashboard wp-admin
         if ( is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
@@ -135,6 +137,14 @@ class Plugin {
                 'owwc-cart-engine',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/cart.js',
                 [],
+                OWWCOMMERCE_VERSION,
+                true
+            );
+
+            wp_enqueue_script(
+                'owwc-shop-load-more',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/js/shop-load-more.js',
+                ['owwc-cart-engine'],
                 OWWCOMMERCE_VERSION,
                 true
             );

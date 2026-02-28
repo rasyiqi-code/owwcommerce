@@ -105,6 +105,9 @@ class Router {
     public function add_query_vars($vars) {
         $vars[] = 'owwc_product_slug';
         $vars[] = 'owwc_order_received';
+        $vars[] = 'q';
+        $vars[] = 'category';
+        $vars[] = 'orderby';
         return $vars;
     }
 

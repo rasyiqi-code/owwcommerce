@@ -56,6 +56,14 @@ class ProductsController extends WP_REST_Controller {
             ],
         ] );
 
+        register_rest_route( $this->namespace, '/' . $this->rest_base . '/public', [
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'get_public_items' ],
+                'permission_callback' => '__return_true',
+            ],
+        ] );
+
         register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
             [
                 'methods'             => WP_REST_Server::READABLE,
@@ -105,6 +113,36 @@ class ProductsController extends WP_REST_Controller {
 
     public function delete_item_permissions_check( $request ) {
         return current_user_can( 'manage_options' );
+    }
+
+    public function get_public_items( $request ) {
+        $page     = (int) $request->get_param( 'page' ) ?: 1;
+        $per_page = (int) $request->get_param( 'per_page' ) ?: 10;
+        $offset   = ( $page - 1 ) * $per_page;
+
+        $filters = [
+            's'        => $request->get_param( 'q' ), // Gunakan 'q' untuk konsistensi dengan shop search
+            'category' => $request->get_param( 'category' ),
+            'orderby'  => $request->get_param( 'orderby' ),
+        ];
+
+        $products    = $this->repository->get_all( $per_page, $offset, $filters );
+        $total_items = $this->repository->count(); // Idealnya count dengan filter, tapi get_all kita cukup fleksibel
+        
+        // Render HTML card untuk setiap produk (Server Side Rendering for AJAX)
+        $html = '';
+        foreach ( $products as $product ) {
+            ob_start();
+            include OWWCOMMERCE_PLUGIN_DIR . 'templates/frontend/parts/product-card.php';
+            $html .= ob_get_clean();
+        }
+
+        return rest_ensure_response( [
+            'html'         => $html,
+            'total_items'  => $total_items,
+            'has_more'     => ( $offset + count( $products ) ) < $total_items,
+            'received'     => count( $products ),
+        ] );
     }
 
     public function get_items( $request ) {

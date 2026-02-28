@@ -202,6 +202,15 @@ class Menu {
 
         add_submenu_page(
             'owwcommerce',
+            __( 'Reviews', 'owwcommerce' ),
+            __( 'Reviews', 'owwcommerce' ),
+            'manage_options',
+            'owwc-reviews',
+            [ $this, 'render_reviews' ]
+        );
+
+        add_submenu_page(
+            'owwcommerce',
             __( 'Settings', 'owwcommerce' ),
             __( 'Settings', 'owwcommerce' ),
             'manage_options',
@@ -263,8 +272,10 @@ class Menu {
             );
             
             wp_localize_script('owwc-admin-products', 'owwcSettings', [
-                'restUrl' => esc_url_raw(rest_url()),
-                'nonce'   => wp_create_nonce('wp_rest')
+                'restUrl'     => esc_url_raw(rest_url()),
+                'nonce'       => wp_create_nonce('wp_rest'),
+                'homeUrl'     => esc_url(home_url('/')),
+                'productBase' => \OwwCommerce\Frontend\Router::get_product_base_static()
             ]);
         }
 
@@ -363,6 +374,33 @@ class Menu {
                 'restUrl' => esc_url_raw(rest_url()),
                 'nonce'   => wp_create_nonce('wp_rest')
             ]);
+        }
+
+        if (strpos($hook, 'owwc-reviews') !== false) {
+            wp_enqueue_script(
+                'owwc-admin-reviews',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-reviews.js',
+                [],
+                OWWCOMMERCE_VERSION,
+                true
+            );
+
+            wp_localize_script('owwc-admin-reviews', 'owwcSettings', [
+                'restUrl' => esc_url_raw(rest_url()),
+                'nonce'   => wp_create_nonce('wp_rest')
+            ]);
+        }
+    }
+
+    /**
+     * Render Halaman Reviews
+     */
+    public function render_reviews() {
+        $template_path = OWWCOMMERCE_PLUGIN_DIR . 'templates/admin/reviews.php';
+        if ( file_exists( $template_path ) ) {
+            require_once $template_path;
+        } else {
+            echo '<div class="wrap"><h1>OwwCommerce Reviews</h1><p>Template reviews.php belum dibuat!</p></div>';
         }
     }
 

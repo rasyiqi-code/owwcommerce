@@ -226,9 +226,71 @@ get_header(); ?>
     <div id="owwc-product-recommendations" class="owwc-recommendations-section" style="margin-top: 60px;">
         <div id="owwc-upsells-wrap" style="display: none; margin-bottom: 40px;">
             <h2 style="font-size: 20px; margin-bottom: 24px;">Anda Mungkin Juga Suka</h2>
-            <div id="owwc-upsells-list" class="owwc-products-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+            <div id="owwc-upsells-list" class="owwc-products-grid">
                 <!-- Diisi via JS -->
             </div>
+        </div>
+    </div>
+
+    <!-- Halaman Ulasan (Reviews) -->
+    <div class="owwc-reviews-section">
+        <div class="owwc-reviews-header">
+            <h2 class="owwc-reviews-title">Ulasan Pembeli (0)</h2>
+            <div class="owwc-average-rating">
+                <div class="owwc-rating-stars-wrap">
+                    <div class="owwc-rating-stars" id="owwc-avg-stars">
+                        <!-- Stars via JS -->
+                    </div>
+                </div>
+                <strong id="owwc-avg-num">0.0</strong>
+            </div>
+        </div>
+
+        <div id="owwc-review-list" class="owwc-review-list">
+            <p style="text-align: center; color: #999; padding: 40px 0;">Belum ada ulasan untuk produk ini. Jadilah yang pertama memberikan ulasan!</p>
+        </div>
+
+        <div class="owwc-review-form-card">
+            <h3>Tulis Ulasan</h3>
+            <p class="form-subtitle">Bagikan pengalaman Anda tentang produk ini untuk membantu pembeli lain.</p>
+            
+            <form id="owwc-review-form">
+                <div class="owwc-review-form-field">
+                    <label>Rating Anda *</label>
+                    <div class="owwc-rating-picker">
+                        <input type="radio" name="rating" id="star5" value="5" required><label for="star5">★</label>
+                        <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
+                        <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
+                        <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
+                        <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+                    </div>
+                </div>
+
+                <div class="owwc-review-form-grid">
+                    <?php if ( ! is_user_logged_in() ) : ?>
+                        <div class="owwc-review-form-field">
+                            <label>Nama *</label>
+                            <input type="text" name="author_name" required placeholder="Nama Anda" class="owwc-admin-input">
+                        </div>
+                        <div class="owwc-review-form-field">
+                            <label>Email *</label>
+                            <input type="email" name="author_email" required placeholder="admin@example.com" class="owwc-admin-input">
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="owwc-review-form-field">
+                    <label>Komentar *</label>
+                    <textarea name="comment" required rows="5" placeholder="Tulis komentar ulasan Anda di sini..." class="owwc-admin-input"></textarea>
+                </div>
+
+                <div class="owwc-review-submit-wrap">
+                    <button type="submit" id="owwc-submit-review" class="owwc-btn">
+                        Kirim Ulasan
+                    </button>
+                    <span id="owwc-review-msg" class="owwc-review-msg"></span>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -246,7 +308,7 @@ get_header(); ?>
             <?php endif; ?>
         </div>
     </div>
-    <button id="owwc-mobile-buy-trigger" class="owwc-add-to-cart-btn owwc-mobile-buy-btn">
+    <button id="owwc-mobile-buy-trigger" class="owwc-btn owwc-mobile-buy-btn">
         Beli Sekarang
     </button>
 </div>
@@ -394,11 +456,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 upsellWrap.style.display = 'block';
                 upsellList.innerHTML = data.upsells.map(p => `
-                    <div class="owwc-product-card" style="border: 1px solid #eee; border-radius: 8px; padding: 15px; text-align: center;">
+                    <div class="owwc-product-card owwc-recommendation-card">
                         <a href="${owwcSettings.homeUrl}${owwcSettings.productBase}/${p.slug}" style="text-decoration: none; color: inherit;">
                             <img src="${p.image_url || ''}" style="width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 4px; margin-bottom: 10px;">
                             <h3 style="font-size: 14px; margin-bottom: 8px;">${p.title}</h3>
-                            <div class="owwc-product-price" style="font-weight: 600; color: var(--owwc-admin-primary, #d4af37);">
+                            <div class="owwc-product-price" style="font-weight: 600; color: var(--owwc-primary);">
                                 ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p.price).replace('IDR', 'Rp')}
                             </div>
                         </a>
@@ -411,6 +473,106 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     loadRecommendations();
+
+    // ================================================================
+    // REVIEWS LOGIC
+    // ================================================================
+    const reviewList = document.getElementById('owwc-review-list');
+    const reviewForm = document.getElementById('owwc-review-form');
+    const avgStars = document.getElementById('owwc-avg-stars');
+    const avgNum = document.getElementById('owwc-avg-num');
+    const reviewTitle = document.querySelector('.owwc-reviews-title');
+
+    const renderStars = (rating) => {
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+            starsHtml += `<span class="owwc-star ${i > Math.round(rating) ? 'empty' : ''}">★</span>`;
+        }
+        return starsHtml;
+    };
+
+    const loadReviews = async () => {
+        try {
+            const apiReviewUrl = `<?php echo esc_url_raw( rest_url( 'owwc/v1/products/' . $product->id . '/reviews' ) ); ?>`;
+            const res = await fetch(apiReviewUrl);
+            const data = await res.json();
+
+            if (data.review_count > 0) {
+                reviewTitle.textContent = `Ulasan Pembeli (${data.review_count})`;
+                avgNum.textContent = data.average_rating.toFixed(1);
+                avgStars.innerHTML = renderStars(data.average_rating);
+
+                reviewList.innerHTML = data.items.map(r => `
+                    <div class="owwc-review-item">
+                        <div class="owwc-review-avatar">
+                            <img src="https://secure.gravatar.com/avatar/${btoa(r.author_email || 'default')}?s=60&d=mp" alt="Avatar">
+                        </div>
+                        <div class="owwc-review-content">
+                            <div class="owwc-review-meta">
+                                <span class="owwc-review-author">${r.author_name || 'Anonim'}</span>
+                                <div class="owwc-rating-stars">
+                                    ${renderStars(r.rating)}
+                                </div>
+                            </div>
+                            <div class="owwc-review-date">${new Date(r.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                            <div class="owwc-review-comment">${r.comment}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                avgStars.innerHTML = renderStars(0);
+            }
+        } catch (e) {
+            console.error("Gagal memuat ulasan:", e);
+        }
+    };
+
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('owwc-submit-review');
+            const msgEl = document.getElementById('owwc-review-msg');
+            const formData = new FormData(reviewForm);
+            const data = Object.fromEntries(formData.entries());
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Mengirim...';
+
+            try {
+                const apiReviewUrl = `<?php echo esc_url_raw( rest_url( 'owwc/v1/products/' . $product->id . '/reviews' ) ); ?>`;
+                const res = await fetch(apiReviewUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': owwcSettings.nonce
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    msgEl.textContent = 'Ulasan berhasil dikirim!';
+                    msgEl.style.color = '#2e7d32';
+                    msgEl.style.display = 'inline';
+                    reviewForm.reset();
+                    loadReviews();
+                } else {
+                    const error = await res.json();
+                    msgEl.textContent = error.message || 'Gagal mengirim ulasan.';
+                    msgEl.style.color = '#d32f2f';
+                    msgEl.style.display = 'inline';
+                }
+            } catch (e) {
+                msgEl.textContent = 'Terjadi kesalahan jaringan.';
+                msgEl.style.display = 'inline';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kirim Ulasan';
+                setTimeout(() => { msgEl.style.display = 'none'; }, 5000);
+            }
+        });
+    }
+
+    loadReviews();
 });
 </script>
 
