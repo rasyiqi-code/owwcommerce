@@ -24,6 +24,7 @@ class Product {
     public int $sales_count = 0;
     public ?string $upsell_ids;
     public ?string $cross_sell_ids;
+    public ?int $created_by;
     public ?string $created_at;
     public ?string $updated_at;
 
@@ -53,6 +54,7 @@ class Product {
 
         $this->upsell_ids  = $data['upsell_ids'] ?? null;
         $this->cross_sell_ids = $data['cross_sell_ids'] ?? null;
+        $this->created_by  = isset( $data['created_by'] ) ? (int) $data['created_by'] : null;
         $this->created_at  = $data['created_at'] ?? null;
         $this->sales_count = isset( $data['sales_count'] ) ? (int) $data['sales_count'] : 0;
         $this->updated_at  = $data['updated_at'] ?? null;
@@ -75,6 +77,7 @@ class Product {
             'sales_count' => $this->sales_count,
             'upsell_ids'  => $this->upsell_ids,
             'cross_sell_ids' => $this->cross_sell_ids,
+            'created_by'  => $this->created_by,
             'created_at'  => $this->created_at,
             'updated_at'  => $this->updated_at,
             'variations'  => array_map( fn($v) => $v->to_array(), $this->variations ),

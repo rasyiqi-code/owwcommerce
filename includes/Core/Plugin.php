@@ -159,19 +159,21 @@ class Plugin {
                 $is_owwcommerce_page = true;
             }
             
-            if ( ! $is_owwcommerce_page && is_singular() ) {
+            if ( ! $is_owwcommerce_page ) {
                 global $post;
-                if ( $post ) {
-                    $content = $post->post_content;
-                    if ( 
-                        strpos( $content, '[owwcommerce_products]' ) !== false ||
-                        strpos( $content, '[owwcommerce_shop]' )     !== false ||
-                        strpos( $content, '[owwcommerce_checkout]' ) !== false ||
-                        strpos( $content, '[owwcommerce_cart]' )     !== false ||
-                        strpos( $content, '[owwcommerce_single_product]' ) !== false ||
-                        strpos( $content, '[owwcommerce_my_account]' ) !== false
-                    ) {
-                        $is_owwcommerce_page = true;
+                if ( is_page() || is_single() || ( is_front_page() && is_home() ) ) {
+                    if ( $post && ! empty( $post->post_content ) ) {
+                        $content = $post->post_content;
+                        if ( 
+                            strpos( $content, '[owwcommerce_products]' ) !== false ||
+                            strpos( $content, '[owwcommerce_shop]' )     !== false ||
+                            strpos( $content, '[owwcommerce_checkout]' ) !== false ||
+                            strpos( $content, '[owwcommerce_cart]' )     !== false ||
+                            strpos( $content, '[owwcommerce_single_product]' ) !== false ||
+                            strpos( $content, '[owwcommerce_my_account]' ) !== false
+                        ) {
+                            $is_owwcommerce_page = true;
+                        }
                     }
                 }
             }

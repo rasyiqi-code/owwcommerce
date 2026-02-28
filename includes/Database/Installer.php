@@ -31,12 +31,14 @@ class Installer {
             upsell_ids text DEFAULT NULL,
             cross_sell_ids text DEFAULT NULL,
             sales_count int(11) NOT NULL DEFAULT '0',
+            created_by bigint(20) unsigned DEFAULT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
             UNIQUE KEY slug (slug),
             KEY type (type),
-            KEY sku (sku)
+            KEY sku (sku),
+            KEY created_by (created_by)
         ) $collate;";
 
         // Tabel: wp_oww_customers

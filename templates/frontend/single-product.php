@@ -119,7 +119,16 @@ get_header(); ?>
 
         <!-- Kolom Kanan: Detail Produk -->
         <div class="owwc-single-product-summary">
-            <p class="owwc-single-product-brand">By OwwCommerce</p>
+            <?php 
+            $author_name = 'Penerbit KBM'; // Default fallback
+            if ( ! empty( $product->created_by ) ) {
+                $user_data = get_userdata( $product->created_by );
+                if ( $user_data ) {
+                    $author_name = $user_data->display_name;
+                }
+            }
+            ?>
+            <p class="owwc-single-product-brand"><?php echo esc_html( $author_name ); ?></p>
             <h1 class="owwc-single-product-title"><?php echo esc_html( $product->title ); ?></h1>
 
             <div class="owwc-single-product-price owwc-product-price">

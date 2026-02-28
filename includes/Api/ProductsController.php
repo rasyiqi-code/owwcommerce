@@ -163,6 +163,7 @@ class ProductsController extends WP_REST_Controller {
             'stock_qty'   => intval( $data['stock_qty'] ?? 0 ),
             'image_url'   => esc_url_raw( $data['image_url'] ?? '' ) ?: null,
             'gallery_ids' => isset( $data['gallery_ids'] ) ? array_map( 'intval', (array) $data['gallery_ids'] ) : [],
+            'created_by'  => (int) get_current_user_id(),
             'upsell_ids'  => sanitize_text_field( $data['upsell_ids'] ?? '' ) ?: null,
             'cross_sell_ids' => sanitize_text_field( $data['cross_sell_ids'] ?? '' ) ?: null,
         ] );

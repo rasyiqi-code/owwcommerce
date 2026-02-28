@@ -129,6 +129,22 @@ class Router {
             }
         }
 
+        // Detect Shortcodes on normal pages
+        if ( is_page() ) {
+            global $post;
+            if ( $post && (
+                strpos( $post->post_content, '[owwcommerce_shop]' ) !== false ||
+                strpos( $post->post_content, '[owwcommerce_cart]' ) !== false ||
+                strpos( $post->post_content, '[owwcommerce_checkout]' ) !== false ||
+                strpos( $post->post_content, '[owwcommerce_my_account]' ) !== false
+            ) ) {
+                $custom_wrapper = OWWCOMMERCE_PLUGIN_DIR . 'templates/frontend/page-owwcommerce.php';
+                if ( file_exists( $custom_wrapper ) ) {
+                    return $custom_wrapper;
+                }
+            }
+        }
+
         return $template;
     }
 }
