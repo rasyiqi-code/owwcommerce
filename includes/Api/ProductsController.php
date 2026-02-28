@@ -92,9 +92,28 @@ class ProductsController extends WP_REST_Controller {
     }
 
     public function get_items( $request ) {
-        $products = $this->repository->get_all();
+        $page     = (int) $request->get_param( 'page' ) ?: 1;
+        $per_page = (int) $request->get_param( 'per_page' ) ?: 10;
+        $offset   = ( $page - 1 ) * $per_page;
+
+        $filters = [
+            's'       => $request->get_param( 's' ),
+            'orderby' => $request->get_param( 'orderby' ),
+        ];
+
+        $products    = $this->repository->get_all( $per_page, $offset, $filters );
+        $total_items = $this->repository->count();
+        $total_pages = ceil( $total_items / $per_page );
+
         $formatted = array_map( fn($p) => $p->to_array(), $products );
-        return rest_ensure_response( $formatted );
+
+        return rest_ensure_response( [
+            'items'        => $formatted,
+            'total_items'  => $total_items,
+            'total_pages'  => (int) $total_pages,
+            'current_page' => $page,
+            'per_page'     => $per_page,
+        ] );
     }
 
     public function get_item( $request ) {

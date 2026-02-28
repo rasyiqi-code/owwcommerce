@@ -13,10 +13,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // LIST VIEW MODE (Jika ada container tabel)
     // =========================================================
     if (appContainer) {
-        async function fetchProducts() {
-            appContainer.innerHTML = '<div class="owwc-admin-card" style="padding:0;"><p style="padding: 24px; text-align: center; color: #666;">Loading products...</p></div>';
+        let currentPage = 1;
+        const perPage = 10;
+
+        async function fetchProducts(page = 1) {
+            currentPage = page;
+            appContainer.innerHTML = '<div class="owwc-admin-card" style="padding:0;"><p style="padding: 24px; text-align: center; color: #666;">Memuat produk...</p></div>';
             try {
-                const res = await fetch(apiBase, {
+                const res = await fetch(`${apiBase}?page=${page}&per_page=${perPage}`, {
                     method: 'GET',
                     headers: {
                         'X-WP-Nonce': nonce,
@@ -30,13 +34,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderTable(data);
             } catch (e) {
                 console.error("Fetch error:", e);
-                appContainer.innerHTML = '<div class="notice notice-error"><p>Failed to load products. Check console for details.</p></div>';
+                appContainer.innerHTML = '<div class="notice notice-error"><p>Gagal memuat produk. Silakan cek konsol.</p></div>';
             }
         }
 
-        function renderTable(products) {
+        function renderTable(data) {
+            const products = data.items || [];
             if (!products.length) {
-                appContainer.innerHTML = '<div class="owwc-admin-card" style="padding:24px; text-align:center;"><p>No products found. Start by adding one!</p></div>';
+                appContainer.innerHTML = '<div class="owwc-admin-card" style="padding:24px; text-align:center;"><p>Produk tidak ditemukan. Ayo buat satu!</p></div>';
                 return;
             }
 
@@ -80,7 +85,34 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             html += '</tbody></table></div>';
+
+            // Pagination UI
+            if (data.total_pages > 1) {
+                html += `
+                    <div class="owwc-admin-pagination" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; background:white; padding:15px; border-radius:8px; border:1px solid #e5e7eb;">
+                        <div class="pagination-info" style="color:#6b7280; font-size:14px;">
+                            Menampilkan halaman <strong>${data.current_page}</strong> dari <strong>${data.total_pages}</strong> (Total: ${data.total_items} produk)
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="owwc-admin-btn owwc-btn-secondary owwc-prev-page" ${data.current_page <= 1 ? 'disabled' : ''} style="margin-right:10px;">&laquo; Sebelumnya</button>
+                            <button class="owwc-admin-btn owwc-btn-secondary owwc-next-page" ${data.current_page >= data.total_pages ? 'disabled' : ''}>Selanjutnya &raquo;</button>
+                        </div>
+                    </div>
+                `;
+            }
+
             appContainer.innerHTML = html;
+
+            // Pagination Events
+            const prevBtn = appContainer.querySelector('.owwc-prev-page');
+            const nextBtn = appContainer.querySelector('.owwc-next-page');
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => fetchProducts(currentPage - 1));
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => fetchProducts(currentPage + 1));
+            }
 
             document.querySelectorAll('.owwc-btn-delete').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
