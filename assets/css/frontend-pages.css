@@ -1051,6 +1051,7 @@
 .owwc-main-image-wrap img {
     max-width: 100%;
     height: auto;
+    max-height: 600px;
     display: block;
     object-fit: contain;
 }
@@ -1342,8 +1343,8 @@
     .owwc-main-image-wrap img {
         width: 100%;
         height: auto;
-        aspect-ratio: 1/1;
-        object-fit: cover;
+        max-height: 500px;
+        object-fit: contain;
     }
 
     .owwc-mobile-action-bar {
@@ -1358,8 +1359,8 @@
 /* Gambar produk di halaman single */
 .owwc-single-product-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
 }
 
 .owwc-single-product-brand {
