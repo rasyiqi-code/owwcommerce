@@ -1051,7 +1051,6 @@
 .owwc-main-image-wrap img {
     max-width: 100%;
     height: auto;
-    max-height: 600px;
     display: block;
     object-fit: contain;
 }
@@ -1343,7 +1342,6 @@
     .owwc-main-image-wrap img {
         width: 100%;
         height: auto;
-        max-height: 500px;
         object-fit: contain;
     }
 
