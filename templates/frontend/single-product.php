@@ -182,43 +182,98 @@ get_header(); ?>
                 </div>
             <?php endif; ?>
 
-            <!-- Form tambah ke keranjang -->
-            <div class="owwc-add-to-cart-form">
-                <div class="owwc-qty-wrapper">
-                    <button type="button" class="owwc-qty-btn owwc-qty-minus">&minus;</button>
-                    <input
-                        type="number"
-                        id="owwc-single-qty"
-                        class="owwc-qty-input"
-                        value="1"
-                        min="1"
-                        max="<?php echo (int) $product->stock_qty; ?>"
-                        aria-label="Jumlah">
-                    <button type="button" class="owwc-qty-btn owwc-qty-plus">&plus;</button>
+            <!-- Tombol Aksi -->
+            <div class="owwc-product-actions-wrap">
+                <?php 
+                $enable_cart = get_option( 'owwc_enable_cart_checkout', 1 );
+                $enable_ext  = get_option( 'owwc_enable_external_checkout', 1 );
+                $enable_wa   = get_option( 'owwc_enable_whatsapp_checkout', 1 );
+                
+                $wa_link = '';
+                if ( $enable_wa ) {
+                    $wa_number = ! empty( $product->whatsapp_url ) ? $product->whatsapp_url : get_option( 'owwc_whatsapp_number' );
+                    if ( ! empty( $wa_number ) ) {
+                        if ( is_numeric( str_replace(['+', ' '], '', $wa_number) ) ) {
+                            $clean_number = str_replace(['+', ' '], '', $wa_number);
+                            $msg = sprintf( 'Halo Admin, saya tertarik dengan produk *%s* (%s). Mohon info lebih lanjut.', $product->title, home_url( add_query_arg( [], $wp->request ) ) );
+                            $wa_link = "https://wa.me/{$clean_number}?text=" . rawurlencode( $msg );
+                        } else {
+                            $wa_link = $wa_number;
+                        }
+                    }
+                }
+                ?>
+                <div class="owwc-add-to-cart-form">
+                    <?php if ( $enable_cart ) : ?>
+                        <div class="owwc-cart-action-group">
+                            <div class="owwc-qty-wrapper">
+                                <button type="button" class="owwc-qty-btn owwc-qty-minus" aria-label="Kurangi jumlah">&minus;</button>
+                                <input
+                                    type="number"
+                                    id="owwc-single-qty"
+                                    class="owwc-qty-input"
+                                    value="1"
+                                    min="1"
+                                    max="<?php echo (int) $product->stock_qty; ?>"
+                                    aria-label="Jumlah">
+                                <button type="button" class="owwc-qty-btn owwc-qty-plus" aria-label="Tambah jumlah">&plus;</button>
+                            </div>
+
+                            <button
+                                id="owwc-single-add-btn"
+                                class="owwc-add-to-cart-btn"
+                                data-product-id="<?php echo esc_attr( $product->id ); ?>"
+                                data-variation-id="0"
+                                data-qty="1"
+                                <?php echo $product->stock_qty <= 0 && $product->type !== 'variable' ? 'disabled' : ''; ?>>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                                <span class="btn-text"><?php echo $product->stock_qty > 0 || $product->type === 'variable' ? 'Tambah ke Keranjang' : 'Stok Habis'; ?></span>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ( ( $enable_ext && ! empty( $product->checkout_url ) ) || $enable_wa ) : ?>
+                        <div class="owwc-external-buttons-group">
+                            <?php if ( $enable_ext && ! empty( $product->checkout_url ) ) : ?>
+                                <a href="<?php echo esc_url( $product->checkout_url ); ?>" 
+                                   class="owwc-add-to-cart-btn owwc-marketplace-btn" 
+                                   target="_blank" 
+                                   rel="nofollow noopener">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                    </svg>
+                                    <span>Beli di Marketplace</span>
+                                </a>
+                            <?php endif; ?>
+
+                            <?php if ( $enable_wa && ! empty( $wa_link ) ) : ?>
+                                    <a href="<?php echo esc_url( $wa_link ); ?>" 
+                                       class="owwc-add-to-cart-btn owwc-whatsapp-btn" 
+                                       target="_blank" 
+                                       rel="nofollow noopener">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                        </svg>
+                                        <span>Tanya via WhatsApp</span>
+                                    </a>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
-                <button
-                    id="owwc-single-add-btn"
-                    class="owwc-add-to-cart-btn"
-                    data-product-id="<?php echo esc_attr( $product->id ); ?>"
-                    data-variation-id="0"
-                    data-qty="1"
-                    <?php echo $product->stock_qty <= 0 && $product->type !== 'variable' ? 'disabled' : ''; ?>>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    <span class="btn-text"><?php echo $product->stock_qty > 0 || $product->type === 'variable' ? 'Beli Sekarang' : 'Stok Habis'; ?></span>
-                </button>
+                <!-- Status stok -->
+                <div class="owwc-stock-status-wrap">
+                    <p class="owwc-stock-status <?php echo $product->stock_qty > 0 ? 'owwc-stock-status--in-stock' : 'owwc-stock-status--out-stock'; ?>">
+                        <?php if ( $product->stock_qty > 0 ) : ?>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Ready Stock (<?php echo (int) $product->stock_qty; ?> unit)
+                        <?php else : ?>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Maaf, stok sedang kosong
+                        <?php endif; ?>
+                    </p>
+                </div>
             </div>
-
-            <!-- Status stok -->
-            <p class="owwc-stock-status <?php echo $product->stock_qty > 0 ? 'owwc-stock-status--in-stock' : 'owwc-stock-status--out-stock'; ?>">
-                <?php if ( $product->stock_qty > 0 ) : ?>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"></path></svg>
-                    Ready Stock (<?php echo (int) $product->stock_qty; ?> unit)
-                <?php else : ?>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"></path></svg>
-                    Maaf, stok sedang kosong
-                <?php endif; ?>
-            </p>
         </div>
     </div>
 
@@ -296,22 +351,38 @@ get_header(); ?>
 </div>
 
 <!-- Sticky Mobile Action Bar -->
-<div class="owwc-mobile-action-bar">
-    <div class="owwc-mobile-price">
-        <span class="owwc-mobile-price-label">Harga</span>
-        <div class="owwc-mobile-price-value owwc-product-price">
-            <?php if ( $product->sale_price ) : ?>
-                <del class="owwc-price-old"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></del>
-                <ins><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->sale_price ) ); ?></ins>
-            <?php else : ?>
-                <span><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></span>
-            <?php endif; ?>
+<?php 
+// Hanya tampilkan sticky bar jika minimal salah satu fitur checkout aktif
+if ( $enable_cart || ( $enable_ext && ! empty( $product->checkout_url ) ) || $enable_wa ) : 
+?>
+    <div class="owwc-mobile-action-bar">
+        <div class="owwc-mobile-price">
+            <span class="owwc-mobile-price-label">Harga</span>
+            <div class="owwc-mobile-price-value owwc-product-price">
+                <?php if ( $product->sale_price ) : ?>
+                    <del class="owwc-price-old"><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></del>
+                    <ins><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->sale_price ) ); ?></ins>
+                <?php else : ?>
+                    <span><?php echo esc_html( \OwwCommerce\Core\Formatter::format_price( $product->price ) ); ?></span>
+                <?php endif; ?>
+            </div>
         </div>
+
+        <?php if ( $enable_cart ) : ?>
+            <button id="owwc-mobile-buy-trigger" class="owwc-btn owwc-mobile-buy-btn">
+                Beli Sekarang
+            </button>
+        <?php elseif ( $enable_ext && ! empty( $product->checkout_url ) ) : ?>
+            <a href="<?php echo esc_url( $product->checkout_url ); ?>" class="owwc-btn owwc-mobile-buy-btn owwc-marketplace-btn" target="_blank" rel="nofollow noopener">
+                Beli di Marketplace
+            </a>
+        <?php elseif ( $enable_wa && ! empty( $wa_link ) ) : ?>
+            <a href="<?php echo esc_url( $wa_link ); ?>" class="owwc-btn owwc-mobile-buy-btn owwc-whatsapp-btn" target="_blank" rel="nofollow noopener">
+                Tanya WhatsApp
+            </a>
+        <?php endif; ?>
     </div>
-    <button id="owwc-mobile-buy-trigger" class="owwc-btn owwc-mobile-buy-btn">
-        Beli Sekarang
-    </button>
-</div>
+<?php endif; ?>
 
 <!-- Script Variasi & Qty -->
 <script>

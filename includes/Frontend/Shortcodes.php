@@ -88,6 +88,11 @@ class Shortcodes {
      * Render Ikon Keranjang (Untuk Header / Widget)
      */
     public function render_cart_icon( $atts ) {
+        // Jangan tampilkan jika fitur keranjang / checkout dinonaktifkan secara global
+        if ( ! get_option( 'owwc_enable_cart_checkout', 1 ) ) {
+            return '';
+        }
+
         // Tandai bahwa shortcode ini telah dieksekusi secara manual
         $GLOBALS['owwc_cart_icon_rendered'] = true;
 

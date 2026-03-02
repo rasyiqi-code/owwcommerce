@@ -112,6 +112,21 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Tab Checkout Eksternal -->
+                <div class="owwc-admin-card" style="margin-top: 24px;">
+                    <h3 style="font-size: 15px; margin-bottom: 20px;">Checkout Eksternal & WhatsApp</h3>
+                    <div class="form-field" style="margin-bottom: 20px;">
+                        <label for="prod-checkout-url">Marketplace Link (Shopee/Tokopedia/Lainnya)</label>
+                        <input type="url" id="prod-checkout-url" class="owwc-admin-input" placeholder="https://shopee.co.id/product-link">
+                        <p style="font-size: 12px; color: #666;">Jika diisi, pelanggan akan melihat tombol untuk beli di marketplace.</p>
+                    </div>
+                    <div class="form-field">
+                        <label for="prod-whatsapp-url">Link/Nomor WhatsApp Khusus</label>
+                        <input type="text" id="prod-whatsapp-url" class="owwc-admin-input" placeholder="628123456789 atau link wa.me">
+                        <p style="font-size: 12px; color: #666;">Kosongkan jika ingin menggunakan nomor WA global dari pengaturan.</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Kolom Sidebar (Kanan: approx 30%) -->

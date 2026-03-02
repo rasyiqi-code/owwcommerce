@@ -30,6 +30,8 @@ class Installer {
             gallery_ids text DEFAULT NULL,
             upsell_ids text DEFAULT NULL,
             cross_sell_ids text DEFAULT NULL,
+            checkout_url varchar(500) DEFAULT NULL,
+            whatsapp_url varchar(500) DEFAULT NULL,
             sales_count int(11) NOT NULL DEFAULT '0',
             created_by bigint(20) unsigned DEFAULT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,

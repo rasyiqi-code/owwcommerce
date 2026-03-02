@@ -2987,3 +2987,173 @@ h1.entry-title,
         justify-content: center;
     }
 }
+
+/* External & WhatsApp Checkout Buttons */
+.owwc-marketplace-btn {
+    background: #ee4d2d !important;
+    /* Shopee Orange */
+    border-color: #ee4d2d !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    transition: var(--owwc-transition-bounce) !important;
+}
+
+.owwc-marketplace-btn:hover {
+    background: #d13f22 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(238, 77, 45, 0.3);
+}
+
+/* External & WhatsApp Checkout Buttons */
+.owwc-product-actions-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 32px 0;
+    padding: 24px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.owwc-add-to-cart-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.owwc-cart-action-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.owwc-qty-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #e5e7eb;
+    border-radius: var(--owwc-radius-md);
+    height: 48px;
+    overflow: hidden;
+    background: #fff;
+    transition: var(--owwc-transition-fast);
+}
+
+.owwc-qty-wrapper:focus-within {
+    border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.owwc-add-to-cart-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 52px;
+    padding: 0 28px;
+    border-radius: var(--owwc-radius-md);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none !important;
+    font-size: 15px;
+    transition: var(--owwc-transition-bounce);
+    border: none;
+}
+
+.owwc-marketplace-btn {
+    background: #ee4d2d !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(238, 77, 45, 0.2);
+}
+
+.owwc-marketplace-btn:hover {
+    background: #d13f22 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(238, 77, 45, 0.3);
+}
+
+.owwc-whatsapp-btn {
+    background: #25D366 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+}
+
+.owwc-whatsapp-btn:hover {
+    background: #1eb956 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+}
+
+.owwc-external-buttons-group {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+}
+
+.owwc-stock-status-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.owwc-stock-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.owwc-stock-status--in-stock {
+    color: #059669;
+}
+
+.owwc-stock-status--out-stock {
+    color: #dc2626;
+}
+
+@media (max-width: 640px) {
+    .owwc-product-actions-wrap {
+        padding: 20px 0;
+        margin: 24px 0;
+    }
+
+    .owwc-external-buttons-group {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .owwc-cart-action-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .owwc-qty-wrapper {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .owwc-marketplace-btn {
+        background: #ee4d2d !important;
+        color: #fff !important;
+    }
+
+    .owwc-whatsapp-btn {
+        background: #25D366 !important;
+        color: #fff !important;
+        color: #fff !important;
+    }
+
+    .owwc-add-to-cart-btn {
+        width: 100%;
+        height: 56px;
+        /* Slightly taller for mobile tap targets */
+        font-size: 16px;
+        border-radius: 12px;
+    }
+}

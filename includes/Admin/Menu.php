@@ -106,6 +106,25 @@ class Menu {
             'default'           => ''
         ] );
 
+        // Checkout Features Control
+        register_setting( 'owwc_settings_group', 'owwc_enable_cart_checkout', [
+            'type'              => 'boolean',
+            'sanitize_callback' => 'rest_sanitize_boolean',
+            'default'           => true
+        ] );
+
+        register_setting( 'owwc_settings_group', 'owwc_enable_external_checkout', [
+            'type'              => 'boolean',
+            'sanitize_callback' => 'rest_sanitize_boolean',
+            'default'           => true
+        ] );
+
+        register_setting( 'owwc_settings_group', 'owwc_enable_whatsapp_checkout', [
+            'type'              => 'boolean',
+            'sanitize_callback' => 'rest_sanitize_boolean',
+            'default'           => true
+        ] );
+
         // Permalinks & Page Slugs
         register_setting( 'owwc_settings_group', 'owwc_page_shop_id', [
             'type'              => 'number',
@@ -216,24 +235,6 @@ class Menu {
             'manage_options',
             'owwc-settings',
             [ $this, 'render_settings' ]
-        );
-
-        add_submenu_page(
-            'owwcommerce',
-            __( 'Migration', 'owwcommerce' ),
-            __( 'Migration', 'owwcommerce' ),
-            'manage_options',
-            'owwc-migration',
-            [ $this, 'render_migration' ]
-        );
-
-        add_submenu_page(
-            'owwcommerce',
-            __( 'Export/Import', 'owwcommerce' ),
-            __( 'Export/Import', 'owwcommerce' ),
-            'manage_options',
-            'owwc-import',
-            [ $this, 'render_import' ]
         );
 
         // Halaman hidden untuk detail pesanan (tidak tampil di menu)
@@ -390,6 +391,38 @@ class Menu {
                 'nonce'   => wp_create_nonce('wp_rest')
             ]);
         }
+
+        if (strpos($hook, 'owwc-settings') !== false) {
+            wp_enqueue_script(
+                'owwc-admin-settings',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-settings.js',
+                [],
+                OWWCOMMERCE_VERSION,
+                true
+            );
+
+            // Enqueue scripts for Migration and Import/Export since they are now tabs
+            wp_enqueue_script(
+                'owwc-admin-migration',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-migration.js',
+                [],
+                OWWCOMMERCE_VERSION,
+                true
+            );
+
+            wp_localize_script('owwc-admin-migration', 'owwcSettings', [
+                'restUrl' => esc_url_raw(rest_url()),
+                'nonce'   => wp_create_nonce('wp_rest')
+            ]);
+
+            wp_enqueue_script(
+                'owwc-admin-import',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-import.js',
+                [],
+                OWWCOMMERCE_VERSION,
+                true
+            );
+        }
     }
 
     /**
@@ -433,21 +466,6 @@ class Menu {
         }
     }
 
-    /**
-     * Render Halaman Migration
-     */
-    public function render_migration() {
-        $template_path = OWWCOMMERCE_PLUGIN_DIR . 'templates/admin/migration.php';
-        if ( file_exists( $template_path ) ) {
-            include $template_path;
-        }
-    }
-    public function render_import() {
-        $template_path = OWWCOMMERCE_PLUGIN_DIR . 'templates/admin/import.php';
-        if ( file_exists( $template_path ) ) {
-            include $template_path;
-        }
-    }
 
     /**
      * Render Halaman Attributes

@@ -24,6 +24,8 @@ class Product {
     public int $sales_count = 0;
     public ?string $upsell_ids;
     public ?string $cross_sell_ids;
+    public ?string $checkout_url;
+    public ?string $whatsapp_url;
     public ?int $created_by;
     public ?string $created_at;
     public ?string $updated_at;
@@ -54,6 +56,8 @@ class Product {
 
         $this->upsell_ids  = $data['upsell_ids'] ?? null;
         $this->cross_sell_ids = $data['cross_sell_ids'] ?? null;
+        $this->checkout_url = $data['checkout_url'] ?? null;
+        $this->whatsapp_url = $data['whatsapp_url'] ?? null;
         $this->created_by  = isset( $data['created_by'] ) ? (int) $data['created_by'] : null;
         $this->created_at  = $data['created_at'] ?? null;
         $this->sales_count = isset( $data['sales_count'] ) ? (int) $data['sales_count'] : 0;
@@ -77,6 +81,8 @@ class Product {
             'sales_count' => $this->sales_count,
             'upsell_ids'  => $this->upsell_ids,
             'cross_sell_ids' => $this->cross_sell_ids,
+            'checkout_url' => $this->checkout_url,
+            'whatsapp_url' => $this->whatsapp_url,
             'created_by'  => $this->created_by,
             'created_at'  => $this->created_at,
             'updated_at'  => $this->updated_at,

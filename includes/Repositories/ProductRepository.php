@@ -37,6 +37,8 @@ class ProductRepository {
             'gallery_ids'    => ! empty( $product->gallery_ids ) ? implode( ',', $product->gallery_ids ) : null,
             'upsell_ids'     => $product->upsell_ids,
             'cross_sell_ids' => $product->cross_sell_ids,
+            'checkout_url'   => $product->checkout_url,
+            'whatsapp_url'   => $product->whatsapp_url,
             'created_by'     => $product->created_by,
             'sales_count'    => $product->sales_count,
             'stock_qty'      => $product->stock_qty,
@@ -56,6 +58,8 @@ class ProductRepository {
             '%s', // gallery_ids
             '%s', // upsell_ids
             '%s', // cross_sell_ids
+            '%s', // checkout_url
+            '%s', // whatsapp_url
             '%d', // created_by
             '%d', // sales_count
             '%d'  // stock_qty

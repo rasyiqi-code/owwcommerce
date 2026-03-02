@@ -15,6 +15,11 @@ class FloatingCart {
      * Render floating cart if not already rendered manually via shortcode
      */
     public function render_floating_cart() {
+        // 0. Jangan merender jika fitur keranjang / checkout dinonaktifkan secara global
+        if ( ! get_option( 'owwc_enable_cart_checkout', 1 ) ) {
+            return;
+        }
+
         // Jika developer sudah mengeksekusi shortcode [owwcommerce_cart_icon] secara manual di header/page, 
         // global flag ini akan bernilai true, jadi hentikan eksekusi floating ini.
         if ( isset( $GLOBALS['owwc_cart_icon_rendered'] ) && $GLOBALS['owwc_cart_icon_rendered'] === true ) {

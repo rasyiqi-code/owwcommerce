@@ -163,6 +163,11 @@ class OwwCommerceCart {
             // === Tombol "Tambah ke Keranjang" ===
             const addBtn = e.target.closest('.owwc-add-to-cart-btn');
             if (addBtn) {
+                // Skip if it's a marketplace or whatsapp link
+                if (addBtn.classList.contains('owwc-marketplace-btn') || addBtn.classList.contains('owwc-whatsapp-btn')) {
+                    return;
+                }
+
                 e.preventDefault();
                 const productId = addBtn.dataset.productId;
                 const variationId = parseInt(addBtn.dataset.variationId || 0, 10);

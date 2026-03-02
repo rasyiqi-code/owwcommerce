@@ -496,6 +496,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (product.cross_sell_ids) {
                         document.getElementById('prod-cross-sells').value = product.cross_sell_ids;
                     }
+                    if (product.checkout_url) {
+                        document.getElementById('prod-checkout-url').value = product.checkout_url;
+                    }
+                    if (product.whatsapp_url) {
+                        document.getElementById('prod-whatsapp-url').value = product.whatsapp_url;
+                    }
 
                     if (product.image_url) {
                         document.getElementById('prod-image').value = product.image_url;
@@ -539,6 +545,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const imageUrl = document.getElementById('prod-image')?.value || '';
             const upsellIds = document.getElementById('prod-upsells')?.value || '';
             const crossSellIds = document.getElementById('prod-cross-sells')?.value || '';
+            const checkoutUrl = document.getElementById('prod-checkout-url')?.value || '';
+            const whatsappUrl = document.getElementById('prod-whatsapp-url')?.value || '';
             const msgEl = document.getElementById('prod-form-message');
 
             if (!title) return;
@@ -569,6 +577,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         gallery_ids: document.getElementById('prod-gallery')?.value ? document.getElementById('prod-gallery').value.split(',') : [],
                         upsell_ids: upsellIds,
                         cross_sell_ids: crossSellIds,
+                        checkout_url: checkoutUrl,
+                        whatsapp_url: whatsappUrl,
                         variations: currentVariations
                     })
                 });

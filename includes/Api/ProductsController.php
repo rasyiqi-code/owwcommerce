@@ -204,6 +204,8 @@ class ProductsController extends WP_REST_Controller {
             'created_by'  => (int) get_current_user_id(),
             'upsell_ids'  => sanitize_text_field( $data['upsell_ids'] ?? '' ) ?: null,
             'cross_sell_ids' => sanitize_text_field( $data['cross_sell_ids'] ?? '' ) ?: null,
+            'checkout_url' => esc_url_raw( $data['checkout_url'] ?? '' ) ?: null,
+            'whatsapp_url' => sanitize_text_field( $data['whatsapp_url'] ?? '' ) ?: null,
         ] );
 
         // Handle variations if type is variable
@@ -244,6 +246,8 @@ class ProductsController extends WP_REST_Controller {
         if ( isset( $data['gallery_ids'] ) ) $product->gallery_ids = array_map( 'intval', (array) $data['gallery_ids'] );
         if ( isset( $data['upsell_ids'] ) )  $product->upsell_ids  = sanitize_text_field( $data['upsell_ids'] ) ?: null;
         if ( isset( $data['cross_sell_ids'] ) ) $product->cross_sell_ids = sanitize_text_field( $data['cross_sell_ids'] ) ?: null;
+        if ( isset( $data['checkout_url'] ) ) $product->checkout_url = esc_url_raw( $data['checkout_url'] ) ?: null;
+        if ( isset( $data['whatsapp_url'] ) ) $product->whatsapp_url = sanitize_text_field( $data['whatsapp_url'] ) ?: null;
 
         if ( $product->type === 'variable' && isset( $data['variations'] ) && is_array( $data['variations'] ) ) {
             $product->variations = [];

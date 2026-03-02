@@ -39,18 +39,37 @@ if ( stripos( $product->title, 'glass' ) !== false ) $hover_bg = '#F0F4F8';
             <?php endif; ?>
         </div>
 
-        <button
-            class="owwc-add-to-cart-btn owwc-btn-hover-icon"
-            data-product-id="<?php echo esc_attr( $product->id ); ?>"
-            data-qty="1"
-            title="Tambah ke Keranjang"
-            aria-label="Tambah ke Keranjang">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-            </svg>
-        </button>
+        <?php 
+        $enable_cart = get_option( 'owwc_enable_cart_checkout', 1 );
+        $enable_ext  = get_option( 'owwc_enable_external_checkout', 1 );
+        
+        if ( $enable_cart ) : ?>
+            <button
+                class="owwc-add-to-cart-btn owwc-btn-hover-icon"
+                data-product-id="<?php echo esc_attr( $product->id ); ?>"
+                data-qty="1"
+                title="Tambah ke Keranjang"
+                aria-label="Tambah ke Keranjang">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </button>
+        <?php elseif ( $enable_ext && ! empty( $product->checkout_url ) ) : ?>
+            <a href="<?php echo esc_url( $product->checkout_url ); ?>" 
+               class="owwc-add-to-cart-btn owwc-btn-hover-icon owwc-marketplace-btn" 
+               target="_blank" 
+               rel="nofollow noopener" 
+               title="Beli di Marketplace"
+               style="background: #ff5722; color: white;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+        <?php endif; ?>
     </div>
 
     <div class="owwc-product-info">
