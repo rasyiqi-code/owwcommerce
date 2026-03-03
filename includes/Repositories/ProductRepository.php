@@ -196,7 +196,7 @@ class ProductRepository {
 
         $results = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
 
-        return array_map( fn( $row ) => new Product( $row ), $results );
+        if ( ! is_array( $results ) ) { return []; } return array_map( fn( $row ) => new Product( $row ), $results );
     }
 
     /**
@@ -282,7 +282,7 @@ class ProductRepository {
 
         $results = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
 
-        return array_map( fn( $row ) => new Product( $row ), $results );
+        if ( ! is_array( $results ) ) { return []; } return array_map( fn( $row ) => new Product( $row ), $results );
     }
 
     /**

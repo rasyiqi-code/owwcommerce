@@ -155,19 +155,24 @@ class ProductsController extends WP_REST_Controller {
             'orderby' => $request->get_param( 'orderby' ),
         ];
 
-        $products    = $this->repository->get_all( $per_page, $offset, $filters );
-        $total_items = $this->repository->count();
-        $total_pages = ceil( $total_items / $per_page );
+        try {
+            $products    = $this->repository->get_all( $per_page, $offset, $filters );
+            $total_items = $this->repository->count();
+            $total_pages = ceil( $total_items / $per_page );
 
-        $formatted = array_map( fn($p) => $p->to_array(), $products );
+            $formatted = array_map( fn($p) => $p->to_array(), (array) $products );
 
-        return rest_ensure_response( [
-            'items'        => $formatted,
-            'total_items'  => $total_items,
-            'total_pages'  => (int) $total_pages,
-            'current_page' => $page,
-            'per_page'     => $per_page,
-        ] );
+            return rest_ensure_response( [
+                'items'        => $formatted,
+                'total_items'  => $total_items,
+                'total_pages'  => (int) $total_pages,
+                'current_page' => $page,
+                'per_page'     => $per_page,
+            ] );
+        } catch (\Throwable $e) {
+            error_log( "OwwCommerce REST Error: " . $e->getMessage() );
+            return new WP_Error( 'rest_internal_error', $e->getMessage(), [ 'status' => 500 ] );
+        }
     }
 
     public function get_item( $request ) {
