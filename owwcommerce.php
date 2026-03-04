@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: OwwCommerce
- * Plugin URI: https://example.com/owwcommerce
+ * Plugin URI: https://crediblemark.com/
  * Description: The Zero-Bloatware E-Commerce Engine for WordPress.
- * Version: 1.3.5
+ * Version: 1.4.0
  * Requires at least: 6.0
  * Requires PHP: 8.1
- * Author: OwwCommerce Team
+ * Author: Rasyiqi & OwwCommerce Team
  * License: GPL v2 or later
  * Text Domain: owwcommerce
  */
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants
-define( 'OWWCOMMERCE_VERSION', '1.3.5' );
+define( 'OWWCOMMERCE_VERSION', '1.4.0' );
 define( 'OWWCOMMERCE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OWWCOMMERCE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 

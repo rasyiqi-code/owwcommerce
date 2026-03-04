@@ -14,4 +14,4 @@ foreach ($columns as $column) {
 
 $db_version = get_option('owwcommerce_version');
 echo "\nDB Version Option: $db_version\n";
-echo "Defined Version: 1.3.5\n";
+echo "Defined Version: 1.4.0\n";
