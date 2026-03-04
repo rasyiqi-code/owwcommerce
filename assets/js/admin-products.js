@@ -143,6 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Bulk Stock Update Logic
         const bulkStockBtn = document.getElementById('owwc-bulk-stock-btn');
+        const bulkSetWrap = document.getElementById('owwc-bulk-set-all-wrap');
+        const setAllBtn = document.getElementById('owwc-bulk-stock-all-btn');
+        const setAllInput = document.getElementById('owwc-bulk-stock-all-input');
         let isBulkMode = false;
 
         if (bulkStockBtn) {
@@ -153,6 +156,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     bulkStockBtn.textContent = 'Simpan Stok';
                     bulkStockBtn.classList.remove('owwc-btn-secondary');
                     bulkStockBtn.classList.add('owwc-admin-btn'); // Primary color
+
+                    // Tampilkan helper "Set Semua"
+                    if (bulkSetWrap) bulkSetWrap.style.display = 'flex';
 
                     document.querySelectorAll('.owwc-badge').forEach(badge => {
                         const td = badge.closest('td');
@@ -211,6 +217,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             bulkStockBtn.textContent = 'Update Stok Massal';
                             bulkStockBtn.classList.add('owwc-btn-secondary');
                             bulkStockBtn.disabled = false;
+
+                            // Sembunyikan helper "Set Semua"
+                            if (bulkSetWrap) bulkSetWrap.style.display = 'none';
+
                             fetchProducts(currentPage);
                         } else {
                             alert('Gagal memperbarui stok.');
@@ -223,6 +233,23 @@ document.addEventListener('DOMContentLoaded', function () {
                         bulkStockBtn.textContent = 'Simpan Stok';
                     }
                 }
+            });
+        }
+
+        // Event Set Semua Stok
+        if (setAllBtn && setAllInput) {
+            setAllBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const value = setAllInput.value;
+                if (value === '') {
+                    alert('Masukkan nilai stok terlebih dahulu.');
+                    return;
+                }
+
+                const inputs = document.querySelectorAll('.bulk-stock-input');
+                inputs.forEach(input => {
+                    input.value = value;
+                });
             });
         }
     }
