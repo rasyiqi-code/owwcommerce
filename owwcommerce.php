@@ -6,7 +6,7 @@
  * Version: 1.4.0
  * Requires at least: 6.0
  * Requires PHP: 8.1
- * Author: Rasyiqi & OwwCommerce Team
+ * Author: Crediblemark & OwwCommerce Team
  * License: GPL v2 or later
  * Text Domain: owwcommerce
  */
