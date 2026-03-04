@@ -239,7 +239,7 @@ class Menu {
 
         // Halaman hidden untuk detail pesanan (tidak tampil di menu)
         add_submenu_page(
-            null, // Parent null = hidden dari menu
+            '', // Parent empty string = hidden dari menu
             __( 'Order Detail', 'owwcommerce' ),
             __( 'Order Detail', 'owwcommerce' ),
             'manage_options',

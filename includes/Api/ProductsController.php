@@ -42,7 +42,7 @@ class ProductsController extends WP_REST_Controller {
                     ],
                     'price' => [
                         'type'              => 'number',
-                        'sanitize_callback' => 'floatval',
+                        'sanitize_callback' => function( $value ) { return floatval( $value ); },
                     ],
                     'sku' => [
                         'type'              => 'string',
@@ -50,7 +50,7 @@ class ProductsController extends WP_REST_Controller {
                     ],
                     'stock_qty' => [
                         'type'              => 'integer',
-                        'sanitize_callback' => 'intval',
+                        'sanitize_callback' => function( $value ) { return intval( $value ); },
                     ],
                 ],
             ],
@@ -194,35 +194,40 @@ class ProductsController extends WP_REST_Controller {
             return new WP_Error( 'rest_missing_title', 'Product title is required.', [ 'status' => 400 ] );
         }
 
-        $product = new Product( [
-            'title'       => sanitize_text_field( $data['title'] ),
-            'slug'        => sanitize_title( $data['title'] ),
-            'description' => sanitize_textarea_field( $data['description'] ?? '' ),
-            'type'        => sanitize_text_field( $data['type'] ?? 'simple' ),
-            'status'      => sanitize_text_field( $data['status'] ?? 'publish' ),
-            'price'       => floatval( $data['price'] ?? 0 ),
-            'sale_price'  => isset( $data['sale_price'] ) && $data['sale_price'] !== '' ? floatval( $data['sale_price'] ) : null,
-            'sku'         => sanitize_text_field( $data['sku'] ?? '' ),
-            'stock_qty'   => intval( $data['stock_qty'] ?? 0 ),
-            'image_url'   => esc_url_raw( $data['image_url'] ?? '' ) ?: null,
-            'gallery_ids' => isset( $data['gallery_ids'] ) ? array_map( 'intval', (array) $data['gallery_ids'] ) : [],
-            'created_by'  => (int) get_current_user_id(),
-            'upsell_ids'  => sanitize_text_field( $data['upsell_ids'] ?? '' ) ?: null,
-            'cross_sell_ids' => sanitize_text_field( $data['cross_sell_ids'] ?? '' ) ?: null,
-            'checkout_url' => esc_url_raw( $data['checkout_url'] ?? '' ) ?: null,
-            'whatsapp_url' => sanitize_text_field( $data['whatsapp_url'] ?? '' ) ?: null,
-        ] );
+        try {
+            $product = new Product( [
+                'title'       => sanitize_text_field( $data['title'] ),
+                'slug'        => sanitize_title( $data['title'] ),
+                'description' => sanitize_textarea_field( $data['description'] ?? '' ),
+                'type'        => sanitize_text_field( $data['type'] ?? 'simple' ),
+                'status'      => sanitize_text_field( $data['status'] ?? 'publish' ),
+                'price'       => floatval( $data['price'] ?? 0 ),
+                'sale_price'  => isset( $data['sale_price'] ) && $data['sale_price'] !== '' ? floatval( $data['sale_price'] ) : null,
+                'sku'         => sanitize_text_field( $data['sku'] ?? '' ),
+                'stock_qty'   => intval( $data['stock_qty'] ?? 0 ),
+                'image_url'   => esc_url_raw( $data['image_url'] ?? '' ) ?: null,
+                'gallery_ids' => isset( $data['gallery_ids'] ) ? array_map( 'intval', (array) $data['gallery_ids'] ) : [],
+                'created_by'  => (int) get_current_user_id(),
+                'upsell_ids'  => sanitize_text_field( $data['upsell_ids'] ?? '' ) ?: null,
+                'cross_sell_ids' => sanitize_text_field( $data['cross_sell_ids'] ?? '' ) ?: null,
+                'checkout_url' => esc_url_raw( $data['checkout_url'] ?? '' ) ?: null,
+                'whatsapp_url' => sanitize_text_field( $data['whatsapp_url'] ?? '' ) ?: null,
+            ] );
 
-        // Handle variations if type is variable
-        if ( $product->type === 'variable' && ! empty( $data['variations'] ) && is_array( $data['variations'] ) ) {
-            foreach ( $data['variations'] as $v ) {
-                $product->variations[] = new \OwwCommerce\Models\ProductVariation( (array) $v );
+            // Handle variations if type is variable
+            if ( $product->type === 'variable' && ! empty( $data['variations'] ) && is_array( $data['variations'] ) ) {
+                foreach ( $data['variations'] as $v ) {
+                    $product->variations[] = new \OwwCommerce\Models\ProductVariation( (array) $v );
+                }
             }
+
+            $saved_product = $this->repository->save( $product );
+
+            return rest_ensure_response( $saved_product->to_array() );
+        } catch ( \Throwable $e ) {
+            error_log( "OwwCommerce REST Create Error: " . $e->getMessage() );
+            return new WP_Error( 'rest_internal_error', 'Gagal membuat produk: ' . $e->getMessage(), [ 'status' => 500 ] );
         }
-
-        $saved_product = $this->repository->save( $product );
-
-        return rest_ensure_response( $saved_product->to_array() );
     }
 
     public function update_item( $request ) {
@@ -235,35 +240,40 @@ class ProductsController extends WP_REST_Controller {
 
         $data = $request->get_json_params() ?: $request->get_params();
 
-        // Update fields jika dikirim
-        if ( isset( $data['title'] ) ) {
-            $product->title = sanitize_text_field( $data['title'] );
-            $product->slug  = sanitize_title( $data['title'] );
-        }
-        if ( isset( $data['description'] ) ) $product->description = sanitize_textarea_field( $data['description'] );
-        if ( isset( $data['type'] ) )        $product->type        = sanitize_text_field( $data['type'] );
-        if ( isset( $data['status'] ) )      $product->status      = sanitize_text_field( $data['status'] );
-        if ( isset( $data['price'] ) )       $product->price       = floatval( $data['price'] );
-        if ( isset( $data['sale_price'] ) )  $product->sale_price  = ( $data['sale_price'] !== '' ) ? floatval( $data['sale_price'] ) : null;
-        if ( isset( $data['sku'] ) )         $product->sku         = sanitize_text_field( $data['sku'] );
-        if ( isset( $data['stock_qty'] ) )   $product->stock_qty   = intval( $data['stock_qty'] );
-        if ( isset( $data['image_url'] ) )   $product->image_url   = esc_url_raw( $data['image_url'] ) ?: null;
-        if ( isset( $data['gallery_ids'] ) ) $product->gallery_ids = array_map( 'intval', (array) $data['gallery_ids'] );
-        if ( isset( $data['upsell_ids'] ) )  $product->upsell_ids  = sanitize_text_field( $data['upsell_ids'] ) ?: null;
-        if ( isset( $data['cross_sell_ids'] ) ) $product->cross_sell_ids = sanitize_text_field( $data['cross_sell_ids'] ) ?: null;
-        if ( isset( $data['checkout_url'] ) ) $product->checkout_url = esc_url_raw( $data['checkout_url'] ) ?: null;
-        if ( isset( $data['whatsapp_url'] ) ) $product->whatsapp_url = sanitize_text_field( $data['whatsapp_url'] ) ?: null;
-
-        if ( $product->type === 'variable' && isset( $data['variations'] ) && is_array( $data['variations'] ) ) {
-            $product->variations = [];
-            foreach ( $data['variations'] as $v ) {
-                $product->variations[] = new \OwwCommerce\Models\ProductVariation( (array) $v );
+        try {
+            // Update fields jika dikirim
+            if ( isset( $data['title'] ) ) {
+                $product->title = sanitize_text_field( $data['title'] );
+                $product->slug  = sanitize_title( $data['title'] );
             }
+            if ( isset( $data['description'] ) ) $product->description = sanitize_textarea_field( $data['description'] );
+            if ( isset( $data['type'] ) )        $product->type        = sanitize_text_field( $data['type'] );
+            if ( isset( $data['status'] ) )      $product->status      = sanitize_text_field( $data['status'] );
+            if ( isset( $data['price'] ) )       $product->price       = floatval( $data['price'] );
+            if ( isset( $data['sale_price'] ) )  $product->sale_price  = ( $data['sale_price'] !== '' ) ? floatval( $data['sale_price'] ) : null;
+            if ( isset( $data['sku'] ) )         $product->sku         = sanitize_text_field( $data['sku'] );
+            if ( isset( $data['stock_qty'] ) )   $product->stock_qty   = intval( $data['stock_qty'] );
+            if ( isset( $data['image_url'] ) )   $product->image_url   = esc_url_raw( $data['image_url'] ) ?: null;
+            if ( isset( $data['gallery_ids'] ) ) $product->gallery_ids = array_map( 'intval', (array) $data['gallery_ids'] );
+            if ( isset( $data['upsell_ids'] ) )  $product->upsell_ids  = sanitize_text_field( $data['upsell_ids'] ) ?: null;
+            if ( isset( $data['cross_sell_ids'] ) ) $product->cross_sell_ids = sanitize_text_field( $data['cross_sell_ids'] ) ?: null;
+            if ( isset( $data['checkout_url'] ) ) $product->checkout_url = esc_url_raw( $data['checkout_url'] ) ?: null;
+            if ( isset( $data['whatsapp_url'] ) ) $product->whatsapp_url = sanitize_text_field( $data['whatsapp_url'] ) ?: null;
+
+            if ( $product->type === 'variable' && isset( $data['variations'] ) && is_array( $data['variations'] ) ) {
+                $product->variations = [];
+                foreach ( $data['variations'] as $v ) {
+                    $product->variations[] = new \OwwCommerce\Models\ProductVariation( (array) $v );
+                }
+            }
+
+            $saved_product = $this->repository->save( $product );
+
+            return rest_ensure_response( $saved_product->to_array() );
+        } catch ( \Throwable $e ) {
+            error_log( "OwwCommerce REST Update Error: " . $e->getMessage() );
+            return new WP_Error( 'rest_internal_error', 'Gagal memperbarui produk: ' . $e->getMessage(), [ 'status' => 500 ] );
         }
-
-        $saved_product = $this->repository->save( $product );
-
-        return rest_ensure_response( $saved_product->to_array() );
     }
 
     public function delete_item( $request ) {
