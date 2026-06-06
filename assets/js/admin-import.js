@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (importBtn && fileInput) {
         importBtn.addEventListener('click', async (e) => {
             if (!fileInput.files.length) {
-                alert('Silakan pilih file Excel terlebih dahulu.');
+                alert('Silakan pilih file CSV terlebih dahulu.');
                 return;
             }
 
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             importBtn.textContent = 'Mengimpor...';
             progressWrap.style.display = 'block';
             progressBar.style.width = '50%';
-            statusText.textContent = 'Membaca file Excel dan memproses data...';
+            statusText.textContent = 'Membaca file CSV dan memproses data...';
             statusText.style.color = '#666';
 
             try {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const data = await res.json();
                     if (res.ok) {
                         progressBar.style.width = '100%';
-                        statusText.textContent = `Berhasil mengimpor ${data.imported} produk dari Excel!`;
+                        statusText.textContent = `Berhasil mengimpor ${data.imported} produk dari CSV!`;
                         statusText.style.color = 'green';
                         setTimeout(() => {
                             window.location.href = '?page=owwc-products';

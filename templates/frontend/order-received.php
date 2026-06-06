@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $order_id = (int) get_query_var( 'owwc_order_received' );
+$order_key = sanitize_text_field( $_GET['key'] ?? '' );
 
 if ( ! $order_id ) {
     wp_redirect( home_url() );
@@ -22,6 +23,21 @@ $order = $order_repo->find( $order_id );
 if ( ! $order ) {
     wp_redirect( home_url() );
     exit;
+}
+
+// Proteksi Otorisasi Halaman: Harus login pemilik, atau menyertakan key yang valid
+$customer_repo = new \OwwCommerce\Repositories\CustomerRepository();
+$customer = $customer_repo->find( $order->customer_id );
+$is_authorized = false;
+
+if ( is_user_logged_in() && $customer && (int) $customer['wp_user_id'] === get_current_user_id() ) {
+    $is_authorized = true;
+} else if ( ! empty( $order_key ) && ! empty( $order->order_key ) && hash_equals( $order->order_key, $order_key ) ) {
+    $is_authorized = true;
+}
+
+if ( ! current_user_can( 'manage_options' ) && ! $is_authorized ) {
+    wp_die( 'Anda tidak diizinkan mengakses halaman pesanan ini.' );
 }
 
 // Header Tema
@@ -186,6 +202,7 @@ get_header();
 
                             const formData = new FormData();
                             formData.append('order_id', <?php echo (int) $order->id; ?>);
+                            formData.append('order_key', '<?php echo esc_js( $order_key ); ?>');
                             formData.append('note', noteInput.value);
                             formData.append('proof', proofInput.files[0]);
 

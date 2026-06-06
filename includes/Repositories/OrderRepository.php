@@ -29,6 +29,10 @@ class OrderRepository {
         $wpdb->query('START TRANSACTION');
 
         try {
+            if ( empty( $order->order_key ) ) {
+                $order->order_key = 'owwc_key_' . wp_generate_password( 15, false );
+            }
+
             $order_data = [
                 'customer_id'      => $order->customer_id,
                 'status'           => $order->status,
@@ -39,6 +43,7 @@ class OrderRepository {
                 'discount_total'   => $order->discount_total,
                 'billing_address'  => $order->billing_address,
                 'shipping_address' => $order->shipping_address,
+                'order_key'        => $order->order_key,
             ];
 
             $wpdb->insert( $this->table_orders, $order_data );
@@ -115,9 +120,14 @@ class OrderRepository {
      */
     public function find_by_user_id( int $user_id, int $limit = 20, int $offset = 0 ): array {
         global $wpdb;
+        $table_customers = $wpdb->prefix . 'oww_customers';
         $results = $wpdb->get_results(
             $wpdb->prepare( 
-                "SELECT * FROM {$this->table_orders} WHERE customer_id = %d ORDER BY created_at DESC LIMIT %d OFFSET %d", 
+                "SELECT o.* FROM {$this->table_orders} o 
+                 INNER JOIN {$table_customers} c ON o.customer_id = c.id 
+                 WHERE c.wp_user_id = %d 
+                 ORDER BY o.created_at DESC 
+                 LIMIT %d OFFSET %d", 
                 $user_id, $limit, $offset 
             ),
             ARRAY_A

@@ -36,6 +36,7 @@ class Review {
             'comment'      => $this->comment,
             'author_name'  => $this->author_name,
             'author_email' => $this->author_email,
+            'avatar_url'   => get_avatar_url( $this->author_email, [ 'size' => 60, 'default' => 'mp' ] ),
             'status'       => $this->status,
             'created_at'   => $this->created_at,
         ];

@@ -15,7 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     window.owwcSettings = {
         restUrl: '<?php echo esc_url_raw( rest_url() ); ?>',
         nonce: '<?php echo wp_create_nonce( 'wp_rest' ); ?>',
-        homeUrl: '<?php echo esc_url( home_url('/') ); ?>'
+        homeUrl: '<?php echo esc_url( home_url('/') ); ?>',
+        cartUrl: '<?php echo esc_url( get_permalink( get_option( 'owwc_page_cart_id' ) ) ?: home_url( '/keranjang' ) ); ?>'
     };
 </script>
 
@@ -441,21 +442,28 @@ $shipping_address = json_decode( get_user_meta( $current_user->ID, 'owwc_shippin
                     });
                     const order = await response.json();
                     
-                    if (order && order.items) {
-                        let cart = JSON.parse(localStorage.getItem('owwc_cart') || '[]');
-                        order.items.forEach(item => {
-                            const existing = cart.find(c => c.id === item.product_id);
-                            if (existing) {
-                                existing.qty += parseInt(item.qty);
-                            } else {
-                                cart.push({ id: item.product_id, qty: parseInt(item.qty) });
-                            }
-                        });
-                        localStorage.setItem('owwc_cart', JSON.stringify(cart));
-                        window.location.href = owwcSettings.homeUrl + 'checkout/cart/';
+                    if (order && order.items && order.items.length > 0) {
+                        for (const item of order.items) {
+                            await fetch(owwcSettings.restUrl + 'owwc/v1/cart', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-WP-Nonce': owwcSettings.nonce
+                                },
+                                body: JSON.stringify({
+                                    product_id: item.product_id,
+                                    qty: parseInt(item.qty),
+                                    variation_id: 0
+                                })
+                            });
+                        }
+                        window.location.href = owwcSettings.cartUrl;
+                    } else {
+                        alert('Tidak ada item dalam pesanan ini.');
                     }
                 } catch (err) {
-                    alert('Gagal memuat pesanan untuk beli lagi.');
+                    alert('Gagal memproses pembelian ulang.');
+                    console.error(err);
                 }
             }
         };

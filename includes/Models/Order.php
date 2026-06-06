@@ -22,6 +22,7 @@ class Order {
     public ?string $shipping_address;
     public ?string $payment_proof;
     public ?string $payment_note;
+    public ?string $order_key;
     public ?string $created_at;
     public ?string $updated_at;
 
@@ -41,6 +42,7 @@ class Order {
         $this->shipping_address = $data['shipping_address'] ?? null;
         $this->payment_proof    = $data['payment_proof'] ?? null;
         $this->payment_note     = $data['payment_note'] ?? null;
+        $this->order_key        = $data['order_key'] ?? null;
         $this->created_at       = $data['created_at'] ?? null;
         $this->updated_at       = $data['updated_at'] ?? null;
 
@@ -78,6 +80,7 @@ class Order {
             'shipping_address' => $this->get_shipping_array(),
             'payment_proof'    => $this->payment_proof,
             'payment_note'     => $this->payment_note,
+            'order_key'        => $this->order_key,
             'created_at'       => $this->created_at,
             'updated_at'       => $this->updated_at,
             'items'            => array_map( fn( $i ) => $i->to_array(), $this->items ),

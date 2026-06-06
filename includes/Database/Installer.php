@@ -74,6 +74,7 @@ class Installer {
             shipping_address text DEFAULT NULL,
             payment_proof varchar(500) DEFAULT NULL,
             payment_note text DEFAULT NULL,
+            order_key varchar(100) DEFAULT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),

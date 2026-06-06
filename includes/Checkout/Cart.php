@@ -11,9 +11,6 @@ class Cart {
     private array $items = [];
 
     public function __construct() {
-        if ( session_status() === PHP_SESSION_NONE ) {
-            session_start();
-        }
         $this->load_cart();
     }
 

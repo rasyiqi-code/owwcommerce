@@ -17,6 +17,13 @@ class Plugin {
     private function __construct() {
         $this->container = new Container();
 
+        // Session start aman untuk Keranjang Belanja
+        add_action( 'init', function() {
+            if ( session_status() === PHP_SESSION_NONE && ! headers_sent() ) {
+                session_start();
+            }
+        }, 1 );
+
         // Auto-upgrade: jalankan Installer jika versi plugin berubah
         // Ini menangani penambahan kolom baru (image_url, billing_address, dll.)
         // tanpa perlu deaktifasi/aktifasi manual.
@@ -161,6 +168,7 @@ class Plugin {
                 'freeShippingThreshold' => (int) get_option( 'owwc_free_shipping_threshold', 0 ),
                 'productBase'     => Router::get_product_base_static(),
                 'homeUrl'         => esc_url( home_url('/') ),
+                'cartUrl'         => esc_url( get_permalink( get_option( 'owwc_page_cart_id' ) ) ?: home_url( '/keranjang' ) ),
             ]);
 
             // 2. Assets yang dimuat secara KONDISIONAL (Zero Bloatware)

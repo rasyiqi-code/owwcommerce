@@ -6,9 +6,6 @@ use WP_REST_Server;
 use WP_Error;
 use OwwCommerce\Repositories\ProductRepository;
 use OwwCommerce\Models\Product;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ImportController extends WP_REST_Controller {
 
@@ -52,13 +49,15 @@ class ImportController extends WP_REST_Controller {
         return current_user_can( 'manage_options' );
     }
 
+    /**
+     * Impor produk dari file CSV (menggantikan Excel).
+     */
     public function import_excel( $request ) {
         set_time_limit( 0 );
-        ini_set( 'memory_limit', '512M' );
 
         $files = $request->get_file_params();
         if ( empty( $files['excel_file'] ) ) {
-            return new WP_Error( 'rest_no_file', 'No Excel file uploaded.', [ 'status' => 400 ] );
+            return new WP_Error( 'rest_no_file', 'No CSV file uploaded.', [ 'status' => 400 ] );
         }
 
         $file_path = $files['excel_file']['tmp_name'];
@@ -70,24 +69,20 @@ class ImportController extends WP_REST_Controller {
             }
             ob_start();
 
-            if ( ! class_exists( 'PhpOffice\PhpSpreadsheet\IOFactory' ) ) {
-                throw new \Exception( 'Library PhpSpreadsheet tidak ditemukan. Pastikan vendor/ dipasang dengan benar.' );
+            if ( ( $handle = fopen( $file_path, 'r' ) ) === false ) {
+                throw new \Exception( 'Gagal membuka file CSV.' );
             }
 
-            $spreadsheet = IOFactory::load( $file_path );
-            $worksheet   = $spreadsheet->getActiveSheet();
-            $rows        = $worksheet->toArray();
-            
-            if ( count( $rows ) < 2 ) {
-                return new WP_Error( 'rest_empty_file', 'File Excel kosong atau tidak memiliki data.', [ 'status' => 400 ] );
+            // Membaca header
+            $header = fgetcsv( $handle, 0, ',' );
+            if ( ! $header ) {
+                fclose( $handle );
+                return new WP_Error( 'rest_empty_file', 'File CSV kosong atau tidak memiliki data.', [ 'status' => 400 ] );
             }
-
-            // Header mapping
-            $header = array_shift( $rows );
             $header = array_map( 'trim', $header );
 
             $imported = 0;
-            foreach ( $rows as $row ) {
+            while ( ( $row = fgetcsv( $handle, 0, ',' ) ) !== false ) {
                 // Skip empty rows
                 if ( empty( array_filter( $row ) ) ) continue;
 
@@ -108,7 +103,7 @@ class ImportController extends WP_REST_Controller {
                     'slug'        => sanitize_title( $data['title'] ?? '' ),
                     'description' => $data['description'] ?? '',
                     'price'       => floatval( $data['price'] ?? 0 ),
-                    'sale_price'  => !empty($data['sale_price']) ? floatval($data['sale_price']) : null,
+                    'sale_price'  => !empty($data['sale_price']) && trim($data['sale_price']) !== '' ? floatval($data['sale_price']) : null,
                     'sku'         => $data['sku'] ?? '',
                     'stock_qty'   => intval( $data['stock'] ?? 0 ),
                     'image_url'   => $data['image_url'] ?? null,
@@ -119,6 +114,7 @@ class ImportController extends WP_REST_Controller {
                 $this->repository->save( $product );
                 $imported++;
             }
+            fclose( $handle );
 
             return rest_ensure_response( [
                 'success'  => true,
@@ -126,75 +122,67 @@ class ImportController extends WP_REST_Controller {
             ] );
 
         } catch ( \Exception $e ) {
-            error_log( "OwwCommerce Excel Import Error: " . $e->getMessage() );
-            return new WP_Error( 'rest_import_failed', 'Gagal membaca file Excel: ' . $e->getMessage(), [ 'status' => 500 ] );
+            error_log( "OwwCommerce CSV Import Error: " . $e->getMessage() );
+            return new WP_Error( 'rest_import_failed', 'Gagal membaca file CSV: ' . $e->getMessage(), [ 'status' => 500 ] );
         }
     }
 
+    /**
+     * Ekspor produk ke file CSV (menggantikan Excel).
+     */
     public function export_excel() {
         set_time_limit( 0 );
-        ini_set( 'memory_limit', '512M' );
 
         try {
             $products = $this->repository->get_all( 9999, 0 );
-            
-            $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
             
             // Bersihkan buffer
             while ( ob_get_level() ) {
                 ob_end_clean();
             }
             ob_start();
-            $headers = [ 'title', 'description', 'price', 'sale_price', 'sku', 'stock', 'image_url' ];
-            $column = 'A';
-            foreach ( $headers as $h ) {
-                $sheet->setCellValue( $column . '1', $h );
-                $sheet->getStyle( $column . '1' )->getFont()->setBold( true );
-                $column++;
-            }
 
-            // Data
-            $row_index = 2;
-            foreach ( $products as $p ) {
-                if ( empty( trim( $p->title ) ) ) continue;
-
-                $sheet->setCellValue( 'A' . $row_index, $p->title );
-                $sheet->setCellValue( 'B' . $row_index, $p->description );
-                $sheet->setCellValue( 'C' . $row_index, $p->price );
-                $sheet->setCellValue( 'D' . $row_index, $p->sale_price );
-                $sheet->setCellValue( 'E' . $row_index, $p->sku );
-                $sheet->setCellValue( 'F' . $row_index, $p->stock_qty );
-                $sheet->setCellValue( 'G' . $row_index, $p->image_url );
-                $row_index++;
-            }
-
-            $filename = 'owwcommerce-products-' . date('Y-m-d') . '.xlsx';
+            $filename = 'owwcommerce-products-' . date('Y-m-d') . '.csv';
             
-            // Bersihkan buffer sebelum kirim file
-            if ( ob_get_length() ) ob_clean();
-
-            header( 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' );
+            header( 'Content-Type: text/csv; charset=utf-8' );
             header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
             header( 'Cache-Control: max-age=0' );
 
-            $writer = new Xlsx( $spreadsheet );
-            $writer->save( 'php://output' );
+            $output = fopen( 'php://output', 'w' );
+            
+            // Tulis Header
+            $headers = [ 'title', 'description', 'price', 'sale_price', 'sku', 'stock', 'image_url' ];
+            fputcsv( $output, $headers );
+
+            // Tulis Data
+            foreach ( $products as $p ) {
+                if ( empty( trim( $p->title ) ) ) continue;
+
+                fputcsv( $output, [
+                    $p->title,
+                    $p->description,
+                    $p->price,
+                    $p->sale_price,
+                    $p->sku,
+                    $p->stock_qty,
+                    $p->image_url
+                ] );
+            }
+            
+            fclose( $output );
             exit;
 
         } catch ( \Exception $e ) {
             if ( ob_get_length() ) ob_clean();
-            wp_die( "Gagal membuat file Excel: " . $e->getMessage() );
+            wp_die( "Gagal membuat file CSV: " . $e->getMessage() );
         }
     }
 
     public function test_lib() {
         ob_start();
-        $exists = class_exists( 'PhpOffice\PhpSpreadsheet\IOFactory' );
-        $version = \Composer\InstalledVersions::getVersion('phpoffice/phpspreadsheet') ?? 'unknown';
         return rest_ensure_response( [
-            'class_exists' => $exists,
-            'version' => $version,
+            'class_exists' => true,
+            'version' => 'native-csv',
             'php_version' => PHP_VERSION,
             'extensions' => [
                 'gd' => extension_loaded('gd'),

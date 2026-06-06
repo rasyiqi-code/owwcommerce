@@ -135,6 +135,16 @@ class CheckoutController extends WP_REST_Controller {
 
         // Cek apakah customer sudah ada (berdasarkan email)
         $existing_customer = $this->customer_repo->find_by_email( $customer_email );
+        
+        // Mencegah polusi data & IDOR: Guest tidak boleh checkout dengan email milik user terdaftar
+        if ( ! is_user_logged_in() && $existing_customer && ! empty( $existing_customer['wp_user_id'] ) ) {
+            return new WP_Error(
+                'email_registered',
+                'Alamat email ini sudah terdaftar sebagai pengguna. Silakan login terlebih dahulu untuk melanjutkan pesanan.',
+                [ 'status' => 400 ]
+            );
+        }
+
         $customer_id       = 0;
 
         if ( $existing_customer ) {
@@ -285,14 +295,15 @@ class CheckoutController extends WP_REST_Controller {
             return new WP_Error( 'not_found', 'Pesanan tidak ditemukan.', [ 'status' => 404 ] );
         }
         
-        // Authorization check: User must own the order or provide correct billing email
+        // Authorization check: User must own the order or provide secure order key
         $customer = $this->customer_repo->find( $order->customer_id );
         $is_authorized = false;
+        $req_key = sanitize_text_field( $data['order_key'] ?? '' );
         
         if ( is_user_logged_in() && $customer && (int) $customer['wp_user_id'] === get_current_user_id() ) {
             $is_authorized = true; // Logged in and owns the order
-        } else if ( ! empty( $email ) && $customer && strtolower( $customer['email'] ) === strtolower( $email ) ) {
-            $is_authorized = true; // Guest order confirmation via email check
+        } else if ( ! empty( $req_key ) && ! empty( $order->order_key ) && hash_equals( $order->order_key, $req_key ) ) {
+            $is_authorized = true; // Authorized via secure order key
         }
         
         if ( ! current_user_can( 'manage_options' ) && ! $is_authorized ) {

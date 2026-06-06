@@ -576,7 +576,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 reviewList.innerHTML = data.items.map(r => `
                     <div class="owwc-review-item">
                         <div class="owwc-review-avatar">
-                            <img src="https://secure.gravatar.com/avatar/${btoa(r.author_email || 'default')}?s=60&d=mp" alt="Avatar">
+                            <img src="${r.avatar_url || ''}" alt="Avatar">
                         </div>
                         <div class="owwc-review-content">
                             <div class="owwc-review-meta">

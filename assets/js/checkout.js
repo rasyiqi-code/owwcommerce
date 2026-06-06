@@ -183,7 +183,8 @@ class OwwCommerceCheckout {
                         if (data.order && data.order.redirect_url) {
                             window.location.href = data.order.redirect_url;
                         } else {
-                            window.location.href = '/checkout/order-received/' + data.order_id;
+                            const orderKey = data.order && data.order.order_key ? data.order.order_key : '';
+                            window.location.href = owwcSettings.homeUrl + 'checkout/order-received/' + data.order_id + '/?key=' + orderKey;
                         }
                     }, 1500);
 

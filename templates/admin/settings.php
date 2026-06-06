@@ -297,13 +297,13 @@
                 <!-- TAB 7: IMPORT / EXPORT -->
                 <div id="tab-import-export" class="owwc-tab-content">
                     <div class="owwc-admin-card">
-                        <h3>Import Produk (Excel)</h3>
-                        <p class="owwc-admin-text-muted" style="margin-bottom: 20px;">Unggah file Excel (.xlsx) untuk mengimpor produk secara massal.</p>
+                        <h3>Import Produk (CSV)</h3>
+                        <p class="owwc-admin-text-muted" style="margin-bottom: 20px;">Unggah file CSV (.csv) untuk mengimpor produk secara massal.</p>
                         
                         <div id="owwc-import-form-container">
                             <div class="form-field">
-                                <label for="excel-file">Pilih File Excel</label>
-                                <input type="file" id="excel-file" name="excel_file" accept=".xlsx" class="owwc-admin-input" style="padding: 10px;">
+                                <label for="excel-file">Pilih File CSV</label>
+                                <input type="file" id="excel-file" name="excel_file" accept=".csv" class="owwc-admin-input" style="padding: 10px;">
                             </div>
                             
                             <div id="import-progress" style="display: none; margin-top: 20px;">
@@ -321,10 +321,10 @@
 
                         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--owwc-admin-border);">
                             <h3>Export Produk</h3>
-                            <p class="owwc-admin-text-muted" style="margin-bottom: 20px;">Unduh semua data produk Anda dalam format Excel.</p>
+                            <p class="owwc-admin-text-muted" style="margin-bottom: 20px;">Unduh semua data produk Anda dalam format CSV.</p>
                             <button type="button" id="owwc-export-btn" class="owwc-admin-btn owwc-btn-secondary">
                                 <span class="dashicons dashicons-download" style="margin-right: 8px;"></span>
-                                Unduh Excel Produk
+                                Unduh CSV Produk
                             </button>
                         </div>
                     </div>
