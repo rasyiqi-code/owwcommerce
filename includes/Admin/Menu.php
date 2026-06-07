@@ -516,7 +516,14 @@ class Menu {
      */
     public function render_customers() {
         $customer_repo = new \OwwCommerce\Repositories\CustomerRepository();
-        $customers = $customer_repo->get_all();
+        
+        $paged = isset( $_GET['paged'] ) ? max( 1, (int) $_GET['paged'] ) : 1;
+        $limit = 20;
+        $offset = ( $paged - 1 ) * $limit;
+        
+        $customers = $customer_repo->get_all( $limit, $offset );
+        $total_customers = $customer_repo->count();
+        $total_pages = ceil( $total_customers / $limit );
 
         $template_path = OWWCOMMERCE_PLUGIN_DIR . 'templates/admin/customers.php';
         if ( file_exists( $template_path ) ) {

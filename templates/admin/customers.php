@@ -2,7 +2,7 @@
     <div class="owwc-admin-header" style="margin-bottom: 20px;">
         <h1 style="display:flex; align-items:center; gap: 10px;">
             <?php esc_html_e( 'Daftar Pelanggan', 'owwcommerce' ); ?>
-            <span style="font-size: 14px; font-weight: normal; color: #666; background: #eee; padding: 2px 8px; border-radius: 20px;"><?php echo count($customers); ?> Total</span>
+            <span style="font-size: 14px; font-weight: normal; color: #666; background: #eee; padding: 2px 8px; border-radius: 20px;"><?php echo (int) $total_customers; ?> Total</span>
         </h1>
     </div>
 
@@ -44,4 +44,21 @@
             </table>
         <?php endif; ?>
     </div>
+
+    <!-- Navigasi Paginasi -->
+    <?php if ( isset($total_pages) && $total_pages > 1 ) : ?>
+        <div class="owwc-admin-pagination" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; background:white; padding:15px; border-radius:8px; border:1px solid #e5e7eb;">
+            <div class="pagination-info" style="color:#6b7280; font-size:14px;">
+                Menampilkan halaman <strong><?php echo (int) $paged; ?></strong> dari <strong><?php echo (int) $total_pages; ?></strong> (Total: <?php echo (int) $total_customers; ?> pelanggan)
+            </div>
+            <div class="pagination-controls" style="display: flex; gap: 8px;">
+                <?php if ( $paged > 1 ) : ?>
+                    <a href="?page=owwc-customers&paged=<?php echo $paged - 1; ?>" class="owwc-admin-btn owwc-btn-secondary" style="text-decoration: none;">&laquo; Sebelumnya</a>
+                <?php endif; ?>
+                <?php if ( $paged < $total_pages ) : ?>
+                    <a href="?page=owwc-customers&paged=<?php echo $paged + 1; ?>" class="owwc-admin-btn owwc-btn-secondary" style="text-decoration: none;">Selanjutnya &raquo;</a>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
 </div>
