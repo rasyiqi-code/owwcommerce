@@ -232,67 +232,35 @@ width: 48px;
 }
 
 /* Kelompok Tombol Eksternal / Marketplace / WhatsApp */
-.owwc-external-buttons-group {
-display: flex;
-    gap: 12px;
-    width: 100%;
-}
-
+.owwc-external-buttons-group { display: flex; gap: 12px; width: 100%; }
 /* Status Stok */
-.owwc-stock-status-wrap {
-margin-top: 16px;
-}
-
-.owwc-stock-status {
-display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.owwc-stock-status svg {
-    flex-shrink: 0;
-}
-.owwc-stock-status--in-stock {
-    color: var(--owwc-success);
-}
-.owwc-stock-status--out-stock {
-    color: var(--owwc-danger);
-}
-#owwc-avg-num {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--owwc-text-main);
-}
-
+.owwc-stock-status-wrap { margin-top: 16px; }
+.owwc-stock-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; }
+.owwc-stock-status svg { flex-shrink: 0; }
+.owwc-stock-status--in-stock { color: var(--owwc-success); }
+.owwc-stock-status--out-stock { color: var(--owwc-danger); }
+#owwc-avg-num { font-size: 15px; font-weight: 700; color: var(--owwc-text-main); }
 /* Sticky Mobile Action Bar */
 .owwc-mobile-action-bar {
-position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: fixed; bottom: 0; left: 0; right: 0;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-top: 1px solid var(--owwc-border);
-    padding: 12px 20px;
-    display: none; /* Sembunyikan secara default di desktop */
-    z-index: 1000;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--owwc-border); padding: 12px 20px;
+    display: none; z-index: 1000;
     box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; align-items: center;
 }
-
 .owwc-mobile-buy-btn {
-height: 40px;
-    padding: 0 20px;
-    font-size: 13px;
-    font-weight: 600;
-    border-radius: var(--owwc-radius-sm);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: none;
+    height: 40px; padding: 0 20px; font-size: 13px; font-weight: 600;
+    border-radius: var(--owwc-radius-sm); display: inline-flex;
+    align-items: center; justify-content: center; cursor: pointer; border: none;
+}
+/* Optimasi Responsif Mobile */
+@media (max-width: 768px) {
+    /* Menjadikan layout detail produk 1 kolom vertical */
+    .owwc-single-product-layout { grid-template-columns: 1fr; gap: 24px; }
+    .owwc-single-product-image { position: relative; top: 0; }
+    .owwc-single-product-title { font-size: 22px; }
+    .owwc-mobile-action-bar { display: flex; }
+    .owwc-single-product { padding-bottom: 80px; }
 }
