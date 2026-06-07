@@ -94,7 +94,7 @@ box-sizing: border-box;
 }
 
 .owwc-page-wrapper {
-padding: 60px 0;
+    padding: 0 0 var(--owwc-space-2xl) 0;
     background-color: var(--owwc-surface);
     min-height: 60vh;
 }
