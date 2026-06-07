@@ -176,9 +176,24 @@ display: flex;
 }
 
 .owwc-cart-actions {
-display: flex;
-    justify-content: flex-end;
-    gap: var(--owwc-space-md);
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--owwc-space-sm);
+}
+.owwc-cart-actions .owwc-btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+@media (min-width: 769px) {
+    .owwc-cart-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: var(--owwc-space-md);
+    }
+    .owwc-cart-actions .owwc-btn {
+        width: auto;
+    }
 }
 
 /* Cart empty state */
