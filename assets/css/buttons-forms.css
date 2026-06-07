@@ -108,12 +108,19 @@ display: block;
     font-size: var(--owwc-font-size-sm);
 }
 
-/* Form row (2 kolom berdampingan) */
+/* Form row (mobile: 1 kolom, desktop: 2 kolom) */
 .owwc-form-row {
-display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: var(--owwc-space-md);
 }
+
+@media (min-width: 769px) {
+    .owwc-form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 
 .owwc-form-group {
 margin-bottom: 15px;
