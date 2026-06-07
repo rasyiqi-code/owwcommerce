@@ -148,16 +148,15 @@
         width: 100%;
     }
 }
-/* Dari /* Checkout responsive */
-@media (max-width: 768px) */
+/* Dari Checkout responsive: @media (max-width: 768px) */
 .owwc-checkout-grid {
-        grid-template-columns: 1fr;
-    }
+    grid-template-columns: 1fr;
+}
 
-    .owwc-checkout-review {
-        order: -1;
-        position: static;
-    }
+.owwc-checkout-review {
+    order: -1;
+    position: static;
+}
 /* Dari @media (max-width: 768px) */
 .owwc-checkout-login-prompt {
         flex-direction: column;
@@ -213,13 +212,10 @@
 
 /* === Single Product Mobile Styles === */
 
-/* Dari /* ==============================================================
-   RESPONSIVENESS (MOBILE FIRST REFINEMENTS)
-   ============================================================== */
-@media (max-width: 768px) */
+/* Dari RESPONSIVENESS (MOBILE FIRST REFINEMENTS): @media (max-width: 768px) */
 .owwc-mobile-action-bar {
-        display: flex;
-    }
+    display: flex;
+}
 
     .owwc-single-product {
         padding-bottom: 80px; /* Beri ruang agar tidak tertutup sticky bar */
