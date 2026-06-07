@@ -9,6 +9,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const apiBase = `${owwcSettings.restUrl}owwc/v1/products`;
     const nonce = owwcSettings.nonce;
 
+    // Helper untuk mencegah XSS
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return '';
+        return String(str).replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
     // =========================================================
     // LIST VIEW MODE (Jika ada container tabel)
     // =========================================================
@@ -62,13 +76,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             products.forEach(p => {
                 const imgHtml = p.image_url
-                    ? `<img src="${p.image_url}" alt="${p.title}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;">`
+                    ? `<img src="${escapeHTML(p.image_url)}" alt="${escapeHTML(p.title)}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;">`
                     : `<span style="display:inline-block;width:40px;height:40px;background:#f0f0f1;border-radius:4px;border:1px solid #dcdcdc;"></span>`;
 
                 html += `
                     <tr>
                         <td style="vertical-align: middle;">${imgHtml}</td>
-                        <td style="vertical-align: middle;"><strong>${p.title}</strong></td>
+                        <td style="vertical-align: middle;"><strong>${escapeHTML(p.title)}</strong></td>
                         <td style="vertical-align: middle;">${Number(p.price).toLocaleString()}</td>
                         <td style="vertical-align: middle;">
                             <span class="owwc-badge ${p.stock_qty > 0 ? 'completed' : 'failed'}">
@@ -76,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             </span>
                         </td>
                         <td style="text-align: right; vertical-align: middle;">
-                            <a href="${owwcSettings.homeUrl}${owwcSettings.productBase}/${p.slug}" target="_blank" class="owwc-admin-btn" style="padding: 6px 12px; font-size: 12px; margin-right: 4px; text-decoration:none; background:#2271b1; color:white;">View</a>
+                            <a href="${escapeHTML(owwcSettings.homeUrl)}${escapeHTML(owwcSettings.productBase)}/${escapeHTML(p.slug)}" target="_blank" class="owwc-admin-btn" style="padding: 6px 12px; font-size: 12px; margin-right: 4px; text-decoration:none; background:#2271b1; color:white;">View</a>
                             <a href="?page=owwc-products&action=edit&id=${p.id}" class="owwc-admin-btn owwc-btn-secondary" style="padding: 6px 12px; font-size: 12px; margin-right: 4px; text-decoration:none;">Edit</a>
                             <button class="owwc-admin-btn owwc-admin-btn-danger owwc-btn-delete" data-id="${p.id}" style="padding: 6px 12px; font-size: 12px;">Delete</button>
                         </td>
@@ -285,6 +299,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 const data = await res.json();
                 if (availableAttrSelect) {
+                    availableAttrSelect.innerHTML = '<option value="">-- Pilih Atribut --</option>';
                     data.forEach(attr => {
                         const opt = document.createElement('option');
                         opt.value = attr.id;
@@ -292,9 +307,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         availableAttrSelect.appendChild(opt);
                     });
                 }
-            } catch (e) { console.error("Error loading attributes", e); }
+                return data;
+            } catch (e) {
+                console.error("Error loading attributes", e);
+                return [];
+            }
         }
-        fetchGlobalAttributes();
 
         // Handle Type Change UI
         function toggleProductTypeUI() {
@@ -367,11 +385,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 div.style.background = '#f9f9f9';
                 div.innerHTML = `
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <strong>${attr.name}</strong>
+                        <strong>${escapeHTML(attr.name)}</strong>
                         <a href="#" class="owwc-remove-attr" data-idx="${idx}" style="color:var(--owwc-admin-danger); font-size:12px;">Hapus</a>
                     </div>
                     <div style="margin-top:10px;">
-                        ${attr.terms.map(t => `<label style="margin-right:10px; font-size:12px;"><input type="checkbox" checked class="term-check" data-attr-id="${attr.id}" data-term-name="${t.name}"> ${t.name}</label>`).join('')}
+                        ${attr.terms.map(t => `<label style="margin-right:10px; font-size:12px;"><input type="checkbox" checked class="term-check" data-attr-id="${escapeHTML(attr.id)}" data-term-name="${escapeHTML(t.name)}"> ${escapeHTML(t.name)}</label>`).join('')}
                     </div>
                 `;
                 selectedAttrContainer.appendChild(div);
@@ -408,6 +426,11 @@ document.addEventListener('DOMContentLoaded', function () {
             // Cartesian Product Helper
             const combinations = groups.reduce((a, b) => a.flatMap(d => b.terms.map(e => ({ ...d, [b.id]: e }))), [{}]);
 
+            if (combinations.length > 50) {
+                alert(`Kombinasi variasi terlalu banyak (${combinations.length}). Maksimal kombinasi yang diperbolehkan adalah 50 untuk menjaga performa halaman. Harap kurangi jumlah atribut atau nilai yang dicentang.`);
+                return;
+            }
+
             currentVariations = combinations.map(combo => ({
                 sku: '',
                 price: document.getElementById('prod-price').value || 0,
@@ -442,10 +465,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const comboDesc = Object.values(v.attributes).join(' / ');
                 html += `
                     <tr>
-                        <td><strong>${comboDesc}</strong></td>
-                        <td><input type="text" class="owwc-admin-input v-sku" value="${v.sku}" data-idx="${idx}" style="padding: 4px 8px;"></td>
-                        <td><input type="number" class="owwc-admin-input v-price" value="${v.price}" data-idx="${idx}" style="padding: 4px 8px;"></td>
-                        <td><input type="number" class="owwc-admin-input v-stock" value="${v.stock_qty}" data-idx="${idx}" style="padding: 4px 8px;"></td>
+                        <td><strong>${escapeHTML(comboDesc)}</strong></td>
+                        <td><input type="text" class="owwc-admin-input v-sku" value="${escapeHTML(v.sku)}" data-idx="${idx}" style="padding: 4px 8px;"></td>
+                        <td><input type="number" class="owwc-admin-input v-price" value="${escapeHTML(v.price)}" data-idx="${idx}" style="padding: 4px 8px;"></td>
+                        <td><input type="number" class="owwc-admin-input v-stock" value="${escapeHTML(v.stock_qty)}" data-idx="${idx}" style="padding: 4px 8px;"></td>
                     </tr>
                 `;
             });
@@ -463,18 +486,25 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Jika ID ada, mode = EDIT, tarik data product dari API
-        if (productId) {
-            formTitle.innerText = 'Edit Produk #' + productId;
-            submitBtn.innerText = 'Memuat Data...';
-            submitBtn.disabled = true;
+        // Inisialisasi Formulir Edit/Tambah
+        async function initForm() {
+            toggleProductTypeUI();
 
-            fetch(`${apiBase}/${productId}`, {
-                method: 'GET',
-                headers: { 'X-WP-Nonce': nonce, 'Content-Type': 'application/json' }
-            })
-                .then(res => res.json())
-                .then(product => {
+            // Tunggu load global attributes selesai untuk membasmi race condition
+            await fetchGlobalAttributes();
+
+            if (productId) {
+                formTitle.innerText = 'Edit Produk #' + productId;
+                submitBtn.innerText = 'Memuat Data...';
+                submitBtn.disabled = true;
+
+                try {
+                    const res = await fetch(`${apiBase}/${productId}`, {
+                        method: 'GET',
+                        headers: { 'X-WP-Nonce': nonce, 'Content-Type': 'application/json' }
+                    });
+                    const product = await res.json();
+
                     document.getElementById('prod-name').value = product.title;
                     document.getElementById('prod-description').value = product.description || '';
                     document.getElementById('prod-price').value = product.price;
@@ -501,9 +531,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             });
                         });
 
-                        // For each attribute found in variations, we need its name to show in UI
-                        // This uses a bit of guesswork but for global attributes we can fetch them or use placeholders
-                        // Simplified: clear and let user manage, or fetch names from availableAttrSelect
                         selectedAttributes = [];
                         Object.entries(attrsMap).forEach(([attrId, termsSet]) => {
                             const option = [...availableAttrSelect.options].find(o => o.value == attrId);
@@ -547,15 +574,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Load Gallery if any
                     if (product.gallery_ids && product.gallery_ids.length > 0) {
                         document.getElementById('prod-gallery').value = product.gallery_ids.join(',');
-                        renderGalleryContainer(product.gallery_ids);
+                        await renderGalleryContainer(product.gallery_ids);
                     }
-                })
-                .catch(e => {
+                } catch (e) {
+                    console.error("Gagal memuat data produk:", e);
                     alert('Gagal memuat data produk.');
                     submitBtn.innerText = 'Update Produk';
                     submitBtn.disabled = false;
-                });
+                }
+            }
         }
+
+        // Jalankan inisialisasi form
+        initForm();
 
         // Handle Submit
         addForm.addEventListener('submit', async (e) => {
@@ -743,14 +774,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!ids || ids.length === 0) return;
 
-        // Fetch image URLs if we only have IDs (e.g. from DB)
-        // Or if we just selected them, we might already have them in selections? 
-        // To be safe and consistent, let's fetch metadata for these IDs
-        for (const id of ids) {
-            try {
-                // We use WP REST API to get attachment URL
-                const res = await fetch(`${owwcSettings.restUrl}wp/v2/media/${id}`);
-                const media = await res.json();
+        try {
+            // Batch fetch media metadata dari WordPress REST API (hanya 1 HTTP request)
+            const res = await fetch(`${owwcSettings.restUrl}wp/v2/media?include=${ids.join(',')}`, {
+                headers: { 'X-WP-Nonce': nonce }
+            });
+            if (!res.ok) throw new Error("Gagal memuat detail galeri");
+            const mediaList = await res.json();
+
+            // Petakan respons ke map ID -> Media
+            const mediaMap = {};
+            mediaList.forEach(media => {
+                mediaMap[media.id] = media;
+            });
+
+            // Render sesuai urutan ID asli
+            ids.forEach(id => {
+                const media = mediaMap[id];
+                if (!media) return;
+
                 const url = (media.media_details && media.media_details.sizes && media.media_details.sizes.thumbnail)
                     ? media.media_details.sizes.thumbnail.source_url
                     : media.source_url;
@@ -764,7 +806,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 item.style.border = '1px solid #ddd';
 
                 item.innerHTML = `
-                    <img src="${url}" style="width:100%; height:100%; object-fit:cover;">
+                    <img src="${escapeHTML(url)}" style="width:100%; height:100%; object-fit:cover;">
                     <button type="button" class="owwc-remove-gallery-item" data-id="${id}" style="position:absolute; top:2px; right:2px; background:rgba(255,0,0,0.7); color:white; border:none; border-radius:50%; width:18px; height:18px; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center;">&times;</button>
                 `;
                 galleryContainer.appendChild(item);
@@ -775,8 +817,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     galleryInput.value = newIds.join(',');
                     renderGalleryContainer(newIds);
                 });
-
-            } catch (e) { console.error("Error loading gallery image", e); }
+            });
+        } catch (e) {
+            console.error("Error loading gallery images", e);
         }
     }
 

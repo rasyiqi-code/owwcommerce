@@ -124,10 +124,11 @@ class ProductsController extends WP_REST_Controller {
             's'        => $request->get_param( 'q' ), // Gunakan 'q' untuk konsistensi dengan shop search
             'category' => $request->get_param( 'category' ),
             'orderby'  => $request->get_param( 'orderby' ),
+            'status'   => 'publish', // Publik hanya melihat produk publish
         ];
 
         $products    = $this->repository->get_all( $per_page, $offset, $filters );
-        $total_items = $this->repository->count(); // Idealnya count dengan filter, tapi get_all kita cukup fleksibel
+        $total_items = $this->repository->count( $filters );
         
         // Render HTML card untuk setiap produk (Server Side Rendering for AJAX)
         $html = '';
@@ -153,11 +154,12 @@ class ProductsController extends WP_REST_Controller {
         $filters = [
             's'       => $request->get_param( 's' ),
             'orderby' => $request->get_param( 'orderby' ),
+            'status'  => 'any', // Admin melihat semua produk (termasuk draft)
         ];
 
         try {
             $products    = $this->repository->get_all( $per_page, $offset, $filters );
-            $total_items = $this->repository->count();
+            $total_items = $this->repository->count( $filters );
             $total_pages = ceil( $total_items / $per_page );
 
             $formatted = array_map( fn($p) => $p->to_array(), (array) $products );
@@ -204,7 +206,7 @@ class ProductsController extends WP_REST_Controller {
                 'price'       => floatval( $data['price'] ?? 0 ),
                 'sale_price'  => isset( $data['sale_price'] ) && $data['sale_price'] !== '' ? floatval( $data['sale_price'] ) : null,
                 'sku'         => sanitize_text_field( $data['sku'] ?? '' ),
-                'stock_qty'   => intval( $data['stock_qty'] ?? 0 ),
+                'stock_qty'   => max( 0, intval( $data['stock_qty'] ?? 0 ) ),
                 'image_url'   => esc_url_raw( $data['image_url'] ?? '' ) ?: null,
                 'gallery_ids' => isset( $data['gallery_ids'] ) ? array_map( 'intval', (array) $data['gallery_ids'] ) : [],
                 'created_by'  => (int) get_current_user_id(),
@@ -252,7 +254,7 @@ class ProductsController extends WP_REST_Controller {
             if ( isset( $data['price'] ) )       $product->price       = floatval( $data['price'] );
             if ( isset( $data['sale_price'] ) )  $product->sale_price  = ( $data['sale_price'] !== '' ) ? floatval( $data['sale_price'] ) : null;
             if ( isset( $data['sku'] ) )         $product->sku         = sanitize_text_field( $data['sku'] );
-            if ( isset( $data['stock_qty'] ) )   $product->stock_qty   = intval( $data['stock_qty'] );
+            if ( isset( $data['stock_qty'] ) )   $product->stock_qty   = max( 0, intval( $data['stock_qty'] ) );
             if ( isset( $data['image_url'] ) )   $product->image_url   = esc_url_raw( $data['image_url'] ) ?: null;
             if ( isset( $data['gallery_ids'] ) ) $product->gallery_ids = array_map( 'intval', (array) $data['gallery_ids'] );
             if ( isset( $data['upsell_ids'] ) )  $product->upsell_ids  = sanitize_text_field( $data['upsell_ids'] ) ?: null;
@@ -297,7 +299,7 @@ class ProductsController extends WP_REST_Controller {
         $updated_count = 0;
         foreach ( $data as $item ) {
             $id    = (int) ( $item['id'] ?? 0 );
-            $stock = (int) ( $item['stock'] ?? 0 );
+            $stock = max( 0, (int) ( $item['stock'] ?? 0 ) );
 
             if ( $id <= 0 ) continue;
 

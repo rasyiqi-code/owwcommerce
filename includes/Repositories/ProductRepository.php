@@ -155,8 +155,15 @@ class ProductRepository {
         global $wpdb;
         
         $sql = "SELECT p.* FROM {$this->table_name} p";
-        $where = ["p.status = 'publish'"];
+        $where = [];
         $params = [];
+
+        // Filter Status (Default: publish, 'any' untuk semua status)
+        $status = $filters['status'] ?? 'publish';
+        if ( $status !== 'any' ) {
+            $where[] = "p.status = %s";
+            $params[] = $status;
+        }
 
         // Filter Kategori (Slug)
         if ( ! empty( $filters['category'] ) ) {
@@ -286,10 +293,46 @@ class ProductRepository {
     }
 
     /**
-     * Menghitung total produk.
+     * Menghitung total produk berdasarkan filter (pencarian, kategori, status).
      */
-    public function count(): int {
+    public function count( array $filters = [] ): int {
         global $wpdb;
-        return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$this->table_name}" );
+        
+        $sql = "SELECT COUNT(DISTINCT p.id) FROM {$this->table_name} p";
+        $where = [];
+        $params = [];
+
+        // Filter Status
+        $status = $filters['status'] ?? 'publish';
+        if ( $status !== 'any' ) {
+            $where[] = "p.status = %s";
+            $params[] = $status;
+        }
+
+        // Filter Kategori (Slug)
+        if ( ! empty( $filters['category'] ) ) {
+            $table_rel = $wpdb->prefix . 'oww_product_category_rel';
+            $table_cat = $wpdb->prefix . 'oww_categories';
+            $sql .= " JOIN {$table_rel} rel ON p.id = rel.product_id";
+            $sql .= " JOIN {$table_cat} cat ON rel.category_id = cat.id";
+            $where[] = "cat.slug = %s";
+            $params[] = $filters['category'];
+        }
+
+        // Search Keyword
+        if ( ! empty( $filters['s'] ) ) {
+            $where[] = "p.title LIKE %s";
+            $params[] = '%' . $wpdb->esc_like( $filters['s'] ) . '%';
+        }
+
+        if ( ! empty( $where ) ) {
+            $sql .= " WHERE " . implode( " AND ", $where );
+        }
+
+        if ( ! empty( $params ) ) {
+            return (int) $wpdb->get_var( $wpdb->prepare( $sql, $params ) );
+        }
+
+        return (int) $wpdb->get_var( $sql );
     }
 }
