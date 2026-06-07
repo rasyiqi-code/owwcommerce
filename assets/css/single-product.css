@@ -1,0 +1,736 @@
+/* ==============================================================
+   HALAMAN DETAIL PRODUK (SINGLE PRODUCT PAGE)
+   Desain Compact & Company Standard
+   ============================================================== */
+
+/* Container Utama Detail Produk */
+.owwc-single-product {
+max-width: 1024px; /* Standar perusahaan: maksimal lebar 1024px */
+    margin: 0 auto;
+    padding: var(--owwc-space-lg) var(--owwc-space-md);
+}
+
+/* Navigasi Breadcrumb */
+.owwc-breadcrumb {
+font-size: 13px;
+    color: var(--owwc-text-muted);
+    margin-bottom: var(--owwc-space-lg);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.owwc-breadcrumb a {
+text-decoration: none;
+    color: inherit;
+    transition: var(--owwc-transition);
+}
+
+.owwc-breadcrumb a:hover {
+color: var(--owwc-primary);
+}
+
+.owwc-breadcrumb-sep {
+color: var(--owwc-text-light);
+}
+
+.owwc-breadcrumb-current {
+font-weight: 500;
+    color: var(--owwc-text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+/* Layout Grid Halaman Utama */
+.owwc-single-product-layout {
+display: grid;
+    grid-template-columns: 1.1fr 0.9fr; /* Keseimbangan kolom kiri & kanan */
+    gap: 40px;
+    align-items: start;
+    margin-bottom: var(--owwc-space-2xl);
+}
+
+/* Kolom Kiri: Gambar Produk */
+.owwc-single-product-image {
+position: sticky;
+    top: 24px;
+}
+
+.owwc-main-image-wrap {
+background: #fafafa;
+    border: 1px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-md);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--owwc-shadow-sm);
+    transition: var(--owwc-transition);
+}
+
+.owwc-main-image-wrap img {
+width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.owwc-main-image-wrap:hover img {
+transform: scale(1.02);
+}
+
+.owwc-image-placeholder {
+display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #fafafa;
+    color: var(--owwc-text-light);
+}
+
+/* Galeri Produk (Thumbnail) */
+.owwc-product-gallery {
+display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.owwc-gallery-thumb {
+width: 64px;
+    height: 64px;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--owwc-transition);
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+
+.owwc-gallery-thumb img {
+max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.owwc-gallery-thumb:hover {
+border-color: var(--owwc-border-hover);
+}
+
+.owwc-gallery-thumb.active {
+border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 2px var(--owwc-primary-ring);
+}
+
+/* Kolom Kanan: Ringkasan & Detail Produk */
+.owwc-single-product-summary {
+display: flex;
+    flex-direction: column;
+}
+
+.owwc-single-product-brand {
+font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--owwc-text-muted);
+    letter-spacing: 0.08em;
+    margin: 0 0 6px 0;
+}
+
+.owwc-single-product-title {
+font-size: 26px; /* Desain compact: dikurangi dari 32px ke 26px */
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    margin: 0 0 12px 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+/* Harga Produk dengan Garis Pembatas Bawah */
+.owwc-single-product-price {
+font-size: 22px;
+    font-weight: 700;
+    color: var(--owwc-primary);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--owwc-border); /* Company standard: harga diberi pembatas bawah tipis */
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.owwc-single-product-price del {
+font-size: 15px;
+    color: var(--owwc-text-light);
+    font-weight: 400;
+    text-decoration: line-through;
+}
+
+.owwc-single-product-price ins {
+text-decoration: none;
+}
+
+.owwc-single-product-description {
+font-size: 14px;
+    line-height: 1.6;
+    color: var(--owwc-text-secondary);
+    margin-bottom: 24px;
+}
+
+.owwc-single-product-description p {
+margin: 0 0 12px 0;
+}
+
+.owwc-single-product-description p:last-child {
+margin-bottom: 0;
+}
+
+/* Selektor Variasi */
+.owwc-variations-selection {
+margin-bottom: 24px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.owwc-variation-field {
+margin-bottom: 16px;
+}
+
+.owwc-variation-field:last-child {
+margin-bottom: 0;
+}
+
+.owwc-variation-label {
+display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+}
+
+.owwc-variation-options {
+display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Pills Variasi Berbentuk Tegas / Rounded-SM */
+.owwc-variation-pill {
+padding: 8px 16px;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm); /* rounded-sm (tegas) */
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--owwc-text-secondary);
+    cursor: pointer;
+    transition: var(--owwc-transition);
+    background: #fff;
+    user-select: none;
+}
+
+.owwc-variation-pill:hover {
+border-color: var(--owwc-primary);
+    color: var(--owwc-primary);
+}
+
+.owwc-variation-pill.active {
+border-color: var(--owwc-primary);
+    background: var(--owwc-primary-light);
+    color: var(--owwc-primary);
+    font-weight: 700;
+}
+
+/* Form Aksi Pembelian */
+.owwc-product-actions-wrap {
+padding-top: 20px;
+    border-top: 1px solid var(--owwc-border);
+}
+
+.owwc-add-to-cart-form {
+display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Menyejajarkan Kuantitas & Tombol Beli */
+.owwc-cart-action-group {
+display: flex;
+    gap: 12px;
+    align-items: center; /* Kuantitas sejajar dengan tombol beli */
+}
+
+/* Selektor Kuantitas */
+.owwc-qty-wrapper {
+display: flex;
+    align-items: center;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm); /* Sesuai dengan radius tegas */
+    height: 48px;
+    width: 120px;
+    overflow: hidden;
+    background: #fff;
+    flex-shrink: 0;
+    transition: var(--owwc-transition);
+}
+
+.owwc-qty-wrapper:focus-within {
+border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+}
+
+.owwc-qty-btn {
+width: 36px;
+    height: 100%;
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--owwc-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    outline: none;
+    user-select: none;
+}
+
+.owwc-qty-btn:hover {
+background: var(--owwc-bg);
+    color: var(--owwc-text-main);
+}
+
+.owwc-qty-btn:active {
+background: var(--owwc-border);
+}
+
+.owwc-qty-input {
+width: 48px;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    outline: none;
+    padding: 0;
+    background: transparent;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.owwc-qty-input::-webkit-outer-spin-button,
+.owwc-qty-input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+    margin: 0;
+}
+
+/* Tombol Tambah ke Keranjang / Aksi */
+.owwc-add-to-cart-btn {
+flex-grow: 1;
+    height: 48px;
+    padding: 0 24px;
+    border-radius: var(--owwc-radius-sm); /* Standar perusahaan */
+    background: var(--owwc-text-main);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--owwc-transition);
+}
+
+.owwc-add-to-cart-btn svg {
+flex-shrink: 0;
+}
+
+.owwc-add-to-cart-btn:hover:not(:disabled) {
+background: var(--owwc-primary);
+    box-shadow: var(--owwc-shadow-gold);
+}
+
+.owwc-add-to-cart-btn:disabled {
+background: var(--owwc-border);
+    color: var(--owwc-text-light);
+    cursor: not-allowed;
+}
+
+/* Kelompok Tombol Eksternal / Marketplace / WhatsApp */
+.owwc-external-buttons-group {
+display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.owwc-external-buttons-group .owwc-add-to-cart-btn {
+flex: 1;
+}
+
+/* Status Stok */
+.owwc-stock-status-wrap {
+margin-top: 16px;
+}
+
+.owwc-stock-status {
+display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.owwc-stock-status svg {
+flex-shrink: 0;
+}
+
+.owwc-stock-status--in-stock {
+color: var(--owwc-success);
+}
+
+.owwc-stock-status--out-stock {
+color: var(--owwc-danger);
+}
+
+/* ==============================================================
+   REVIEWS & RATINGS (2 KOLOM DESKTOP GRID)
+   ============================================================== */
+.owwc-reviews-section {
+margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--owwc-border);
+}
+
+.owwc-reviews-header {
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--owwc-border);
+}
+
+.owwc-reviews-title {
+font-size: 18px;
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    margin: 0;
+}
+
+.owwc-average-rating {
+display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.owwc-rating-stars {
+display: flex;
+    gap: 2px;
+}
+
+.owwc-star {
+color: #ffd700;
+    font-size: 16px;
+}
+
+.owwc-star.empty {
+color: var(--owwc-border);
+}
+
+#owwc-avg-num {
+font-size: 15px;
+    font-weight: 700;
+    color: var(--owwc-text-main);
+}
+
+/* Daftar Item Ulasan */
+.owwc-review-list {
+margin-bottom: 24px;
+}
+
+.owwc-review-item {
+padding: 16px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    gap: 16px;
+}
+
+.owwc-review-item:last-child {
+border-bottom: none;
+}
+
+.owwc-review-avatar {
+width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f3f4f6;
+    flex-shrink: 0;
+}
+
+.owwc-review-avatar img {
+width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.owwc-review-content {
+flex-grow: 1;
+}
+
+.owwc-review-meta {
+display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.owwc-review-author {
+font-weight: 600;
+    font-size: 14px;
+    color: var(--owwc-text-main);
+}
+
+.owwc-review-date {
+font-size: 12px;
+    color: var(--owwc-text-muted);
+    margin-bottom: 6px;
+}
+
+.owwc-review-comment {
+font-size: 13px;
+    line-height: 1.5;
+    color: var(--owwc-text-secondary);
+}
+
+/* Formulir Ulasan (Kolom Kanan) */
+.owwc-review-form-card {
+background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--owwc-radius-md);
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.01);
+    transition: var(--owwc-transition);
+}
+
+.owwc-review-form-card h3 {
+font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: var(--owwc-text-main);
+    letter-spacing: -0.01em;
+}
+
+.owwc-review-form-card .form-subtitle {
+font-size: 13px;
+    color: var(--owwc-text-muted);
+    margin: 0 0 24px 0;
+    line-height: 1.5;
+}
+
+.owwc-review-form-field {
+margin-bottom: 20px;
+}
+
+.owwc-review-form-field label {
+display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--owwc-text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+/* Pemilih Rating Bintang Modern */
+.owwc-rating-picker {
+display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.owwc-rating-picker input {
+display: none;
+}
+
+.owwc-rating-picker label {
+cursor: pointer;
+    font-size: 28px;
+    color: #e5e7eb;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s ease;
+    margin: 0;
+}
+
+.owwc-rating-picker label:hover {
+transform: scale(1.2);
+}
+
+.owwc-rating-picker label:hover,
+.owwc-rating-picker label:hover~label,
+.owwc-rating-picker input:checked~label {
+color: var(--owwc-primary);
+}
+
+/* Kolom Input & Textarea Premium */
+.owwc-review-form-card .owwc-admin-input {
+width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--owwc-text-main);
+    background: #fbfbfb;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.owwc-review-form-card .owwc-admin-input:focus {
+outline: none;
+    border-color: var(--owwc-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+}
+
+.owwc-review-form-card .owwc-admin-input::placeholder {
+color: #a0aec0;
+}
+
+/* Grid input form (Nama & Email) */
+.owwc-review-form-grid {
+display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.owwc-review-form-grid .owwc-review-form-field {
+margin-bottom: 0;
+}
+
+.owwc-review-submit-wrap {
+display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+/* Tombol Kirim Ulasan Premium */
+#owwc-submit-review.owwc-btn {
+background: var(--owwc-text-main);
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--owwc-radius-sm);
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.08);
+}
+
+#owwc-submit-review.owwc-btn:hover {
+background: var(--owwc-primary);
+    transform: translateY(-1.5px);
+    box-shadow: var(--owwc-shadow-gold);
+    color: #ffffff;
+}
+
+#owwc-submit-review.owwc-btn:active {
+transform: translateY(0);
+}
+
+#owwc-submit-review.owwc-btn:disabled {
+background: var(--owwc-border);
+    color: var(--owwc-text-light);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.owwc-review-msg {
+font-size: 13px;
+    font-weight: 500;
+}
+
+/* Sticky Mobile Action Bar */
+.owwc-mobile-action-bar {
+position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--owwc-border);
+    padding: 12px 20px;
+    display: none; /* Sembunyikan secara default di desktop */
+    z-index: 1000;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.owwc-mobile-price {
+display: flex;
+    flex-direction: column;
+}
+
+.owwc-mobile-price-label {
+font-size: 10px;
+    color: var(--owwc-text-muted);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.owwc-mobile-price-value {
+font-size: 16px;
+    font-weight: 700;
+    color: var(--owwc-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.owwc-mobile-price-value del {
+font-size: 12px;
+    color: var(--owwc-text-light);
+    font-weight: 400;
+    text-decoration: line-through;
+}
+
+.owwc-mobile-price-value ins {
+text-decoration: none;
+}
+
+.owwc-mobile-buy-btn {
+height: 40px;
+    padding: 0 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: var(--owwc-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+}

@@ -1,44 +1,51 @@
-/* === OwwCommerce Frontend Mobile Styles === */
+/* === OwwCommerce Frontend Mobile Overrides (max-width: 768px) === */
 
-/* === Frontend Global Mobile Patches === */
+/* === Mobile Styles for frontend === */
+/* Pindahan dari @media (max-width: 768px) */
 .owwc-page-wrapper {
-    padding: 0px 0;
-}
-
-.owwc-floating-cart-wrapper.bottom-right {
-    bottom: 20px;
-    right: 16px;
-}
-.owwc-floating-cart-wrapper.bottom-left {
-    bottom: 20px;
-    left: 16px;
-}
-.owwc-floating-cart-wrapper.top-right {
-    top: 20px;
-    right: 16px;
-}
-.owwc-floating-cart-wrapper.top-left {
-    top: 20px;
-    left: 16px;
-}
-
-.owwc-toast-container {
-    right: var(--owwc-space-md);
-    left: var(--owwc-space-md);
-}
-.owwc-toast {
-    max-width: 100%;
-}
+        padding: 0px 0;
+    }
 
 @media (max-width: 480px) {
-    .owwc-form-row {
+  .owwc-form-row {
         grid-template-columns: 1fr;
     }
 }
 
+/* Pindahan dari /* Mobile adjustment */
+@media (max-width: 768px) */
+.owwc-floating-cart-wrapper.bottom-right {
+        bottom: 20px;
+        right: 16px;
+    }
 
-/* === Pages Mobile Styles === */
+    .owwc-floating-cart-wrapper.bottom-left {
+        bottom: 20px;
+        left: 16px;
+    }
 
+    .owwc-floating-cart-wrapper.top-right {
+        top: 20px;
+        right: 16px;
+    }
+
+    .owwc-floating-cart-wrapper.top-left {
+        top: 20px;
+        left: 16px;
+    }
+
+    .owwc-toast-container {
+        right: var(--owwc-space-md);
+        left: var(--owwc-space-md);
+    }
+
+    .owwc-toast {
+        max-width: 100%;
+    }
+
+
+
+/* === Mobile Styles for pages === */
 @media (max-width: 640px) {
   .owwc-shop-filters {
         width: 100%;
@@ -50,7 +57,8 @@
         justify-content: center;
     }
 }
-/* Dari @media (max-width: 768px) */
+
+/* Pindahan dari @media (max-width: 768px) */
 .owwc-shop-container {
         padding: 0;
         /* Remove container padding to allow hero to be full-width */
@@ -76,6 +84,7 @@
     .owwc-shop-search-submit {
         padding: 0 20px;
     }
+
 /* Mobile: sembunyikan header tabel, ubah row jadi card */
 @media (max-width: 640px) {
   .owwc-table thead {
@@ -148,16 +157,19 @@
         width: 100%;
     }
 }
-/* Dari Checkout responsive: @media (max-width: 768px) */
-.owwc-checkout-grid {
-    grid-template-columns: 1fr;
-}
 
-.owwc-checkout-review {
-    order: -1;
-    position: static;
-}
-/* Dari @media (max-width: 768px) */
+/* Pindahan dari /* Checkout responsive */
+@media (max-width: 768px) */
+.owwc-checkout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .owwc-checkout-review {
+        order: -1;
+        position: static;
+    }
+
+/* Pindahan dari @media (max-width: 768px) */
 .owwc-checkout-login-prompt {
         flex-direction: column;
         text-align: center;
@@ -176,6 +188,7 @@
         width: 100%;
         box-sizing: border-box;
     }
+
 @media (max-width: 480px) {
   .owwc-login-card {
         border-radius: 0;
@@ -197,6 +210,7 @@
         display: block;
     }
 }
+
 @media (max-width: 640px) {
   .owwc-load-more-container {
         margin-top: 30px;
@@ -210,12 +224,15 @@
 }
 
 
-/* === Single Product Mobile Styles === */
 
-/* Dari RESPONSIVENESS (MOBILE FIRST REFINEMENTS): @media (max-width: 768px) */
+/* === Mobile Styles for product === */
+/* Pindahan dari /* ==============================================================
+   RESPONSIVENESS (MOBILE FIRST REFINEMENTS)
+   ============================================================== */
+@media (max-width: 768px) */
 .owwc-mobile-action-bar {
-    display: flex;
-}
+        display: flex;
+    }
 
     .owwc-single-product {
         padding-bottom: 80px; /* Beri ruang agar tidak tertutup sticky bar */
@@ -266,3 +283,4 @@
     .owwc-add-to-cart-btn {
         flex-grow: 1;
     }
+
