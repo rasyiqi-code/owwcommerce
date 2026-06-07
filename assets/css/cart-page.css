@@ -24,55 +24,55 @@ width: 100%;
 }
 
 .owwc-table th {
-background: var(--owwc-bg);
+    background: var(--owwc-bg);
     color: var(--owwc-text-muted);
     font-weight: 600;
     text-transform: uppercase;
     font-size: var(--owwc-font-size-xs);
     letter-spacing: 0.05em;
-    padding: var(--owwc-space-md);
+    padding: 10px var(--owwc-space-md);
     text-align: left;
     border-bottom: 2px solid var(--owwc-border);
 }
 
 .owwc-table td {
-    padding: 12px var(--owwc-space-md);
+    padding: 8px var(--owwc-space-md);
     border-bottom: 1px solid var(--owwc-border);
     vertical-align: middle;
     color: var(--owwc-text-main);
 }
 
 .owwc-table tr:last-child td {
-border-bottom: none;
+    border-bottom: none;
 }
 
 /* Kolom tabel */
 .owwc-cart-col-thumb {
-width: 64px;
+    width: 64px;
 }
 
 .owwc-cart-col-name {
-font-weight: 600;
+    font-weight: 600;
 }
 
 .owwc-cart-col-qty {
-text-align: center;
+    text-align: center;
 }
 
 .owwc-cart-col-subtotal {
-text-align: right;
+    text-align: right;
     font-weight: 600;
 }
 
 .owwc-cart-col-remove {
-text-align: center;
+    text-align: center;
     width: 50px;
 }
 
 /* Thumbnail placeholder */
 .owwc-cart-thumb {
-width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     background: var(--owwc-bg);
     border-radius: var(--owwc-radius-sm);
     display: flex;
@@ -121,9 +121,9 @@ border-color: var(--owwc-primary);
 }
 
 .owwc-cart-qty-btn {
-border: none;
+    border: none;
     background: transparent;
-    padding: 6px 12px;
+    padding: 4px 10px;
     cursor: pointer;
     font-weight: 600;
     color: var(--owwc-text-secondary);
@@ -131,16 +131,16 @@ border: none;
 }
 
 .owwc-cart-qty-btn:hover {
-background: var(--owwc-bg);
+    background: var(--owwc-bg);
     color: var(--owwc-text-main);
 }
 
 .owwc-cart-qty-input {
-width: 44px;
+    width: 44px;
     text-align: center;
     border: none;
     outline: none;
-    padding: 4px 0;
+    padding: 2px 0;
     font-size: var(--owwc-font-size-sm);
     font-weight: 600;
     color: var(--owwc-text-main);
