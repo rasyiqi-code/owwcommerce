@@ -5,6 +5,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('#owwc-attributes-table tbody');
     const cancelTermBtn = document.getElementById('cancel-term-mode');
 
+    // Helper untuk mencegah XSS
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return '';
+        return String(str).replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
     function fetchAttributes() {
         fetch(`${owwcSettings.restUrl}owwc/v1/attributes`, {
             headers: { 'X-WP-Nonce': owwcSettings.nonce }
@@ -15,42 +29,30 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    async function fetchTerms(attrId) {
-        const res = await fetch(`${owwcSettings.restUrl}owwc/v1/attributes/${attrId}/terms`, {
-            headers: { 'X-WP-Nonce': owwcSettings.nonce }
-        });
-        return await res.json();
-    }
-
     function renderTable(attributes) {
         if (!attributes || attributes.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px;">Belum ada atribut.</td></tr>';
             return;
         }
 
-        tableBody.innerHTML = attributes.map(a => `
-            <tr>
-                <td><strong>${a.name}</strong></td>
-                <td>${a.slug}</td>
-                <td id="terms-cell-${a.id}" class="owwc-terms-list">Memuat nilai...</td>
-                <td>
-                    <button class="owwc-admin-btn owwc-manage-terms" data-id="${a.id}" data-name="${a.name}" style="padding: 4px 8px; font-size: 11px;">
-                        <span class="dashicons dashicons-edit"></span> Kelola Nilai
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        tableBody.innerHTML = attributes.map(a => {
+            const termsHtml = (a.terms && a.terms.length > 0)
+                ? a.terms.map(t => `<span class="owwc-badge" style="background: #f3f4f6; color: #374151; margin-right: 5px; margin-bottom: 5px;">${escapeHTML(t.name)}</span>`).join('')
+                : '-';
 
-        // Fetch terms for each attribute to display in the list
-        attributes.forEach(async (a) => {
-            const terms = await fetchTerms(a.id);
-            const cell = document.getElementById(`terms-cell-${a.id}`);
-            if (terms && terms.length > 0) {
-                cell.innerHTML = terms.map(t => `<span class="owwc-badge" style="background: #f3f4f6; color: #374151; margin-right: 5px; margin-bottom: 5px;">${t.name}</span>`).join('');
-            } else {
-                cell.innerText = '-';
-            }
-        });
+            return `
+                <tr>
+                    <td><strong>${escapeHTML(a.name)}</strong></td>
+                    <td><code>${escapeHTML(a.slug)}</code></td>
+                    <td id="terms-cell-${a.id}" class="owwc-terms-list">${termsHtml}</td>
+                    <td>
+                        <button class="owwc-admin-btn owwc-manage-terms" data-id="${escapeHTML(a.id)}" data-name="${escapeHTML(a.name)}" style="padding: 4px 8px; font-size: 11px;">
+                            <span class="dashicons dashicons-edit"></span> Kelola Nilai
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
 
         // Attach events for manage terms
         document.querySelectorAll('.owwc-manage-terms').forEach(btn => {

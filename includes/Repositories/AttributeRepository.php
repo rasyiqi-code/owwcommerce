@@ -24,7 +24,20 @@ class AttributeRepository {
     public function get_all(): array {
         global $wpdb;
         $results = $wpdb->get_results( "SELECT * FROM {$this->table_attr} ORDER BY name ASC" );
-        return array_map( fn( $row ) => new Attribute( (array) $row ), $results );
+        $attributes = array_map( fn( $row ) => new Attribute( (array) $row ), $results );
+
+        if ( ! empty( $attributes ) ) {
+            $all_terms = $wpdb->get_results( "SELECT * FROM {$this->table_terms} ORDER BY name ASC", ARRAY_A );
+            $terms_by_attr = [];
+            foreach ( $all_terms as $t_row ) {
+                $terms_by_attr[ $t_row['attribute_id'] ][] = $t_row;
+            }
+            foreach ( $attributes as $a ) {
+                $a->terms = array_map( fn($t) => new AttributeTerm( $t ), $terms_by_attr[ $a->id ] ?? [] );
+            }
+        }
+
+        return $attributes;
     }
 
     /**
