@@ -279,6 +279,8 @@ font-size: 12px;
 /* Responsif Mobile: Grid 2 Kolom */
 @media (max-width: 768px) {
     .owwc-products-grid { grid-template-columns: repeat(2, 1fr); gap: var(--owwc-space-sm); }
+    .owwc-product-card-inner { padding: 0; }
+    .owwc-product-image { border-radius: 0; }
     .owwc-product-info { padding: var(--owwc-space-sm); }
     .owwc-product-title { font-size: 13px; margin-bottom: 4px; }
     .owwc-price-current { font-size: 13px; }
