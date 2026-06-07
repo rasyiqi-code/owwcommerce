@@ -20,11 +20,12 @@
    Override variabel ini di tema untuk kustomisasi tampilan.
    ============================================================== */
 :root {
-/* Warna utama — Gold */
-    --owwc-primary: #D4A843;
-    --owwc-primary-hover: #B8912E;
-    --owwc-primary-light: rgba(212, 168, 67, 0.10);
-    --owwc-primary-ring: rgba(212, 168, 67, 0.30);
+    /* Warna utama — otomatis mendeteksi warna tema WordPress dengan fallback ke Gold */
+    --owwc-primary-base: var(--wp--preset--color--primary, var(--ast-global-color-0, var(--color-primary, var(--primary-color, var(--theme-color, #D4A843)))));
+    --owwc-primary: var(--owwc-primary-base);
+    --owwc-primary-hover: color-mix(in srgb, var(--owwc-primary-base) 85%, black);
+    --owwc-primary-light: color-mix(in srgb, var(--owwc-primary-base) 10%, transparent);
+    --owwc-primary-ring: color-mix(in srgb, var(--owwc-primary-base) 30%, transparent);
 
     /* Warna semantik */
     --owwc-danger: #EF4444;
