@@ -68,15 +68,12 @@
     cursor: pointer;
     transition: background 0.15s;
 }
-
 .owwc-radio-option:hover {
     background: var(--owwc-primary-light);
 }
-
 .owwc-radio-option:last-child {
     border-bottom: none;
 }
-
 .owwc-radio-option label {
     display: flex;
     align-items: center;
@@ -86,14 +83,12 @@
     cursor: pointer;
     margin: 0;
 }
-
 .owwc-radio-option input[type="radio"] {
     width: 18px;
     height: 18px;
     accent-color: var(--owwc-primary);
     cursor: pointer;
 }
-
 .owwc-payment-box {
     margin-top: var(--owwc-space-sm);
     padding: var(--owwc-space-md);
@@ -104,25 +99,37 @@
     display: none;
     border-left: 3px solid var(--owwc-primary);
 }
-
 .owwc-summary-row {
     display: flex;
     justify-content: space-between;
-    padding: var(--owwc-space-sm) 0;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
     border-bottom: 1px solid var(--owwc-border);
     color: var(--owwc-text-secondary);
     font-size: var(--owwc-font-size-sm);
 }
-
+.owwc-summary-row span:first-child {
+    flex: 1;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.4;
+}
+.owwc-summary-row span:last-child {
+    white-space: nowrap;
+    text-align: right;
+    font-weight: 600;
+    color: var(--owwc-text-main);
+}
 .owwc-summary-total {
     display: flex;
     justify-content: space-between;
-    padding: var(--owwc-space-md) 0 0 0;
+    align-items: center;
+    padding: 16px 0 0 0;
     font-size: var(--owwc-font-size-xl);
-    font-weight: 700;
+    font-weight: 800;
     color: var(--owwc-text-main);
 }
-
 .owwc-checkout-error {
     color: var(--owwc-danger);
     font-size: var(--owwc-font-size-sm);
@@ -131,7 +138,6 @@
     background: var(--owwc-danger-light);
     border-radius: var(--owwc-radius-sm);
 }
-
 /* Checkout Login Prompt */
 .owwc-checkout-login-prompt {
     background: #fff;
@@ -146,13 +152,11 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
     animation: slideDown 0.5s ease-out;
 }
-
 .owwc-clp-content {
     display: flex;
     align-items: center;
     gap: 15px;
 }
-
 .owwc-clp-icon {
     width: 44px;
     height: 44px;
@@ -164,20 +168,17 @@
     color: #D4A843;
     flex-shrink: 0;
 }
-
 .owwc-clp-text h4 {
     margin: 0 0 4px;
     font-size: 15px;
     font-weight: 700;
     color: #111;
 }
-
 .owwc-clp-text p {
     margin: 0;
     font-size: 13px;
     color: #666;
 }
-
 .owwc-clp-actions {
     display: flex;
     gap: 10px;
@@ -197,7 +198,6 @@
     border: none;
     text-align: center;
 }
-
 .owwc-clp-btn--login {
     background: #111;
     color: #fff;

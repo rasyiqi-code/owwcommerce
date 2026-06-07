@@ -249,50 +249,51 @@ position: absolute;
 }
 
 .owwc-cart-icon-link:hover .owwc-cart-badge {
-transform: scale(1.1);
+    transform: scale(1.1);
 }
-
 /* Cart Skeleton Loader */
 .owwc-skeleton-cart-row {
-height: 80px;
+    height: 80px;
     margin-bottom: 12px;
 }
 
-@keyframes owwc-spin {
-to {
-        transform: rotate(360deg);
-    }
+/* --- Coupon Section --- */
+.owwc-coupon-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dotted var(--owwc-border);
 }
-
-/* Navigasi Breadcrumb */
-.owwc-breadcrumb {
-font-size: 13px;
-    color: var(--owwc-text-muted);
-    margin-bottom: var(--owwc-space-lg);
+.owwc-coupon-controls {
     display: flex;
+    gap: 8px;
     align-items: center;
-    gap: 6px;
 }
-
-.owwc-breadcrumb a {
-text-decoration: none;
-    color: inherit;
+.owwc-coupon-input {
+    margin-bottom: 0 !important;
+    flex: 1;
+    height: 40px;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+.owwc-coupon-btn {
+    height: 40px;
+    padding: 0 16px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+    background: #111;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
     transition: var(--owwc-transition);
 }
-
-.owwc-breadcrumb a:hover {
-color: var(--owwc-primary);
+.owwc-coupon-btn:hover {
+    background: var(--owwc-primary);
+}
+.owwc-coupon-msg {
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
 }
 
-.owwc-breadcrumb-sep {
-color: var(--owwc-text-light);
-}
 
-.owwc-breadcrumb-current {
-font-weight: 500;
-    color: var(--owwc-text-main);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 250px;
-}

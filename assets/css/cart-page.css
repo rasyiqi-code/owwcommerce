@@ -256,30 +256,3 @@ display: flex;
     gap: 12px;
     align-items: center; /* Kuantitas sejajar dengan tombol beli */
 }
-
-/* --- Coupon Section --- */
-.owwc-coupon-section {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px dotted #ccc;
-}
-
-.owwc-coupon-controls {
-    display: flex;
-    gap: 8px;
-}
-
-.owwc-coupon-input {
-    margin-bottom: 0 !important;
-}
-
-.owwc-coupon-btn {
-    padding: 10px 15px !important;
-    font-size: 13px !important;
-}
-
-.owwc-coupon-msg {
-    font-size: 12px;
-    margin-top: 5px;
-    display: none;
-}
