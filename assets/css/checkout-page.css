@@ -7,6 +7,11 @@
     margin: 0 auto;
     padding: var(--owwc-space-lg) var(--owwc-space-md);
 }
+/* Menengahkan judul halaman checkout dan subjudulnya */
+.owwc-checkout-container .owwc-section-title,
+.owwc-checkout-container .owwc-section-subtitle {
+    text-align: center;
+}
 .owwc-checkout-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -17,14 +22,12 @@
     min-width: 0;
 }
 .owwc-checkout-review {
-
     background: var(--owwc-surface);
     border: 1px solid var(--owwc-border);
     border-radius: var(--owwc-radius-md);
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 }
-
 .owwc-checkout-review h3 {
     margin-top: 0;
     margin-bottom: 20px;
@@ -184,7 +187,6 @@
     gap: 10px;
     width: 100%;
 }
-
 .owwc-clp-btn {
     flex: 1;
     padding: 10px 16px;
@@ -273,7 +275,6 @@
     margin-top: 20px;
 }
 @media (min-width: 769px) {
-
     .owwc-checkout-grid {
         grid-template-columns: 1fr 380px;
         gap: var(--owwc-space-2xl);

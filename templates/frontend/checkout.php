@@ -50,14 +50,6 @@ if ( $user_id ) {
 
 <div class="owwc-checkout-container">
 
-    <!-- Breadcrumb navigasi -->
-    <nav class="owwc-breadcrumb" aria-label="Breadcrumb">
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Beranda</a>
-        <span class="owwc-breadcrumb-sep">›</span>
-        <a href="<?php echo esc_url( $cart_url ); ?>">Keranjang</a>
-        <span class="owwc-breadcrumb-sep">›</span>
-        <span class="owwc-breadcrumb-current">Checkout</span>
-    </nav>
 
     <?php if ( ! is_user_logged_in() ) : ?>
         <div class="owwc-checkout-login-prompt" id="owwc-login-prompt">
