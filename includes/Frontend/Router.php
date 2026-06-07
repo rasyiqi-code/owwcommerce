@@ -16,7 +16,7 @@ class Router {
         // Register action & filters
         add_action('init', [$this, 'add_rewrite_rules']);
         add_filter('query_vars', [$this, 'add_query_vars']);
-        add_filter('template_include', [$this, 'load_custom_template']);
+        add_filter('template_include', [$this, 'load_custom_template'], 9999);
 
         // Auto-flush rewrite rules if product base changed or requested via URL
         add_action('init', [$this, 'maybe_flush_rules'], 20);

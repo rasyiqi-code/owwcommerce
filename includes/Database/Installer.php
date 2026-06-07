@@ -206,7 +206,167 @@ class Installer {
         dbDelta( $sql_variations );
         dbDelta( $sql_reviews );
 
+        self::insert_default_data();
+
         update_option( 'owwcommerce_db_version', OWWCOMMERCE_VERSION );
         flush_rewrite_rules();
     }
+
+    /**
+     * Memasukkan data produk, ulasan, kupon, kategori, dan variasi contoh
+     * untuk kebutuhan demo instan bagi pengguna.
+     */
+    private static function insert_default_data() {
+        global $wpdb;
+
+        $table_products        = $wpdb->prefix . 'oww_products';
+        $table_categories      = $wpdb->prefix . 'oww_categories';
+        $table_prod_cat_rel    = $wpdb->prefix . 'oww_product_category_rel';
+        $table_coupons         = $wpdb->prefix . 'oww_coupons';
+        $table_attributes      = $wpdb->prefix . 'oww_attributes';
+        $table_attribute_terms = $wpdb->prefix . 'oww_attribute_terms';
+        $table_variations      = $wpdb->prefix . 'oww_product_variations';
+        $table_reviews         = $wpdb->prefix . 'oww_reviews';
+
+        // 1. Cek apakah produk sudah ada di database
+        $count = $wpdb->get_var( "SELECT COUNT(*) FROM $table_products" );
+        if ( $count > 0 ) {
+            return; // Data contoh sudah ada atau pengguna sudah memiliki produk
+        }
+
+        // 2. Tambah Kategori Contoh
+        $categories = [
+            [ 'name' => 'Buku', 'slug' => 'buku', 'description' => 'Koleksi buku bisnis, panduan, dan literatur berkualitas.' ],
+            [ 'name' => 'Elektronik', 'slug' => 'elektronik', 'description' => 'Perangkat audio, aksesoris, dan gawai pendukung kerja.' ],
+            [ 'name' => 'Pakaian', 'slug' => 'pakaian', 'description' => 'Busana kaos premium, jaket, dan pakaian harian adem.' ],
+        ];
+        $cat_ids = [];
+        foreach ( $categories as $cat ) {
+            $wpdb->insert( $table_categories, $cat );
+            $cat_ids[ $cat['slug'] ] = $wpdb->insert_id;
+        }
+
+        // 3. Tambah Atribut & Terms (untuk variasi Pakaian)
+        $wpdb->insert( $table_attributes, [ 'name' => 'Ukuran', 'slug' => 'ukuran' ] );
+        $attr_id = $wpdb->insert_id;
+
+        $terms = [
+            [ 'attribute_id' => $attr_id, 'name' => 'M', 'slug' => 'm' ],
+            [ 'attribute_id' => $attr_id, 'name' => 'L', 'slug' => 'l' ],
+        ];
+        foreach ( $terms as $term ) {
+            $wpdb->insert( $table_attribute_terms, $term );
+        }
+
+        // 4. Tambah Produk 1: Buku (Simple Product)
+        $wpdb->insert( $table_products, [
+            'title'        => 'Panduan Sukses Bisnis Online',
+            'slug'         => 'panduan-sukses-bisnis-online',
+            'description'  => 'Buku panduan lengkap cara memulai dan mengembangkan bisnis online dari nol untuk pemula. Ditulis oleh praktisi bisnis berpengalaman dengan ulasan langkah demi langkah yang sangat praktis dan taktis.',
+            'type'         => 'simple',
+            'status'       => 'publish',
+            'price'        => 150000.00,
+            'sale_price'   => 99000.00,
+            'sku'          => 'BUKU-001',
+            'stock_qty'    => 25,
+            'image_url'    => 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=600',
+            'sales_count'  => 12, // Memicu status badge "TERLARIS"
+        ] );
+        $prod1_id = $wpdb->insert_id;
+        if ( isset( $cat_ids['buku'] ) ) {
+            $wpdb->insert( $table_prod_cat_rel, [ 'product_id' => $prod1_id, 'category_id' => $cat_ids['buku'] ] );
+        }
+
+        // Tambah Ulasan Awal untuk Produk 1
+        $wpdb->insert( $table_reviews, [
+            'product_id'   => $prod1_id,
+            'rating'       => 5,
+            'comment'      => 'Sangat bermanfaat! Penjelasannya mudah dipahami bagi pemula seperti saya yang baru mau belajar jualan.',
+            'author_name'  => 'Budi Santoso',
+            'author_email' => 'budi@example.com',
+            'status'       => 'approved',
+        ] );
+        $wpdb->insert( $table_reviews, [
+            'product_id'   => $prod1_id,
+            'rating'       => 4,
+            'comment'      => 'Buku yang sangat bagus. Ilustrasinya menarik dan pengiriman bukunya cepat sekali.',
+            'author_name'  => 'Siti Aminah',
+            'author_email' => 'siti@example.com',
+            'status'       => 'approved',
+        ] );
+
+        // 5. Tambah Produk 2: Pakaian (Variable Product)
+        $wpdb->insert( $table_products, [
+            'title'        => 'Kaos Premium OwwCommerce',
+            'slug'         => 'kaos-premium-owwcommerce',
+            'description'  => 'Kaos katun bambu super adem dengan sablon logo premium OwwCommerce. Sangat nyaman dipakai harian dan memiliki jahitan rapi kualitas distro.',
+            'type'         => 'variable',
+            'status'       => 'publish',
+            'price'        => 125000.00,
+            'sale_price'   => null,
+            'sku'          => 'KAOS-001',
+            'stock_qty'    => 35,
+            'image_url'    => 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=600',
+        ] );
+        $prod2_id = $wpdb->insert_id;
+        if ( isset( $cat_ids['pakaian'] ) ) {
+            $wpdb->insert( $table_prod_cat_rel, [ 'product_id' => $prod2_id, 'category_id' => $cat_ids['pakaian'] ] );
+        }
+
+        // Hubungkan variasi produk
+        $wpdb->insert( $table_variations, [
+            'product_id' => $prod2_id,
+            'sku'        => 'KAOS-001-M',
+            'price'      => 120000.00,
+            'sale_price' => null,
+            'stock_qty'  => 15,
+            'attributes' => json_encode( [ (string)$attr_id => 'M' ] ),
+        ] );
+        $wpdb->insert( $table_variations, [
+            'product_id' => $prod2_id,
+            'sku'        => 'KAOS-001-L',
+            'price'      => 125000.00,
+            'sale_price' => null,
+            'stock_qty'  => 20,
+            'attributes' => json_encode( [ (string)$attr_id => 'L' ] ),
+        ] );
+
+        // 6. Tambah Produk 3: Elektronik (Simple Product - Checkout Eksternal/WA)
+        $wpdb->insert( $table_products, [
+            'title'        => 'Earphone Bass Booster',
+            'slug'         => 'earphone-bass-booster',
+            'description'  => 'Earphone kabel dengan teknologi super bass dan audio jernih maksimal. Sangat cocok untuk mendengarkan musik stereo, bermain gim, dan video call meeting harian.',
+            'type'         => 'simple',
+            'status'       => 'publish',
+            'price'        => 75000.00,
+            'sale_price'   => 59000.00,
+            'sku'          => 'EAR-001',
+            'stock_qty'    => 50,
+            'image_url'    => 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=80&w=600',
+            'checkout_url' => 'https://shopee.co.id',
+            'whatsapp_url' => '628123456789',
+        ] );
+        $prod3_id = $wpdb->insert_id;
+        if ( isset( $cat_ids['elektronik'] ) ) {
+            $wpdb->insert( $table_prod_cat_rel, [ 'product_id' => $prod3_id, 'category_id' => $cat_ids['elektronik'] ] );
+        }
+
+        // 7. Tambah Kupon Contoh
+        $wpdb->insert( $table_coupons, [
+            'code'        => 'DISKON10',
+            'type'        => 'percent',
+            'amount'      => 10.00,
+            'description' => 'Kupon diskon 10% untuk semua jenis pesanan tanpa minimum belanja.',
+        ] );
+        $wpdb->insert( $table_coupons, [
+            'code'        => 'DISKON50K',
+            'type'        => 'fixed',
+            'amount'      => 50000.00,
+            'description' => 'Potongan harga langsung senilai Rp 50.000.',
+        ] );
+
+        // Set opsi flag agar data demo tidak di-impor ulang di masa mendatang
+        update_option( 'owwc_demo_data_imported', 1 );
+    }
 }
+

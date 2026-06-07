@@ -17,6 +17,18 @@ class Menu {
     }
 
     public function register_settings() {
+        // Auto-load data demo jika tabel produk kosong dan belum pernah di-load sebelumnya
+        global $wpdb;
+        $table_products = $wpdb->prefix . 'oww_products';
+        if ( ! get_option( 'owwc_demo_data_imported' ) ) {
+            if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_products ) ) ) {
+                $count = $wpdb->get_var( "SELECT COUNT(*) FROM {$table_products}" );
+                if ( 0 === (int) $count ) {
+                    \OwwCommerce\Database\Installer::install();
+                }
+            }
+        }
+
         register_setting( 'owwc_settings_group', 'owwc_floating_cart_style', [
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
