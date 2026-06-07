@@ -1,19 +1,10 @@
 /*
- * OwwCommerce Frontend — Design System & Komponen Umum
+ * OwwCommerce Frontend — Design System & Komponen Umum (Base)
  * 
  * Tema: Hitam & Gold (Dark Mode Premium)
- * 
  * Menggunakan CSS Variables agar mudah di-override oleh tema WordPress.
- * Tema cukup re-deklarasi variabel di :root untuk mengubah tampilan.
- * 
- * Contoh override di tema:
- *   :root { --owwc-primary: #E11D48; }
  */
 
-/* ==============================================================
-   DESIGN TOKENS (CSS Variables)
-   Override variabel ini di tema untuk kustomisasi tampilan.
-   ============================================================== */
 :root {
     /* Warna utama — Gold */
     --owwc-primary: #D4A843;
@@ -100,12 +91,6 @@ body.owwc-page {
     padding: 0;
 }
 
-@media (max-width: 768px) {
-    .owwc-page-wrapper {
-        padding: 0px 0;
-    }
-}
-
 /* ==============================================================
    BUTTONS
    ============================================================== */
@@ -113,7 +98,6 @@ body.owwc-page {
 .owwc-add-to-cart-btn {
     appearance: none;
     background: var(--owwc-primary);
-    /* Teks putih di atas background gold untuk kontras */
     color: #fff;
     border: none;
     border-radius: var(--owwc-radius-sm);
@@ -214,17 +198,11 @@ body.owwc-page {
     font-size: var(--owwc-font-size-sm);
 }
 
-/* Form row (2 kolom berdampingan) */
+/* Form row (2 kolom berdampingan secara default) */
 .owwc-form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--owwc-space-md);
-}
-
-@media (max-width: 480px) {
-    .owwc-form-row {
-        grid-template-columns: 1fr;
-    }
 }
 
 /* ==============================================================
@@ -242,7 +220,6 @@ body.owwc-page {
 }
 
 .owwc-toast {
-    /* Surface terang + blur untuk toast */
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -279,7 +256,6 @@ body.owwc-page {
    LOADING SKELETON
    ============================================================== */
 .owwc-skeleton {
-    /* Skeleton loading shimmer untuk light mode */
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: owwc-shimmer 1.5s ease-in-out infinite;
@@ -313,7 +289,6 @@ body.owwc-page {
     0% {
         background-position: 200% 0;
     }
-
     100% {
         background-position: -200% 0;
     }
@@ -450,38 +425,6 @@ body.owwc-page {
     font-size: 15px;
     font-weight: 600;
     color: var(--owwc-text-main);
-}
-
-/* Mobile adjustment */
-@media (max-width: 768px) {
-    .owwc-floating-cart-wrapper.bottom-right {
-        bottom: 20px;
-        right: 16px;
-    }
-
-    .owwc-floating-cart-wrapper.bottom-left {
-        bottom: 20px;
-        left: 16px;
-    }
-
-    .owwc-floating-cart-wrapper.top-right {
-        top: 20px;
-        right: 16px;
-    }
-
-    .owwc-floating-cart-wrapper.top-left {
-        top: 20px;
-        left: 16px;
-    }
-
-    .owwc-toast-container {
-        right: var(--owwc-space-md);
-        left: var(--owwc-space-md);
-    }
-
-    .owwc-toast {
-        max-width: 100%;
-    }
 }
 
 /* ==============================================================

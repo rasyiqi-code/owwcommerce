@@ -223,22 +223,28 @@ class Plugin {
                     return $classes;
                 } );
 
+                // Enqueue Desktop CSS jika layar desktop (min-width: 769px)
                 wp_enqueue_style(
-                    'owwc-frontend-pages',
-                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend-pages.css',
+                    'owwc-frontend-desktop',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend-desktop.css',
                     ['owwc-frontend-style'],
-                    OWWCOMMERCE_VERSION
+                    OWWCOMMERCE_VERSION,
+                    'screen and (min-width: 769px)'
+                );
+
+                // Enqueue Mobile CSS jika layar mobile (max-width: 768px)
+                wp_enqueue_style(
+                    'owwc-frontend-mobile',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend-mobile.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION,
+                    'screen and (max-width: 768px)'
                 );
             }
 
             // Cek khusus untuk single product (halaman detail produk virtual)
             if ( get_query_var( 'owwc_product_slug' ) ) {
-                wp_enqueue_style(
-                    'owwc-single-product',
-                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/single-product.css',
-                    ['owwc-frontend-pages'],
-                    OWWCOMMERCE_VERSION
-                );
+                // Style sudah digabung secara modular ke dalam frontend-desktop.css dan frontend-mobile.css
 
                 wp_enqueue_script(
                     'owwc-single-product-app',
