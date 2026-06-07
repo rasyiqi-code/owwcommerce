@@ -21,7 +21,7 @@
    ============================================================== */
 :root {
     /* Warna utama — otomatis mendeteksi warna tema WordPress dengan fallback ke Gold */
-    --owwc-primary-base: var(--wp--preset--color--primary, var(--ast-global-color-0, var(--color-primary, var(--primary-color, var(--theme-color, #D4A843)))));
+    --owwc-primary-base: var(--brand-red, var(--wp--preset--color--primary, var(--ast-global-color-0, var(--color-primary, var(--primary-color, var(--theme-color, #D4A843))))));
     --owwc-primary: var(--owwc-primary-base);
     --owwc-primary-hover: color-mix(in srgb, var(--owwc-primary-base) 85%, black);
     --owwc-primary-light: color-mix(in srgb, var(--owwc-primary-base) 10%, transparent);
