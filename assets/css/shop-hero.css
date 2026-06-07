@@ -155,3 +155,19 @@ background: #c61111;
 background: #a00d0d;
     transform: scale(1.02);
 }
+
+/* Optimasi Responsif Mobile untuk Hero Banner Full-Width */
+@media (max-width: 768px) {
+    .owwc-shop-hero {
+        margin: -20px -20px 40px -20px;
+        border-radius: 0;
+        padding: 40px 16px 60px;
+    }
+    .owwc-hero-title {
+        font-size: 2.2rem;
+        letter-spacing: -1px;
+    }
+    .owwc-hero-subtitle {
+        font-size: 0.95rem;
+    }
+}
