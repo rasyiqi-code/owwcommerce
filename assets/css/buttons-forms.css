@@ -68,12 +68,12 @@ width: 100%;
    ============================================================== */
 .owwc-input,
 .owwc-select {
-width: 100%;
-    padding: 12px var(--owwc-space-md);
+    width: 100%;
+    padding: 10px 14px;
     border: 1.5px solid var(--owwc-border);
     border-radius: var(--owwc-radius-sm);
     background: var(--owwc-surface);
-    font-size: var(--owwc-font-size-base);
+    font-size: var(--owwc-font-size-sm);
     color: var(--owwc-text-main);
     transition: border-color 0.2s, box-shadow 0.2s;
     outline: none;
@@ -82,30 +82,18 @@ width: 100%;
 
 .owwc-input:focus,
 .owwc-select:focus {
-border-color: var(--owwc-primary);
+    border-color: var(--owwc-primary);
     box-shadow: 0 0 0 3px var(--owwc-primary-ring);
     background: var(--owwc-surface);
 }
 
 .owwc-select {
-appearance: none;
+    appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
     padding-right: 40px;
-}
-
-.owwc-form-group {
-margin-bottom: var(--owwc-space-lg);
-}
-
-.owwc-form-group label {
-display: block;
-    margin-bottom: var(--owwc-space-sm);
-    font-weight: 600;
-    color: var(--owwc-text-main);
-    font-size: var(--owwc-font-size-sm);
 }
 
 /* Form row (mobile: 1 kolom, desktop: 2 kolom) */
@@ -127,14 +115,15 @@ display: block;
 }
 
 .owwc-form-group {
-    margin-bottom: 15px;
+    margin-bottom: 14px;
 }
 
 .owwc-form-group label {
-display: block;
+    display: block;
     font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--owwc-text-main);
+    margin-bottom: 6px;
 }
 
 .owwc-btn {
