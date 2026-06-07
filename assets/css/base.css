@@ -97,6 +97,7 @@ box-sizing: border-box;
     padding: 0 0 var(--owwc-space-2xl) 0;
     background-color: var(--owwc-surface);
     min-height: 60vh;
+    overflow-x: hidden;
 }
 
 .owwc-container {
