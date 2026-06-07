@@ -23,8 +23,12 @@ width: 100%;
     margin-bottom: var(--owwc-space-xl);
 }
 
+.owwc-table tr {
+    background: #ffffff !important;
+}
+
 .owwc-table th {
-    background: transparent;
+    background: #ffffff !important;
     color: var(--owwc-text-muted);
     font-weight: 600;
     text-transform: uppercase;
@@ -40,6 +44,7 @@ width: 100%;
     border-bottom: 1px solid var(--owwc-border);
     vertical-align: middle;
     color: var(--owwc-text-main);
+    background: #ffffff !important;
 }
 
 .owwc-table tr:last-child td {
