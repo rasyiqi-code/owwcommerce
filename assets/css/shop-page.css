@@ -20,6 +20,14 @@
     }
 }
 
+.owwc-load-more-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: var(--owwc-space-2xl) 0 var(--owwc-space-xl) 0;
+    width: 100%;
+}
+
 .owwc-load-more-btn {
     appearance: none;
     -webkit-appearance: none;
