@@ -121,6 +121,15 @@ class CategoryRepository {
         $rel_table = $wpdb->prefix . 'oww_product_category_rel';
         $wpdb->delete( $rel_table, [ 'category_id' => $id ], [ '%d' ] );
 
+        // Ubah parent_id kategori anak menjadi 0 agar tidak yatim (orphaned)
+        $wpdb->update(
+            $this->table,
+            [ 'parent_id' => 0 ],
+            [ 'parent_id' => $id ],
+            [ '%d' ],
+            [ '%d' ]
+        );
+
         $deleted = $wpdb->delete(
             $this->table,
             [ 'id' => $id ],

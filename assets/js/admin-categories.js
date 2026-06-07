@@ -6,6 +6,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!tableBody || typeof owwcSettings === 'undefined') return;
 
+    // Helper untuk mencegah XSS
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return '';
+        return String(str).replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
     // Load Categories
     function loadCategories() {
         tableBody.innerHTML = '<tr><td colspan="4">Memuat data...</td></tr>';
@@ -38,11 +52,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                    <td><strong>${cat.name}</strong></td>
-                    <td>${cat.description || '-'}</td>
-                    <td><code>${cat.slug}</code></td>
+                    <td><strong>${escapeHTML(cat.name)}</strong></td>
+                    <td>${escapeHTML(cat.description) || '-'}</td>
+                    <td><code>${escapeHTML(cat.slug)}</code></td>
                     <td style="text-align: right;">
-                        <button class="owwc-admin-btn owwc-admin-btn-danger owwc-btn-delete" data-id="${cat.id}" style="padding: 6px 12px; font-size: 12px;">Hapus</button>
+                        <button class="owwc-admin-btn owwc-admin-btn-danger owwc-btn-delete" data-id="${escapeHTML(cat.id)}" style="padding: 6px 12px; font-size: 12px;">Hapus</button>
                     </td>
                 </tr>`;
                     tableBody.appendChild(tr);
