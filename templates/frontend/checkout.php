@@ -224,12 +224,6 @@ if ( $user_id ) {
 
                 <!-- Honeypot anti-spam -->
                 <input type="hidden" name="owwc_anti_spam" value="">
-
-                <button type="submit" id="owwc-place-order" class="owwc-btn owwc-btn--block">
-                    Buat Pesanan
-                </button>
-
-                <div id="owwc-checkout-error" class="owwc-checkout-error owwc-checkout-error-message"></div>
             </form>
         </div>
 
@@ -252,7 +246,14 @@ if ( $user_id ) {
                 <div class="owwc-skeleton owwc-skeleton--text-sm"></div>
                 <div class="owwc-skeleton owwc-skeleton--text"></div>
             </div>
+
+            <div id="owwc-checkout-error" class="owwc-checkout-error owwc-checkout-error-message"></div>
+
+            <button type="submit" form="owwc-checkout-form-main" id="owwc-place-order" class="owwc-btn owwc-btn--block owwc-place-order-btn">
+                Buat Pesanan
+            </button>
         </div>
+
 
     </div>
 </div>

@@ -113,6 +113,7 @@ display: block;
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--owwc-space-md);
+    margin-bottom: var(--owwc-space-md);
 }
 
 @media (min-width: 769px) {
@@ -121,9 +122,12 @@ display: block;
     }
 }
 
+.owwc-form-row .owwc-form-group {
+    margin-bottom: 0;
+}
 
 .owwc-form-group {
-margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .owwc-form-group label {

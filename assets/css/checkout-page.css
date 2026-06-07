@@ -1,5 +1,4 @@
 /* === OwwCommerce Frontend Modul: Checkout Page === */
-
 /* ==============================================================
    CHECKOUT PAGE
    ============================================================== */
@@ -8,7 +7,6 @@
     margin: 0 auto;
     padding: var(--owwc-space-lg) var(--owwc-space-md);
 }
-
 .owwc-checkout-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -271,7 +269,11 @@
     font-size: 12px;
     color: #888;
 }
+.owwc-place-order-btn {
+    margin-top: 20px;
+}
 @media (min-width: 769px) {
+
     .owwc-checkout-grid {
         grid-template-columns: 1fr 380px;
         gap: var(--owwc-space-2xl);
