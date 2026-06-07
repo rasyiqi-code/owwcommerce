@@ -1,0 +1,157 @@
+/* === OwwCommerce Frontend Modul: Shop Hero === */
+
+.owwc-shop-search-icon {
+display: flex;
+    align-items: center;
+    color: var(--owwc-text-light);
+    flex-shrink: 0;
+}
+
+.owwc-shop-search-input {
+flex: 1;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 10px 12px !important;
+    font-size: 14px !important;
+    height: 44px !important;
+    color: var(--owwc-text-main) !important;
+}
+
+.owwc-shop-search-btn {
+background: var(--owwc-text-main) !important;
+    color: #fff !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: 4px;
+}
+
+.owwc-shop-search-btn:hover {
+background: var(--owwc-primary) !important;
+    transform: scale(1.05);
+}
+
+.owwc-shop-search-btn svg {
+width: 18px;
+    height: 18px;
+}
+
+/* ==============================================================
+   SHOP PAGE — Hero & Header
+   ============================================================== */
+
+.owwc-shop-hero {
+position: relative;
+    background: linear-gradient(135deg, #26a69a 0%, #009688 100%);
+    /* Teal gradient */
+    padding: 60px 20px 80px;
+    border-radius: var(--owwc-radius-md);
+    margin-bottom: 40px;
+    overflow: visible;
+    /* FIXED: allow search bar to overflow */
+    text-align: center;
+    color: #fff;
+}
+
+/* Background blobs to mimic the reference */
+.owwc-shop-hero::before,
+.owwc-shop-hero::after {
+content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    /* Ensure blobs don't interfere with clicks */
+}
+
+.owwc-shop-hero::before {
+top: -100px;
+    left: -100px;
+}
+
+.owwc-shop-hero::after {
+bottom: -100px;
+    right: -100px;
+}
+
+.owwc-shop-hero-content {
+position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.owwc-hero-title {
+font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -1.5px;
+}
+
+.owwc-hero-subtitle {
+font-size: 1rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Floating Search Bar */
+.owwc-shop-search-floating {
+position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    width: 90%;
+    max-width: 700px;
+    z-index: 20;
+    /* Increased to ensure it's above everything */
+}
+
+.owwc-shop-search-form {
+background: #fff;
+    padding: 6px;
+    border-radius: var(--owwc-radius-full);
+    display: flex;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.owwc-shop-search-input-new {
+flex: 1;
+    border: none !important;
+    background: transparent !important;
+    padding: 10px 20px !important;
+    font-size: 15px !important;
+    color: var(--owwc-text-main) !important;
+}
+
+.owwc-shop-search-input-new:focus {
+outline: none !important;
+    box-shadow: none !important;
+}
+
+.owwc-shop-search-submit {
+background: #c61111;
+    /* Red button like reference */
+    color: #fff;
+    border: none;
+    border-radius: var(--owwc-radius-full);
+    padding: 0 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--owwc-transition);
+}
+
+.owwc-shop-search-submit:hover {
+background: #a00d0d;
+    transform: scale(1.02);
+}

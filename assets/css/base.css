@@ -1,0 +1,139 @@
+/* === OwwCommerce Frontend Modul: Base === */
+
+/*
+ * OwwCommerce Frontend — Design System & Komponen Umum
+ * 
+ * Tema: Hitam & Gold (Dark Mode Premium)
+ * 
+ * Menggunakan CSS Variables agar mudah di-override oleh tema WordPress.
+ * Tema cukup re-deklarasi variabel di :root untuk mengubah tampilan.
+ * 
+ * Contoh override di tema:
+ *   :root {
+--owwc-primary: #E11D48;
+}
+
+*/
+
+/* ==============================================================
+   DESIGN TOKENS (CSS Variables)
+   Override variabel ini di tema untuk kustomisasi tampilan.
+   ============================================================== */
+:root {
+/* Warna utama — Gold */
+    --owwc-primary: #D4A843;
+    --owwc-primary-hover: #B8912E;
+    --owwc-primary-light: rgba(212, 168, 67, 0.10);
+    --owwc-primary-ring: rgba(212, 168, 67, 0.30);
+
+    /* Warna semantik */
+    --owwc-danger: #EF4444;
+    --owwc-danger-light: #FEE2E2;
+    --owwc-success: #10B981;
+    --owwc-success-light: #D1FAE5;
+    --owwc-warning: #F59E0B;
+
+    /* Surface & background — Tetap Light Mode */
+    --owwc-bg: #F9FAFB;
+    --owwc-surface: #FFFFFF;
+    --owwc-border: #E5E7EB;
+    --owwc-border-hover: #D1D5DB;
+
+    /* Tipografi — Hitam/gelap untuk kontras di light mode */
+    --owwc-text-main: #111827;
+    --owwc-text-secondary: #374151;
+    --owwc-text-muted: #6B7280;
+    --owwc-text-light: #9CA3AF;
+    --owwc-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --owwc-font-size-xs: 0.75rem;
+    --owwc-font-size-sm: 0.875rem;
+    --owwc-font-size-base: 1rem;
+    --owwc-font-size-lg: 1.125rem;
+    --owwc-font-size-xl: 1.25rem;
+    --owwc-font-size-2xl: 1.5rem;
+    --owwc-font-size-3xl: 2rem;
+
+    /* Spacing */
+    --owwc-space-xs: 4px;
+    --owwc-space-sm: 8px;
+    --owwc-space-md: 16px;
+    --owwc-space-lg: 24px;
+    --owwc-space-xl: 32px;
+    --owwc-space-2xl: 48px;
+
+    /* Efek visual — Shadow dengan subtle gold glow */
+    --owwc-radius-sm: 8px;
+    --owwc-radius-md: 12px;
+    --owwc-radius-lg: 16px;
+    --owwc-radius-full: 9999px;
+    --owwc-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --owwc-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --owwc-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --owwc-shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --owwc-shadow-gold: 0 10px 15px -3px rgba(212, 168, 67, 0.2), 0 4px 6px -2px rgba(212, 168, 67, 0.1);
+
+    /* Gradients */
+    --owwc-gradient-gold: linear-gradient(135deg, #D4A843 0%, #B8912E 100%);
+    --owwc-gradient-dark: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+
+    --owwc-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --owwc-transition-bounce: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ==============================================================
+   BASE — Reset ringan khusus elemen OwwCommerce
+   ============================================================== */
+body.owwc-page {
+font-family: var(--owwc-font-family);
+}
+
+[class^="owwc-"],
+[class*=" owwc-"] {
+box-sizing: border-box;
+    font-family: var(--owwc-font-family);
+}
+
+.owwc-page-wrapper {
+padding: 60px 0;
+    background-color: var(--owwc-surface);
+    min-height: 60vh;
+}
+
+.owwc-container {
+max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* ==============================================================
+   SECTION HEADING
+   ============================================================== */
+.owwc-section-title {
+font-size: var(--owwc-font-size-2xl);
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    margin: 0 0 var(--owwc-space-sm) 0;
+    line-height: 1.3;
+}
+
+.owwc-section-subtitle {
+font-size: var(--owwc-font-size-sm);
+    color: var(--owwc-text-muted);
+    margin: 0 0 var(--owwc-space-xl) 0;
+}
+
+.owwc-checkout-section-title {
+font-size: var(--owwc-font-size-lg);
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    margin: var(--owwc-space-xl) 0 var(--owwc-space-md) 0;
+    padding-bottom: var(--owwc-space-sm);
+    border-bottom: 2px solid var(--owwc-border);
+    display: flex;
+    align-items: center;
+    gap: var(--owwc-space-sm);
+}
+
+.owwc-checkout-section-title:first-child {
+margin-top: 0;
+}

@@ -1,0 +1,285 @@
+/* === OwwCommerce Frontend Modul: Cart Page === */
+
+/* ==============================================================
+   CART PAGE — Card-based di mobile, tabel di desktop
+   ============================================================== */
+.owwc-cart-container {
+max-width: 900px;
+    margin: 0 auto;
+    padding: var(--owwc-space-xl) var(--owwc-space-md);
+}
+
+.owwc-cart-header {
+margin-bottom: var(--owwc-space-xl);
+}
+
+/* Tabel cart — desktop */
+.owwc-table {
+width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: var(--owwc-space-xl);
+}
+
+.owwc-table th {
+background: var(--owwc-bg);
+    color: var(--owwc-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: var(--owwc-font-size-xs);
+    letter-spacing: 0.05em;
+    padding: var(--owwc-space-md);
+    text-align: left;
+    border-bottom: 2px solid var(--owwc-border);
+}
+
+.owwc-table td {
+padding: var(--owwc-space-lg) var(--owwc-space-md);
+    border-bottom: 1px solid var(--owwc-border);
+    vertical-align: middle;
+    color: var(--owwc-text-main);
+}
+
+.owwc-table tr:last-child td {
+border-bottom: none;
+}
+
+/* Kolom tabel */
+.owwc-cart-col-thumb {
+width: 64px;
+}
+
+.owwc-cart-col-name {
+font-weight: 600;
+}
+
+.owwc-cart-col-qty {
+text-align: center;
+}
+
+.owwc-cart-col-subtotal {
+text-align: right;
+    font-weight: 600;
+}
+
+.owwc-cart-col-remove {
+text-align: center;
+    width: 50px;
+}
+
+/* Thumbnail placeholder */
+.owwc-cart-thumb {
+width: 56px;
+    height: 56px;
+    background: var(--owwc-bg);
+    border-radius: var(--owwc-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--owwc-text-light);
+}
+
+/* Tombol hapus item cart */
+.owwc-cart-item-remove {
+color: var(--owwc-text-light);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    padding: var(--owwc-space-sm);
+    border-radius: 50%;
+    transition: var(--owwc-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    line-height: 1;
+}
+
+.owwc-cart-item-remove:hover {
+background: var(--owwc-danger-light);
+    color: var(--owwc-danger);
+}
+
+/* Cart Qty Selector */
+.owwc-cart-qty-wrapper {
+display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    overflow: hidden;
+    background: var(--owwc-surface);
+    transition: var(--owwc-transition);
+}
+
+.owwc-cart-qty-wrapper:focus-within {
+border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 2px var(--owwc-primary-ring);
+}
+
+.owwc-cart-qty-btn {
+border: none;
+    background: transparent;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--owwc-text-secondary);
+    transition: var(--owwc-transition);
+}
+
+.owwc-cart-qty-btn:hover {
+background: var(--owwc-bg);
+    color: var(--owwc-text-main);
+}
+
+.owwc-cart-qty-input {
+width: 44px;
+    text-align: center;
+    border: none;
+    outline: none;
+    padding: 4px 0;
+    font-size: var(--owwc-font-size-sm);
+    font-weight: 600;
+    color: var(--owwc-text-main);
+    background: transparent;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.owwc-cart-qty-input::-webkit-outer-spin-button,
+.owwc-cart-qty-input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+    margin: 0;
+}
+
+/* Cart summary */
+.owwc-cart-summary {
+background: var(--owwc-surface);
+    border: 1px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-md);
+    padding: var(--owwc-space-lg);
+}
+
+.owwc-cart-summary-total {
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--owwc-space-md) 0;
+    font-size: var(--owwc-font-size-xl);
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    border-top: 2px solid var(--owwc-border);
+    margin-bottom: var(--owwc-space-lg);
+}
+
+.owwc-cart-actions {
+display: flex;
+    justify-content: flex-end;
+    gap: var(--owwc-space-md);
+}
+
+/* Cart empty state */
+.owwc-cart-empty {
+text-align: center;
+    padding: var(--owwc-space-2xl) var(--owwc-space-lg);
+    background: var(--owwc-surface);
+    border: 1px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-md);
+}
+
+.owwc-cart-empty svg {
+color: var(--owwc-text-light);
+    margin-bottom: var(--owwc-space-lg);
+}
+
+.owwc-cart-empty p {
+color: var(--owwc-text-muted);
+    font-size: var(--owwc-font-size-lg);
+    margin-bottom: var(--owwc-space-lg);
+}
+
+.owwc-table {
+width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.owwc-table thead {
+background: var(--header-bg);
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.owwc-table th {
+padding: 12px 15px;
+    font-size: 11px;
+    color: #888;
+    font-weight: 800;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.owwc-table tr {
+border-bottom: 1px solid #f9f9f9;
+}
+
+.owwc-table td {
+padding: 12px 15px;
+    font-size: 13px;
+    color: #444;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.owwc-table .id-col {
+width: 50px;
+    font-weight: 800;
+    color: #000;
+}
+
+.owwc-table th:last-child,
+.owwc-table td:last-child {
+padding-right: 30px;
+    text-align: right;
+}
+
+.owwc-add-to-cart-form {
+display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Menyejajarkan Kuantitas & Tombol Beli */
+.owwc-cart-action-group {
+    display: flex;
+    gap: 12px;
+    align-items: center; /* Kuantitas sejajar dengan tombol beli */
+}
+
+/* --- Coupon Section --- */
+.owwc-coupon-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dotted #ccc;
+}
+
+.owwc-coupon-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.owwc-coupon-input {
+    margin-bottom: 0 !important;
+}
+
+.owwc-coupon-btn {
+    padding: 10px 15px !important;
+    font-size: 13px !important;
+}
+
+.owwc-coupon-msg {
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}

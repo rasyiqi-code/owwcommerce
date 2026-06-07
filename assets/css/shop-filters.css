@@ -1,0 +1,196 @@
+/* === OwwCommerce Frontend Modul: Shop Filters === */
+
+/*
+ * OwwCommerce Frontend Pages — Style Khusus Halaman
+ * 
+ * File ini berisi style untuk halaman-halaman spesifik OwwCommerce:
+ * Shop, Cart, Checkout, dan Single Product.
+ * 
+ * Semua style menggunakan CSS Variables dari frontend.css,
+ * sehingga tema bisa override tampilan hanya dengan mengubah variabel.
+ */
+
+/* Filter & Sorting UI */
+.owwc-sort-group {
+background: var(--owwc-surface);
+    padding: 6px;
+    border-radius: var(--owwc-radius-full);
+    border: 1px solid var(--owwc-border);
+    transition: var(--owwc-transition);
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.owwc-sort-btn {
+position: relative;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--owwc-text-muted);
+    transition: var(--owwc-transition);
+    text-decoration: none !important;
+    background: transparent !important;
+}
+
+.owwc-sort-btn svg {
+width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    display: block;
+}
+
+.owwc-sort-btn:hover {
+color: var(--owwc-primary) !important;
+    background: var(--owwc-primary-light) !important;
+}
+
+.owwc-sort-btn.is-active {
+background: var(--owwc-text-main) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Shop Controls (Search & Sort) */
+.owwc-shop-controls-wrapper {
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--owwc-space-md);
+    margin-bottom: var(--owwc-space-lg);
+    flex-wrap: wrap;
+}
+
+.owwc-shop-filter-bar {
+flex: 1;
+    min-width: 300px;
+    background: var(--owwc-surface);
+    border: 1px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-full);
+    padding: 2px 4px 2px 16px;
+    display: flex;
+    align-items: center;
+    transition: var(--owwc-transition);
+}
+
+.owwc-shop-filter-bar:focus-within {
+border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+}
+
+.owwc-shop-filter-form {
+display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+}
+
+.owwc-shop-filter-divider {
+width: 1px;
+    height: 20px;
+    background: var(--owwc-border);
+    margin: 0 10px;
+}
+
+.owwc-shop-category-select {
+border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    width: auto !important;
+    padding: 0 35px 0 12px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    color: var(--owwc-text-secondary) !important;
+    height: 44px !important;
+    cursor: pointer;
+}
+
+/* Active Filters */
+.owwc-active-filters {
+display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: var(--owwc-space-xl);
+    flex-wrap: wrap;
+}
+
+.owwc-filter-tag {
+background: var(--owwc-bg);
+    border: 1px solid var(--owwc-border);
+    padding: 6px 12px;
+    border-radius: var(--owwc-radius-full);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.owwc-filter-remove {
+color: var(--owwc-text-light);
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.owwc-filter-remove:hover {
+color: var(--owwc-danger);
+}
+
+/* Category Tags */
+.owwc-category-tags-container {
+margin-bottom: 30px;
+    padding-top: 25px;
+}
+
+.owwc-category-tags {
+display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 5px;
+    /* Memberi sedikit ruang bawah agar tidak terpotong */
+}
+
+.owwc-category-tags::-webkit-scrollbar {
+display: none;
+}
+
+.owwc-cat-tag {
+text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--owwc-text-muted);
+    padding: 8px 20px;
+    border-radius: var(--owwc-radius-full);
+    transition: var(--owwc-transition);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.owwc-cat-tag:hover {
+color: var(--owwc-primary);
+}
+
+.owwc-cat-tag.is-active {
+background: #4285f4;
+    /* Blue active tag like reference */
+    color: #fff !important;
+    box-shadow: 0 6px 12px rgba(66, 133, 244, 0.25);
+}
+
+/* Search result info */
+.owwc-search-result-info {
+display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    justify-content: center;
+}

@@ -144,8 +144,22 @@ class Plugin {
             // 1. Assets yang harus dimuat secara GLOBAL (agar floating cart & add to cart berfungsi di mana saja)
             wp_enqueue_style(
                 'owwc-frontend-style',
-                OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend.css',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/css/base.css',
                 [],
+                OWWCOMMERCE_VERSION
+            );
+
+            wp_enqueue_style(
+                'owwc-frontend-buttons-forms',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/css/buttons-forms.css',
+                ['owwc-frontend-style'],
+                OWWCOMMERCE_VERSION
+            );
+
+            wp_enqueue_style(
+                'owwc-frontend-components',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/css/components.css',
+                ['owwc-frontend-buttons-forms'],
                 OWWCOMMERCE_VERSION
             );
 
@@ -179,82 +193,107 @@ class Plugin {
             ]);
 
             // 2. Assets yang dimuat secara KONDISIONAL (Zero Bloatware)
-            $is_owwcommerce_page = false;
+            global $post;
+            $has_shop_shortcode     = false;
+            $has_cart_shortcode     = false;
+            $has_checkout_shortcode = false;
+            $has_product_shortcode  = false;
+            $has_account_shortcode  = false;
 
-            // Cek jika ini adalah halaman virtual (Single Product / Order Received)
-            if ( get_query_var( 'owwc_product_slug' ) || get_query_var( 'owwc_order_received' ) ) {
-                $is_owwcommerce_page = true;
-            }
-            
-            if ( ! $is_owwcommerce_page ) {
-                global $post;
-                if ( is_page() || is_single() || ( is_front_page() && is_home() ) ) {
-                    if ( $post && ! empty( $post->post_content ) ) {
-                        $content = $post->post_content;
-                        if ( 
-                            strpos( $content, '[owwcommerce_products]' ) !== false ||
-                            strpos( $content, '[owwcommerce_shop]' )     !== false ||
-                            strpos( $content, '[owwcommerce_checkout]' ) !== false ||
-                            strpos( $content, '[owwcommerce_cart]' )     !== false ||
-                            strpos( $content, '[owwcommerce_single_product]' ) !== false ||
-                            strpos( $content, '[owwcommerce_my_account]' ) !== false
-                        ) {
-                            $is_owwcommerce_page = true;
-                        }
-                    }
+            if ( $post && ! empty( $post->post_content ) ) {
+                $content = $post->post_content;
+                if ( strpos( $content, '[owwcommerce_products]' ) !== false || strpos( $content, '[owwcommerce_shop]' ) !== false ) {
+                    $has_shop_shortcode = true;
+                }
+                if ( strpos( $content, '[owwcommerce_cart]' ) !== false ) {
+                    $has_cart_shortcode = true;
+                }
+                if ( strpos( $content, '[owwcommerce_checkout]' ) !== false ) {
+                    $has_checkout_shortcode = true;
+                }
+                if ( strpos( $content, '[owwcommerce_single_product]' ) !== false ) {
+                    $has_product_shortcode = true;
+                }
+                if ( strpos( $content, '[owwcommerce_my_account]' ) !== false ) {
+                    $has_account_shortcode = true;
                 }
             }
 
+            $is_single_product_page = get_query_var( 'owwc_product_slug' ) || $has_product_shortcode;
+            $is_order_received_page = (bool) get_query_var( 'owwc_order_received' );
+            $is_shop_page           = $has_shop_shortcode;
+            $is_cart_page           = $has_cart_shortcode;
+            $is_checkout_page       = $has_checkout_shortcode && ! $is_order_received_page;
+            $is_account_page        = $has_account_shortcode;
+
+            $is_owwcommerce_page = $is_single_product_page || $is_order_received_page || $is_shop_page || $is_cart_page || $is_checkout_page || $is_account_page;
+
             // Tambahkan body class owwc-page untuk targeting CSS yang lebih akurat
             if ( $is_owwcommerce_page ) {
-                add_filter( 'body_class', function( $classes ) {
+                add_filter( 'body_class', function( $classes ) use ( $is_account_page, $is_checkout_page ) {
                     $classes[] = 'owwc-page';
-                    
-                    global $post;
-                    if ( is_page() && $post ) {
-                        if ( strpos( $post->post_content, '[owwcommerce_my_account]' ) !== false ) {
-                            $classes[] = 'owwc-my-account-page';
-                        }
-                        if ( strpos( $post->post_content, '[owwcommerce_checkout]' ) !== false ) {
-                            $classes[] = 'owwc-checkout-page';
-                        }
+                    if ( $is_account_page ) {
+                        $classes[] = 'owwc-my-account-page';
                     }
-                    
+                    if ( $is_checkout_page ) {
+                        $classes[] = 'owwc-checkout-page';
+                    }
                     return $classes;
                 } );
+            }
 
-                // Enqueue Base Page Styles (media: all)
+            // A. Pemuatan Kondisional Halaman Katalog/Toko
+            if ( $is_shop_page ) {
                 wp_enqueue_style(
-                    'owwc-frontend-pages',
-                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend-pages.css',
+                    'owwc-shop-hero',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/shop-hero.css',
                     ['owwc-frontend-style'],
                     OWWCOMMERCE_VERSION
                 );
-
-                // Enqueue Desktop CSS jika layar desktop (min-width: 769px)
                 wp_enqueue_style(
-                    'owwc-frontend-desktop',
-                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend-desktop.css',
-                    ['owwc-frontend-pages'],
+                    'owwc-shop-filters',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/shop-filters.css',
+                    ['owwc-frontend-style'],
                     OWWCOMMERCE_VERSION
                 );
-
-                // Enqueue Mobile CSS jika layar mobile (max-width: 768px)
                 wp_enqueue_style(
-                    'owwc-frontend-mobile',
-                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend-mobile.css',
-                    ['owwc-frontend-pages'],
+                    'owwc-product-card',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/product-card.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION
+                );
+                wp_enqueue_style(
+                    'owwc-shop-page',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/shop-page.css',
+                    ['owwc-frontend-style'],
                     OWWCOMMERCE_VERSION
                 );
             }
 
-            // Cek khusus untuk single product (halaman detail produk virtual)
-            if ( get_query_var( 'owwc_product_slug' ) ) {
-                // Enqueue Base Single Product Styles (media: all)
+            // B. Pemuatan Kondisional Halaman Detail Produk
+            if ( $is_single_product_page ) {
                 wp_enqueue_style(
-                    'owwc-single-product',
-                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/single-product.css',
-                    ['owwc-frontend-pages'],
+                    'owwc-product-page',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/product-page.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION
+                );
+                wp_enqueue_style(
+                    'owwc-product-variations',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/product-variations.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION
+                );
+                wp_enqueue_style(
+                    'owwc-reviews',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/reviews.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION
+                );
+                wp_enqueue_style(
+                    'owwc-product-card',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/product-card.css',
+                    ['owwc-frontend-style'],
                     OWWCOMMERCE_VERSION
                 );
 
@@ -267,9 +306,34 @@ class Plugin {
                 );
             }
 
-            // Cek khusus untuk checkout script (hanya di-load jika ada shortcode checkout)
-            global $post;
-            if ( $post && strpos( $post->post_content, '[owwcommerce_checkout]' ) !== false ) {
+            // C. Pemuatan Kondisional Halaman Keranjang Belanja
+            if ( $is_cart_page ) {
+                wp_enqueue_style(
+                    'owwc-cart-page',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/cart-page.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION
+                );
+            }
+
+            // D. Pemuatan Kondisional Halaman Checkout
+            if ( $is_checkout_page ) {
+                wp_enqueue_style(
+                    'owwc-checkout-page',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/checkout-page.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION
+                );
+
+                if ( ! is_user_logged_in() ) {
+                    wp_enqueue_style(
+                        'owwc-login-style',
+                        OWWCOMMERCE_PLUGIN_URL . 'assets/css/login.css',
+                        ['owwc-frontend-style'],
+                        OWWCOMMERCE_VERSION
+                    );
+                }
+
                 wp_enqueue_script(
                     'owwc-checkout-app',
                     OWWCOMMERCE_PLUGIN_URL . 'assets/js/checkout.js',
@@ -278,6 +342,36 @@ class Plugin {
                     true
                 );
             }
+
+            // E. Pemuatan Kondisional Halaman Order Received
+            if ( $is_order_received_page ) {
+                wp_enqueue_style(
+                    'owwc-order-received',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/order-received.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION
+                );
+            }
+
+            // F. Pemuatan Kondisional Halaman Akun Saya
+            if ( $is_account_page ) {
+                wp_enqueue_style(
+                    'owwc-account-page',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/account-page.css',
+                    ['owwc-frontend-style'],
+                    OWWCOMMERCE_VERSION
+                );
+
+                if ( ! is_user_logged_in() ) {
+                    wp_enqueue_style(
+                        'owwc-login-style',
+                        OWWCOMMERCE_PLUGIN_URL . 'assets/css/login.css',
+                        ['owwc-frontend-style'],
+                        OWWCOMMERCE_VERSION
+                    );
+                }
+            }
         });
     }
 }
+

@@ -1,0 +1,298 @@
+/* === OwwCommerce Frontend Modul: Account Page === */
+
+.owwc-profile-info-card {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.owwc-profile-info-card p {
+    margin: 0;
+    line-height: 1.6;
+    color: #444;
+    font-size: 14px;
+}
+
+.owwc-profile-info-card strong {
+    color: #111;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.owwc-profile-info-card .edit-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--owwc-primary);
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+
+.owwc-order-received-wrap {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.owwc-profile-card-mini {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 20px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: var(--card-shadow);
+}
+
+.owwc-profile-card-mini .avatar-border {
+    border: 2px solid var(--owwc-primary);
+    padding: 2px;
+    border-radius: 50%;
+}
+
+.owwc-profile-card-mini .avatar-border img {
+    width: 45px;
+    height: 45px;
+}
+
+.owwc-profile-card-mini .name {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+    color: #111;
+}
+
+.owwc-profile-card-mini .email {
+    font-size: 11px;
+    color: #888;
+    margin: 2px 0 0;
+}
+
+.order-table-wrap.horizontal-scroll {
+    overflow-x: auto;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    border: 1px solid #f0f0f0;
+}
+
+/* Dashboard Styles */
+.owwc-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    overflow: visible;
+    padding-bottom: 80px;
+}
+
+.floating-whatsapp__btn {
+    display: none !important;
+}
+
+h1.entry-title, .page-title, .post-title {
+    display: none !important;
+}
+
+.owwc-dashboard-main {
+    min-width: 0;
+}
+
+.owwc-dashboard-nav {
+    background: rgba(255, 255, 255, 0.95);
+    border-top: 1px solid #eaeaea;
+    overflow: hidden;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    backdrop-filter: blur(10px);
+    padding: 5px 0;
+}
+
+.owwc-dashboard-nav ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+}
+
+.owwc-dashboard-nav ul li {
+    flex: 1;
+}
+
+.owwc-dashboard-nav ul li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 5px;
+    color: #444;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.owwc-dashboard-nav ul li a svg {
+    width: 22px;
+    height: 22px;
+    opacity: 0.5;
+    margin-bottom: 2px;
+    transition: all 0.2s;
+    stroke: currentColor;
+    fill: none;
+}
+
+.owwc-dashboard-nav ul li a.active {
+    color: var(--owwc-primary);
+}
+
+.owwc-dashboard-nav ul li a.active svg {
+    opacity: 1;
+    stroke-width: 2.5;
+}
+
+.tab-header {
+    margin-bottom: 20px;
+}
+
+.tab-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+}
+
+.tab-header p {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.owwc-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.owwc-stat-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid #eaeaea;
+    box-shadow: var(--card-shadow);
+}
+
+.owwc-stat-card .label {
+    font-size: 11px;
+    color: #888;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.owwc-stat-card .value {
+    display: block;
+    font-size: 22px;
+    color: #111;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+.owwc-stat-card .value.primary {
+    color: var(--owwc-primary);
+}
+
+.owwc-card {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 25px;
+    padding: 20px;
+}
+
+.owwc-card.no-padding {
+    padding: 0;
+}
+
+.card-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--header-bg);
+}
+
+.card-header h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+
+.card-header a, .card-header .edit-link {
+    font-size: 12px;
+    color: var(--owwc-primary);
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.action-btns {
+    justify-content: flex-end;
+    display: flex;
+    gap: 8px;
+}
+.owwc-form.stacked input, .owwc-form.stacked textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    transition: 0.2s;
+    box-sizing: border-box;
+    background: #fff;
+}
+.owwc-form.stacked input:focus, .owwc-form.stacked textarea:focus {
+    border-color: var(--owwc-primary);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #111;
+}
+.address-display {
+    padding: 5px 20px 20px 20px;
+}
+.address-display p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    margin: 0;
+}

@@ -1,0 +1,252 @@
+/* === OwwCommerce Frontend Modul: Reviews === */
+
+/* Review pesanan (sidebar) */
+.owwc-checkout-review {
+background: var(--owwc-surface);
+    border: 1px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-md);
+    padding: var(--owwc-space-lg);
+    box-shadow: var(--owwc-shadow-sm);
+    position: sticky;
+    top: var(--owwc-space-lg);
+}
+
+.owwc-checkout-review h3 {
+font-size: var(--owwc-font-size-lg);
+    font-weight: 700;
+    margin: 0 0 var(--owwc-space-md) 0;
+}
+
+/* Styling Reviews & Ratings dipindahkan secara modular ke single-product.css */
+
+/* Shop Load More */
+.owwc-load-more-container {
+margin-top: 50px;
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+/* ==============================================================
+   REVIEWS & RATINGS (2 KOLOM DESKTOP GRID)
+   ============================================================== */
+.owwc-reviews-section {
+margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--owwc-border);
+}
+
+.owwc-reviews-header {
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--owwc-border);
+}
+
+.owwc-reviews-title {
+font-size: 18px;
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    margin: 0;
+}
+
+.owwc-average-rating {
+display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.owwc-rating-stars {
+display: flex;
+    gap: 2px;
+}
+
+.owwc-star {
+color: #ffd700;
+    font-size: 16px;
+}
+
+.owwc-star.empty {
+color: var(--owwc-border);
+}
+
+/* Daftar Item Ulasan */
+.owwc-review-list {
+margin-bottom: 24px;
+}
+
+.owwc-review-item {
+padding: 16px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    gap: 16px;
+}
+
+.owwc-review-item:last-child {
+border-bottom: none;
+}
+
+.owwc-review-avatar {
+width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f3f4f6;
+    flex-shrink: 0;
+}
+
+.owwc-review-avatar img {
+width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.owwc-review-content {
+flex-grow: 1;
+}
+
+.owwc-review-meta {
+display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.owwc-review-author {
+font-weight: 600;
+    font-size: 14px;
+    color: var(--owwc-text-main);
+}
+
+.owwc-review-date {
+font-size: 12px;
+    color: var(--owwc-text-muted);
+    margin-bottom: 6px;
+}
+
+.owwc-review-comment {
+font-size: 13px;
+    line-height: 1.5;
+    color: var(--owwc-text-secondary);
+}
+
+/* Formulir Ulasan (Kolom Kanan) */
+.owwc-review-form-card {
+background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--owwc-radius-md);
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.01);
+    transition: var(--owwc-transition);
+}
+
+.owwc-review-form-card h3 {
+font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: var(--owwc-text-main);
+    letter-spacing: -0.01em;
+}
+
+.owwc-review-form-card .form-subtitle {
+font-size: 13px;
+    color: var(--owwc-text-muted);
+    margin: 0 0 24px 0;
+    line-height: 1.5;
+}
+
+.owwc-review-form-field {
+margin-bottom: 20px;
+}
+
+.owwc-review-form-field label {
+display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--owwc-text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+/* Pemilih Rating Bintang Modern */
+.owwc-rating-picker {
+display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.owwc-rating-picker input {
+display: none;
+}
+
+.owwc-rating-picker label {
+cursor: pointer;
+    font-size: 28px;
+    color: #e5e7eb;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s ease;
+    margin: 0;
+}
+
+.owwc-rating-picker label:hover {
+transform: scale(1.2);
+}
+
+.owwc-rating-picker label:hover,
+.owwc-rating-picker label:hover~label,
+.owwc-rating-picker input:checked~label {
+color: var(--owwc-primary);
+}
+
+/* Kolom Input & Textarea Premium */
+.owwc-review-form-card .owwc-admin-input {
+width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--owwc-text-main);
+    background: #fbfbfb;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.owwc-review-form-card .owwc-admin-input:focus {
+outline: none;
+    border-color: var(--owwc-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+}
+
+.owwc-review-form-card .owwc-admin-input::placeholder {
+color: #a0aec0;
+}
+
+/* Grid input form (Nama & Email) */
+.owwc-review-form-grid {
+display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.owwc-review-form-grid .owwc-review-form-field {
+margin-bottom: 0;
+}
+
+.owwc-review-submit-wrap {
+display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.owwc-review-msg {
+font-size: 13px;
+    font-weight: 500;
+}

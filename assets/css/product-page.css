@@ -1,0 +1,298 @@
+/* === OwwCommerce Frontend Modul: Product Page === */
+
+/* ==============================================================
+   HALAMAN DETAIL PRODUK (SINGLE PRODUCT PAGE)
+   Desain Compact & Company Standard
+   ============================================================== */
+
+/* Container Utama Detail Produk */
+.owwc-single-product {
+max-width: 1024px; /* Standar perusahaan: maksimal lebar 1024px */
+    margin: 0 auto;
+    padding: var(--owwc-space-lg) var(--owwc-space-md);
+}
+
+/* Layout Grid Halaman Utama */
+.owwc-single-product-layout {
+display: grid;
+    grid-template-columns: 1.1fr 0.9fr; /* Keseimbangan kolom kiri & kanan */
+    gap: 40px;
+    align-items: start;
+    margin-bottom: var(--owwc-space-2xl);
+}
+
+/* Kolom Kiri: Gambar Produk */
+.owwc-single-product-image {
+position: sticky;
+    top: 24px;
+}
+
+.owwc-main-image-wrap {
+background: #fafafa;
+    border: 1px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-md);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--owwc-shadow-sm);
+    transition: var(--owwc-transition);
+}
+
+.owwc-main-image-wrap img {
+width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.owwc-main-image-wrap:hover img {
+transform: scale(1.02);
+}
+
+.owwc-image-placeholder {
+display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #fafafa;
+    color: var(--owwc-text-light);
+}
+
+/* Galeri Produk (Thumbnail) */
+.owwc-product-gallery {
+display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.owwc-gallery-thumb {
+width: 64px;
+    height: 64px;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--owwc-transition);
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+
+.owwc-gallery-thumb img {
+max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.owwc-gallery-thumb:hover {
+border-color: var(--owwc-border-hover);
+}
+
+.owwc-gallery-thumb.active {
+border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 2px var(--owwc-primary-ring);
+}
+
+/* Kolom Kanan: Ringkasan & Detail Produk */
+.owwc-single-product-summary {
+display: flex;
+    flex-direction: column;
+}
+
+.owwc-single-product-brand {
+font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--owwc-text-muted);
+    letter-spacing: 0.08em;
+    margin: 0 0 6px 0;
+}
+
+.owwc-single-product-title {
+font-size: 26px; /* Desain compact: dikurangi dari 32px ke 26px */
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    margin: 0 0 12px 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+/* Harga Produk dengan Garis Pembatas Bawah */
+.owwc-single-product-price {
+font-size: 22px;
+    font-weight: 700;
+    color: var(--owwc-primary);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--owwc-border); /* Company standard: harga diberi pembatas bawah tipis */
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.owwc-single-product-price del {
+font-size: 15px;
+    color: var(--owwc-text-light);
+    font-weight: 400;
+    text-decoration: line-through;
+}
+
+.owwc-single-product-price ins {
+text-decoration: none;
+}
+
+.owwc-single-product-description {
+font-size: 14px;
+    line-height: 1.6;
+    color: var(--owwc-text-secondary);
+    margin-bottom: 24px;
+}
+
+.owwc-single-product-description p {
+margin: 0 0 12px 0;
+}
+
+.owwc-single-product-description p:last-child {
+    margin-bottom: 0;
+}
+/* Aksi Pembelian & Selektor Kuantitas */
+.owwc-product-actions-wrap {
+    padding-top: 20px;
+    border-top: 1px solid var(--owwc-border);
+}
+.owwc-qty-wrapper {
+display: flex;
+    align-items: center;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm); /* Sesuai dengan radius tegas */
+    height: 48px;
+    width: 120px;
+    overflow: hidden;
+    background: #fff;
+    flex-shrink: 0;
+    transition: var(--owwc-transition);
+}
+
+.owwc-qty-wrapper:focus-within {
+border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+}
+
+.owwc-qty-btn {
+width: 36px;
+    height: 100%;
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--owwc-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    outline: none;
+    user-select: none;
+}
+
+.owwc-qty-btn:hover {
+background: var(--owwc-bg);
+    color: var(--owwc-text-main);
+}
+
+.owwc-qty-btn:active {
+background: var(--owwc-border);
+}
+
+.owwc-qty-input {
+width: 48px;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    outline: none;
+    padding: 0;
+    background: transparent;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.owwc-qty-input::-webkit-outer-spin-button,
+.owwc-qty-input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+    margin: 0;
+}
+
+/* Kelompok Tombol Eksternal / Marketplace / WhatsApp */
+.owwc-external-buttons-group {
+display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Status Stok */
+.owwc-stock-status-wrap {
+margin-top: 16px;
+}
+
+.owwc-stock-status {
+display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.owwc-stock-status svg {
+    flex-shrink: 0;
+}
+.owwc-stock-status--in-stock {
+    color: var(--owwc-success);
+}
+.owwc-stock-status--out-stock {
+    color: var(--owwc-danger);
+}
+#owwc-avg-num {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--owwc-text-main);
+}
+
+/* Sticky Mobile Action Bar */
+.owwc-mobile-action-bar {
+position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--owwc-border);
+    padding: 12px 20px;
+    display: none; /* Sembunyikan secara default di desktop */
+    z-index: 1000;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.owwc-mobile-buy-btn {
+height: 40px;
+    padding: 0 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: var(--owwc-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+}

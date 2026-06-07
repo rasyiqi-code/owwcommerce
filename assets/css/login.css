@@ -1,0 +1,147 @@
+/* === OwwCommerce Frontend Modul: Login Overrides === */
+
+.owwc-login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 40px 20px;
+    background: #fdfdfd;
+}
+
+.owwc-login-card {
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
+    border-radius: 24px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.owwc-login-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.06);
+}
+
+.owwc-login-header {
+    padding: 40px 40px 20px;
+    text-align: center;
+}
+
+.owwc-login-icon {
+    width: 64px;
+    height: 64px;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    color: var(--owwc-primary);
+}
+
+.owwc-login-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.owwc-login-header h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #111;
+    margin: 0 0 12px;
+    letter-spacing: -0.5px;
+}
+
+.owwc-login-header p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0 10px;
+}
+
+.owwc-login-body {
+    padding: 0 40px 40px;
+}
+
+/* WordPress Login Form Overrides */
+#owwc-login-form-element p {
+    margin-bottom: 20px;
+}
+
+#owwc-login-form-element label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#owwc-login-form-element input[type="text"],
+#owwc-login-form-element input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 15px;
+    background: #fdfdfd;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+#owwc-login-form-element input:focus {
+    border-color: var(--owwc-primary);
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.1);
+}
+
+#owwc-login-form-element .login-remember {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: -10px;
+}
+
+#owwc-login-form-element .login-remember label {
+    text-transform: none;
+    font-weight: 600;
+    color: #666;
+    margin: 0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#owwc-login-form-element .login-submit {
+    margin-top: 30px;
+    margin-bottom: 0 !important;
+}
+
+#owwc-login-form-element input[type="submit"] {
+    width: 100%;
+    padding: 16px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#owwc-login-form-element input[type="submit"]:hover {
+    background: var(--owwc-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(212, 168, 67, 0.25);
+}
+
+#owwc-login-form-element input[type="submit"]:active {
+    transform: translateY(0);
+}

@@ -1,0 +1,222 @@
+/* === OwwCommerce Frontend Modul: Order Received / Confirmation === */
+
+.owwc-or-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.owwc-or-icon {
+    width: 64px;
+    height: 64px;
+    color: #10b981;
+    margin: 0 auto 15px auto;
+}
+
+.owwc-or-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #111;
+}
+
+.owwc-or-subtitle {
+    color: #666;
+    font-size: 16px;
+}
+
+.owwc-or-info-box {
+    background: #fafafa;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.owwc-or-info-title {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+}
+
+.owwc-or-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.owwc-or-detail-label {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.owwc-or-detail-value {
+    font-size: 16px;
+    color: #111;
+}
+
+.owwc-text-primary {
+    color: var(--owwc-primary);
+}
+
+.owwc-confirm-box {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    padding: 25px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.owwc-confirm-box-title {
+    margin-top: 0;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+}
+
+.owwc-form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.owwc-form-input:focus {
+    border-color: var(--owwc-primary);
+    outline: none;
+}
+
+.owwc-file-dummy {
+    border: 2px dashed #ddd;
+    background: #fafafa;
+    padding: 20px;
+    text-align: center;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+}
+
+.owwc-file-dummy:hover {
+    border-color: var(--owwc-primary);
+}
+
+.owwc-file-icon {
+    width: 32px;
+    height: 32px;
+    color: #999;
+    margin: 0 auto 10px;
+}
+
+.owwc-file-dummy.has-file {
+    border-color: var(--owwc-primary);
+    background: #fefce8;
+}
+
+.owwc-form-file {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.owwc-or-footer {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.owwc-confirm-msg {
+    margin-top: 15px;
+    display: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.owwc-confirm-msg.error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+.owwc-confirm-msg.success {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.owwc-confirmation-success-state {
+    text-align: center;
+    padding: 30px;
+}
+
+.owwc-cs-icon {
+    width: 60px;
+    height: 60px;
+    background: #ecfdf5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.owwc-cs-icon svg {
+    width: 32px;
+    height: 32px;
+    color: #10b981;
+}
+
+.owwc-cs-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+
+.owwc-cs-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+}
+
+.owwc-cs-desc {
+    font-size: 13px;
+    color: #888;
+    margin-top: 15px;
+    line-height: 1.5;
+}
+
+.owwc-cod-instructions-box {
+    background: #fff;
+    border: 1px solid #10b981;
+    border-left: 4px solid #10b981;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.owwc-cod-title {
+    margin-top: 0;
+    font-size: 16px;
+    color: #10b981;
+}
+
+.owwc-cod-desc {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #555;
+}

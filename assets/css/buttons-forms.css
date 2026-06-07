@@ -1,0 +1,266 @@
+/* === OwwCommerce Frontend Modul: Buttons Forms === */
+
+/* ==============================================================
+   BUTTONS
+   ============================================================== */
+.owwc-btn,
+.owwc-add-to-cart-btn {
+appearance: none;
+    background: var(--owwc-primary);
+    /* Teks putih di atas background gold untuk kontras */
+    color: #fff;
+    border: none;
+    border-radius: var(--owwc-radius-sm);
+    padding: 12px 24px;
+    font-size: var(--owwc-font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--owwc-transition);
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--owwc-space-sm);
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.owwc-btn:hover,
+.owwc-add-to-cart-btn:hover {
+background: var(--owwc-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--owwc-primary-ring);
+}
+
+.owwc-btn:active,
+.owwc-add-to-cart-btn:active {
+transform: translateY(0);
+}
+
+.owwc-btn:disabled,
+.owwc-add-to-cart-btn:disabled {
+opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Variant: secondary / outline */
+.owwc-btn--outline {
+background: transparent;
+    color: var(--owwc-primary);
+    border: 1.5px solid var(--owwc-primary);
+}
+
+.owwc-btn--outline:hover {
+background: var(--owwc-primary-light);
+    box-shadow: none;
+}
+
+/* Variant: full-width */
+.owwc-btn--block {
+width: 100%;
+}
+
+/* ==============================================================
+   FORM INPUTS
+   ============================================================== */
+.owwc-input,
+.owwc-select {
+width: 100%;
+    padding: 12px var(--owwc-space-md);
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    background: var(--owwc-surface);
+    font-size: var(--owwc-font-size-base);
+    color: var(--owwc-text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    font-family: var(--owwc-font-family);
+}
+
+.owwc-input:focus,
+.owwc-select:focus {
+border-color: var(--owwc-primary);
+    box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+    background: var(--owwc-surface);
+}
+
+.owwc-select {
+appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.owwc-form-group {
+margin-bottom: var(--owwc-space-lg);
+}
+
+.owwc-form-group label {
+display: block;
+    margin-bottom: var(--owwc-space-sm);
+    font-weight: 600;
+    color: var(--owwc-text-main);
+    font-size: var(--owwc-font-size-sm);
+}
+
+/* Form row (2 kolom berdampingan) */
+.owwc-form-row {
+display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--owwc-space-md);
+}
+
+.owwc-form-group {
+margin-bottom: 15px;
+}
+
+.owwc-form-group label {
+display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.owwc-btn {
+padding: 12px 24px;
+    text-decoration: none;
+    display: inline-block;
+    background: #111;
+    color: #fff;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.owwc-btn:hover {
+background: var(--owwc-primary);
+}
+
+.owwc-btn-link {
+font-size: 11px;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    padding: 5px 10px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.owwc-btn-small {
+border: none;
+    background: #000;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.owwc-btn-small.wa {
+background: #25D366;
+    text-decoration: none;
+}
+
+.owwc-btn-primary {
+width: 100%;
+    border: none;
+    background: #000;
+    color: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.owwc-btn-secondary {
+width: 100%;
+    border: none;
+    background: #f3f4f6;
+    color: #111;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+/* Tombol Tambah ke Keranjang / Aksi */
+.owwc-add-to-cart-btn {
+flex-grow: 1;
+    height: 48px;
+    padding: 0 24px;
+    border-radius: var(--owwc-radius-sm); /* Standar perusahaan */
+    background: var(--owwc-text-main);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--owwc-transition);
+}
+
+.owwc-add-to-cart-btn svg {
+flex-shrink: 0;
+}
+
+.owwc-add-to-cart-btn:hover:not(:disabled) {
+background: var(--owwc-primary);
+    box-shadow: var(--owwc-shadow-gold);
+}
+
+.owwc-add-to-cart-btn:disabled {
+background: var(--owwc-border);
+    color: var(--owwc-text-light);
+    cursor: not-allowed;
+}
+
+.owwc-external-buttons-group .owwc-add-to-cart-btn {
+flex: 1;
+}
+
+/* Tombol Kirim Ulasan Premium */
+#owwc-submit-review.owwc-btn {
+background: var(--owwc-text-main);
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--owwc-radius-sm);
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.08);
+}
+
+#owwc-submit-review.owwc-btn:hover {
+background: var(--owwc-primary);
+    transform: translateY(-1.5px);
+    box-shadow: var(--owwc-shadow-gold);
+    color: #ffffff;
+}
+
+#owwc-submit-review.owwc-btn:active {
+transform: translateY(0);
+}
+
+#owwc-submit-review.owwc-btn:disabled {
+background: var(--owwc-border);
+    color: var(--owwc-text-light);
+    cursor: not-allowed;
+    box-shadow: none;
+}

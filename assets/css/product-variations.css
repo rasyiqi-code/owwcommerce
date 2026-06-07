@@ -1,0 +1,58 @@
+/* === OwwCommerce Frontend Modul: Product Variations === */
+
+/* Selektor Variasi */
+.owwc-variations-selection {
+margin-bottom: 24px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.owwc-variation-field {
+margin-bottom: 16px;
+}
+
+.owwc-variation-field:last-child {
+margin-bottom: 0;
+}
+
+.owwc-variation-label {
+display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--owwc-text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+}
+
+.owwc-variation-options {
+display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Pills Variasi Berbentuk Tegas / Rounded-SM */
+.owwc-variation-pill {
+padding: 8px 16px;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm); /* rounded-sm (tegas) */
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--owwc-text-secondary);
+    cursor: pointer;
+    transition: var(--owwc-transition);
+    background: #fff;
+    user-select: none;
+}
+
+.owwc-variation-pill:hover {
+border-color: var(--owwc-primary);
+    color: var(--owwc-primary);
+}
+
+.owwc-variation-pill.active {
+border-color: var(--owwc-primary);
+    background: var(--owwc-primary-light);
+    color: var(--owwc-primary);
+    font-weight: 700;
+}
