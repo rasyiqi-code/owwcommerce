@@ -528,28 +528,31 @@
 
 /* Formulir Ulasan (Kolom Kanan) */
 .owwc-review-form-card {
-    background: #fafafa;
-    border: 1px solid var(--owwc-border);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: var(--owwc-radius-md);
-    padding: 24px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.01);
+    transition: var(--owwc-transition);
 }
 
 .owwc-review-form-card h3 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     margin: 0 0 6px 0;
     color: var(--owwc-text-main);
+    letter-spacing: -0.01em;
 }
 
 .owwc-review-form-card .form-subtitle {
     font-size: 13px;
     color: var(--owwc-text-muted);
-    margin: 0 0 20px 0;
-    line-height: 1.4;
+    margin: 0 0 24px 0;
+    line-height: 1.5;
 }
 
 .owwc-review-form-field {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .owwc-review-form-field label {
@@ -557,15 +560,18 @@
     font-size: 12px;
     font-weight: 600;
     color: var(--owwc-text-main);
-    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
 }
 
-/* Pemilih Rating Bintang */
+/* Pemilih Rating Bintang Modern */
 .owwc-rating-picker {
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
-    gap: 4px;
+    gap: 6px;
+    margin-bottom: 4px;
 }
 
 .owwc-rating-picker input {
@@ -574,24 +580,54 @@
 
 .owwc-rating-picker label {
     cursor: pointer;
-    font-size: 24px;
-    color: var(--owwc-border);
-    transition: color 0.15s;
+    font-size: 28px;
+    color: #e5e7eb;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s ease;
     margin: 0;
+}
+
+.owwc-rating-picker label:hover {
+    transform: scale(1.2);
 }
 
 .owwc-rating-picker label:hover,
 .owwc-rating-picker label:hover~label,
 .owwc-rating-picker input:checked~label {
-    color: #ffd700;
+    color: var(--owwc-primary);
+}
+
+/* Kolom Input & Textarea Premium */
+.owwc-review-form-card .owwc-admin-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--owwc-border);
+    border-radius: var(--owwc-radius-sm);
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--owwc-text-main);
+    background: #fbfbfb;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.owwc-review-form-card .owwc-admin-input:focus {
+    outline: none;
+    border-color: var(--owwc-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px var(--owwc-primary-ring);
+}
+
+.owwc-review-form-card .owwc-admin-input::placeholder {
+    color: #a0aec0;
 }
 
 /* Grid input form (Nama & Email) */
 .owwc-review-form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .owwc-review-form-grid .owwc-review-form-field {
@@ -601,18 +637,48 @@
 .owwc-review-submit-wrap {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 16px;
+    gap: 16px;
+    margin-top: 24px;
 }
 
-.owwc-review-submit-wrap .owwc-btn {
-    padding: 10px 20px;
-    font-size: 13px;
+/* Tombol Kirim Ulasan Premium */
+#owwc-submit-review.owwc-btn {
+    background: var(--owwc-text-main);
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--owwc-radius-sm);
+    font-weight: 600;
+    font-size: 13.5px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.08);
+}
+
+#owwc-submit-review.owwc-btn:hover {
+    background: var(--owwc-primary);
+    transform: translateY(-1.5px);
+    box-shadow: var(--owwc-shadow-gold);
+    color: #ffffff;
+}
+
+#owwc-submit-review.owwc-btn:active {
+    transform: translateY(0);
+}
+
+#owwc-submit-review.owwc-btn:disabled {
+    background: var(--owwc-border);
+    color: var(--owwc-text-light);
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 .owwc-review-msg {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
 }
 
