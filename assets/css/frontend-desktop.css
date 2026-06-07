@@ -82,15 +82,13 @@
     }
 }
 
-
-
 /* === Desktop Styles for product === */
 /* Pindahan dari /* Grid 2 Kolom di Desktop */
 @media (min-width: 769px) */
 .owwc-reviews-section {
-        display: grid;
+  display: grid;
         grid-template-columns: 1.25fr 0.75fr; /* Sisi ulasan di kiri (1.25) & formulir di kanan (0.75) */
         gap: 48px;
         align-items: start;
-    }
+}
 

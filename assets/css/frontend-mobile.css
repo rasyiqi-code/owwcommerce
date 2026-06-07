@@ -1,10 +1,151 @@
 /* === OwwCommerce Frontend Mobile Overrides (max-width: 768px) === */
 
+@media (max-width: 768px) {
+  .owwc-floating-cart-wrapper.bottom-left {
+    bottom: 20px;
+          left: 16px;
+  }
+
+
+  .owwc-floating-cart-wrapper.top-right {
+    top: 20px;
+          right: 16px;
+  }
+
+
+  .owwc-floating-cart-wrapper.top-left {
+    top: 20px;
+          left: 16px;
+  }
+
+
+  .owwc-toast-container {
+    right: var(--owwc-space-md);
+          left: var(--owwc-space-md);
+  }
+
+
+  .owwc-toast {
+    max-width: 100%;
+  }
+
+
+  .owwc-shop-hero {
+    border-radius: 0;
+          /* Full-width looks better without rounded corners on mobile */
+          margin-bottom: 25px;
+          padding: 40px 15px 60px;
+  }
+
+
+  .owwc-category-tags-container,
+      .owwc-products-grid {
+    padding-left: 15px;
+          padding-right: 15px;
+  }
+
+
+  .owwc-hero-title {
+    font-size: 2.2rem;
+  }
+
+
+  .owwc-shop-search-submit {
+    padding: 0 20px;
+  }
+
+
+  .owwc-checkout-review {
+    order: -1;
+          position: static;
+  }
+
+
+  .owwc-clp-content {
+    flex-direction: column;
+  }
+
+
+  .owwc-clp-actions {
+    width: 100%;
+          flex-direction: column;
+  }
+
+
+  .owwc-clp-btn {
+    width: 100%;
+          box-sizing: border-box;
+  }
+
+
+  .owwc-single-product {
+    padding-bottom: 80px; /* Beri ruang agar tidak tertutup sticky bar */
+  }
+
+
+  .owwc-single-product-layout {
+    grid-template-columns: 1fr;
+          gap: 24px;
+  }
+
+
+  .owwc-single-product-image {
+    position: static;
+  }
+
+
+  .owwc-main-image-wrap {
+    border-radius: var(--owwc-radius-sm);
+          margin: 0;
+  }
+
+
+  .owwc-single-product-title {
+    font-size: 22px;
+  }
+
+
+  .owwc-single-product-price {
+    font-size: 20px;
+          margin-bottom: 16px;
+  }
+
+
+  .owwc-reviews-section {
+    display: flex;
+          flex-direction: column;
+          gap: 32px;
+  }
+
+
+  .owwc-review-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .owwc-cart-action-group {
+    flex-direction: row;
+          width: 100%;
+  }
+
+
+  .owwc-qty-wrapper {
+    width: 100px;
+  }
+
+
+  .owwc-add-to-cart-btn {
+    flex-grow: 1;
+  }
+
+
+}
+
 /* === Mobile Styles for frontend === */
 /* Pindahan dari @media (max-width: 768px) */
 .owwc-page-wrapper {
-        padding: 0px 0;
-    }
+  padding: 0px 0;
+}
 
 @media (max-width: 480px) {
   .owwc-form-row {
@@ -15,35 +156,9 @@
 /* Pindahan dari /* Mobile adjustment */
 @media (max-width: 768px) */
 .owwc-floating-cart-wrapper.bottom-right {
-        bottom: 20px;
+  bottom: 20px;
         right: 16px;
-    }
-
-    .owwc-floating-cart-wrapper.bottom-left {
-        bottom: 20px;
-        left: 16px;
-    }
-
-    .owwc-floating-cart-wrapper.top-right {
-        top: 20px;
-        right: 16px;
-    }
-
-    .owwc-floating-cart-wrapper.top-left {
-        top: 20px;
-        left: 16px;
-    }
-
-    .owwc-toast-container {
-        right: var(--owwc-space-md);
-        left: var(--owwc-space-md);
-    }
-
-    .owwc-toast {
-        max-width: 100%;
-    }
-
-
+}
 
 /* === Mobile Styles for pages === */
 @media (max-width: 640px) {
@@ -60,30 +175,9 @@
 
 /* Pindahan dari @media (max-width: 768px) */
 .owwc-shop-container {
-        padding: 0;
+  padding: 0;
         /* Remove container padding to allow hero to be full-width */
-    }
-
-    .owwc-shop-hero {
-        border-radius: 0;
-        /* Full-width looks better without rounded corners on mobile */
-        margin-bottom: 25px;
-        padding: 40px 15px 60px;
-    }
-
-    .owwc-category-tags-container,
-    .owwc-products-grid {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-    .owwc-hero-title {
-        font-size: 2.2rem;
-    }
-
-    .owwc-shop-search-submit {
-        padding: 0 20px;
-    }
+}
 
 /* Mobile: sembunyikan header tabel, ubah row jadi card */
 @media (max-width: 640px) {
@@ -161,33 +255,14 @@
 /* Pindahan dari /* Checkout responsive */
 @media (max-width: 768px) */
 .owwc-checkout-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .owwc-checkout-review {
-        order: -1;
-        position: static;
-    }
+  grid-template-columns: 1fr;
+}
 
 /* Pindahan dari @media (max-width: 768px) */
 .owwc-checkout-login-prompt {
-        flex-direction: column;
+  flex-direction: column;
         text-align: center;
-    }
-
-    .owwc-clp-content {
-        flex-direction: column;
-    }
-
-    .owwc-clp-actions {
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .owwc-clp-btn {
-        width: 100%;
-        box-sizing: border-box;
-    }
+}
 
 @media (max-width: 480px) {
   .owwc-login-card {
@@ -223,64 +298,12 @@
     }
 }
 
-
-
 /* === Mobile Styles for product === */
 /* Pindahan dari /* ==============================================================
    RESPONSIVENESS (MOBILE FIRST REFINEMENTS)
    ============================================================== */
 @media (max-width: 768px) */
 .owwc-mobile-action-bar {
-        display: flex;
-    }
-
-    .owwc-single-product {
-        padding-bottom: 80px; /* Beri ruang agar tidak tertutup sticky bar */
-    }
-
-    .owwc-single-product-layout {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-
-    .owwc-single-product-image {
-        position: static;
-    }
-
-    .owwc-main-image-wrap {
-        border-radius: var(--owwc-radius-sm);
-        margin: 0;
-    }
-
-    .owwc-single-product-title {
-        font-size: 22px;
-    }
-
-    .owwc-single-product-price {
-        font-size: 20px;
-        margin-bottom: 16px;
-    }
-
-    .owwc-reviews-section {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-    }
-
-    .owwc-review-form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .owwc-cart-action-group {
-        flex-direction: row;
-        width: 100%;
-    }
-
-    .owwc-qty-wrapper {
-        width: 100px;
-    }
-
-    .owwc-add-to-cart-btn {
-        flex-grow: 1;
-    }
+  display: flex;
+}
 

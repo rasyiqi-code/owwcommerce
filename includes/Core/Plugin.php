@@ -236,8 +236,7 @@ class Plugin {
                     'owwc-frontend-desktop',
                     OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend-desktop.css',
                     ['owwc-frontend-pages'],
-                    OWWCOMMERCE_VERSION,
-                    'screen and (min-width: 769px)'
+                    OWWCOMMERCE_VERSION
                 );
 
                 // Enqueue Mobile CSS jika layar mobile (max-width: 768px)
@@ -245,8 +244,7 @@ class Plugin {
                     'owwc-frontend-mobile',
                     OWWCOMMERCE_PLUGIN_URL . 'assets/css/frontend-mobile.css',
                     ['owwc-frontend-pages'],
-                    OWWCOMMERCE_VERSION,
-                    'screen and (max-width: 768px)'
+                    OWWCOMMERCE_VERSION
                 );
             }
 
