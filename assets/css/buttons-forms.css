@@ -69,7 +69,7 @@ width: 100%;
 .owwc-input,
 .owwc-select {
     width: 100%;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border: 1.5px solid var(--owwc-border);
     border-radius: var(--owwc-radius-sm);
     background: var(--owwc-surface);
@@ -100,8 +100,8 @@ width: 100%;
 .owwc-form-row {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--owwc-space-md);
-    margin-bottom: var(--owwc-space-md);
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 @media (min-width: 769px) {
@@ -115,15 +115,15 @@ width: 100%;
 }
 
 .owwc-form-group {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
 .owwc-form-group label {
     display: block;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--owwc-text-main);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .owwc-btn {
