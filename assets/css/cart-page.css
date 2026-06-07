@@ -234,10 +234,3 @@ display: flex;
     flex-direction: column;
     gap: 16px;
 }
-
-/* Menyejajarkan Kuantitas & Tombol Beli */
-.owwc-cart-action-group {
-    display: flex;
-    gap: 12px;
-    align-items: center; /* Kuantitas sejajar dengan tombol beli */
-}

@@ -264,3 +264,11 @@ background: var(--owwc-border);
     cursor: not-allowed;
     box-shadow: none;
 }
+
+/* Menyejajarkan input kuantitas dan tombol beli/pilih variasi secara global */
+.owwc-cart-action-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
