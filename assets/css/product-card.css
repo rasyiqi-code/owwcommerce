@@ -273,5 +273,14 @@ font-size: 12px;
 }
 
 .owwc-mobile-price-value ins {
-text-decoration: none;
+    text-decoration: none;
+}
+
+/* Responsif Mobile: Grid 2 Kolom */
+@media (max-width: 768px) {
+    .owwc-products-grid { grid-template-columns: repeat(2, 1fr); gap: var(--owwc-space-sm); }
+    .owwc-product-info { padding: var(--owwc-space-sm); }
+    .owwc-product-title { font-size: 13px; margin-bottom: 4px; }
+    .owwc-price-current { font-size: 13px; }
+    .owwc-price-old { font-size: 10px; }
 }
