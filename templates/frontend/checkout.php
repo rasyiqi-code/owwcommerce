@@ -48,8 +48,6 @@ if ( $user_id ) {
 }
 ?>
 
-// Blank - Styles dipindahkan ke stylesheet eksternal
-
 <div class="owwc-checkout-container">
 
     <!-- Breadcrumb navigasi -->
