@@ -36,7 +36,7 @@ background: var(--owwc-bg);
 }
 
 .owwc-table td {
-padding: var(--owwc-space-lg) var(--owwc-space-md);
+    padding: 12px var(--owwc-space-md);
     border-bottom: 1px solid var(--owwc-border);
     vertical-align: middle;
     color: var(--owwc-text-main);
