@@ -127,13 +127,17 @@ width: 100%;
 }
 
 .owwc-btn {
-padding: 12px 24px;
+    padding: 10px 18px;
+    font-size: 13px;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: #111;
     color: #fff;
     border-radius: 6px;
     font-weight: 600;
+    transition: background 0.2s, transform 0.15s;
 }
 
 .owwc-btn:hover {
