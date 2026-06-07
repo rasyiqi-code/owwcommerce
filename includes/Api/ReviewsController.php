@@ -84,12 +84,29 @@ class ReviewsController extends WP_REST_Controller {
         $reviews = $this->repository->get_all();
         $formatted = [];
         
+        if ( empty( $reviews ) ) {
+            return new WP_REST_Response( [], 200 );
+        }
+
+        // Kumpulkan ID produk unik
+        $product_ids = array_unique( array_map( fn( $r ) => $r->product_id, $reviews ) );
+        
+        $product_titles = [];
+        if ( ! empty( $product_ids ) ) {
+            global $wpdb;
+            $table_products = $wpdb->prefix . 'oww_products';
+            $ids_placeholder = implode( ',', array_map( 'intval', $product_ids ) );
+            $results = $wpdb->get_results( "SELECT id, title FROM {$table_products} WHERE id IN ($ids_placeholder)", ARRAY_A );
+            if ( is_array( $results ) ) {
+                foreach ( $results as $row ) {
+                    $product_titles[ $row['id'] ] = $row['title'];
+                }
+            }
+        }
+
         foreach ( $reviews as $r ) {
             $data = $r->to_array();
-            // Get product title
-            $product_repo = new \OwwCommerce\Repositories\ProductRepository();
-            $product = $product_repo->find( $r->product_id );
-            $data['product_title'] = $product ? $product->title : 'Unknown Product';
+            $data['product_title'] = $product_titles[ $r->product_id ] ?? 'Unknown Product';
             $formatted[] = $data;
         }
 

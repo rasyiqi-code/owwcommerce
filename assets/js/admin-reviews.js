@@ -1,6 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
     const tbody = document.getElementById('owwc-reviews-tbody');
 
+    // Helper untuk mencegah XSS
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return '';
+        return String(str).replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
     const renderStars = (rating) => {
         let starsHtml = '';
         for (let i = 1; i <= 5; i++) {
@@ -17,28 +31,28 @@ document.addEventListener('DOMContentLoaded', function () {
             const reviews = await res.json();
 
             if (reviews.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">Belum ada ulasan yang masuk.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">Belum ada ulasan yang masuk.</td></tr>';
                 return;
             }
 
             tbody.innerHTML = reviews.map(r => `
                 <tr class="${r.status === 'pending' ? 'pending-row' : ''}">
                     <td>
-                        <div class="product-title">${r.product_title}</div>
-                        <div style="font-size: 11px; color: #999;">ID: ${r.product_id}</div>
+                        <div class="product-title">${escapeHTML(r.product_title)}</div>
+                        <div style="font-size: 11px; color: #999;">ID: ${escapeHTML(r.product_id)}</div>
                     </td>
                     <td>
                         <div class="author-info">
-                            <strong>${r.author_name || 'Anonim'}</strong>
-                            <div class="author-email">${r.author_email || '-'}</div>
+                            <strong>${escapeHTML(r.author_name || 'Anonim')}</strong>
+                            <div class="author-email">${escapeHTML(r.author_email || '-')}</div>
                         </div>
                     </td>
                     <td>${renderStars(r.rating)}</td>
                     <td>
-                        <div class="comment-text">${r.comment}</div>
+                        <div class="comment-text">${escapeHTML(r.comment)}</div>
                     </td>
                     <td>
-                        <span class="owwc-status-badge status-${r.status}">${r.status === 'pending' ? 'Menunggu' : 'Disetujui'}</span>
+                        <span class="owwc-status-badge status-${escapeHTML(r.status)}">${r.status === 'pending' ? 'Menunggu' : 'Disetujui'}</span>
                     </td>
                     <td>
                         <div style="font-size: 13px;">${new Date(r.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
@@ -47,11 +61,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td style="text-align: right;">
                         <div style="display: flex; gap: 5px; justify-content: flex-end;">
                             ${r.status === 'pending' ? `
-                                <button class="btn-approve-review" data-id="${r.id}" title="Setujui Ulasan">
+                                <button class="btn-approve-review" data-id="${escapeHTML(r.id)}" title="Setujui Ulasan">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 </button>
                             ` : ''}
-                            <button class="btn-delete-review" data-id="${r.id}" title="Hapus Ulasan">
+                            <button class="btn-delete-review" data-id="${escapeHTML(r.id)}" title="Hapus Ulasan">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                             </button>
                         </div>
@@ -107,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (e) {
             console.error(e);
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red; padding: 40px;">Gagal memuat data ulasan.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: red; padding: 40px;">Gagal memuat data ulasan.</td></tr>';
         }
     };
 
