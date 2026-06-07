@@ -1,20 +1,27 @@
+<?php
+/**
+ * Template Halaman Katalog Produk OwwCommerce
+ * Komentar dan deskripsi menggunakan Bahasa Indonesia.
+ */
+?>
 <div class="owwc-admin-wrap">
-    <div class="owwc-admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div class="owwc-admin-header owwc-mb-3">
         <h1><?php esc_html_e( 'Katalog Produk', 'owwcommerce' ); ?></h1>
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <div id="owwc-bulk-set-all-wrap" style="display: none; align-items: center; gap: 8px; background: #f3f4f6; padding: 4px 10px; border-radius: 6px; border: 1px solid #e5e7eb;">
-                <input type="number" id="owwc-bulk-stock-all-input" class="owwc-admin-input" placeholder="Stok..." style="width: 80px; height: 32px; font-size: 13px;">
-                <button id="owwc-bulk-stock-all-btn" class="owwc-admin-btn owwc-btn-secondary" style="padding: 4px 12px; height: 32px; font-size: 13px; background: white;">Set Semua</button>
+        <div class="owwc-flex-align-center owwc-flex-gap-2">
+            <!-- Helper Update Stok Massal Compact -->
+            <div id="owwc-bulk-set-all-wrap" class="owwc-flex-align-center owwc-flex-gap-2 owwc-p-2" style="display: none; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: var(--owwc-admin-radius); padding-top: 2px; padding-bottom: 2px; height: 26px;">
+                <input type="number" id="owwc-bulk-stock-all-input" class="owwc-admin-input owwc-text-xs" placeholder="Stok..." style="width: 70px; height: 22px; padding: 2px 6px;">
+                <button id="owwc-bulk-stock-all-btn" class="owwc-admin-btn owwc-btn-secondary owwc-admin-btn-sm" style="height: 22px; padding: 0 8px; line-height: 22px; background: white;">Set Semua</button>
             </div>
-            <button id="owwc-bulk-stock-btn" class="owwc-admin-btn owwc-btn-secondary">Update Stok Massal</button>
-            <a href="?page=owwc-products&action=add" class="owwc-admin-btn" style="text-decoration: none;">Tambah Produk Baru</a>
+            <button id="owwc-bulk-stock-btn" class="owwc-admin-btn owwc-btn-secondary owwc-admin-btn-sm">Update Stok Massal</button>
+            <a href="?page=owwc-products&action=add" class="owwc-admin-btn owwc-admin-btn-sm" style="text-decoration: none;">Tambah Produk Baru</a>
         </div>
     </div>
     
     <!-- Render Table via Javascript API -->
     <div id="owwc-products-app">
-        <div class="owwc-admin-card" style="padding: 0; overflow:hidden;">
-            <p style="padding: 24px; text-align: center; color: #666;">Memuat data produk...</p>
+        <div class="owwc-admin-card owwc-p-0" style="overflow: hidden;">
+            <p class="owwc-text-muted owwc-p-4" style="text-align: center; margin: 0;">Memuat data produk...</p>
         </div>
     </div>
 </div>

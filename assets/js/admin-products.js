@@ -90,9 +90,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             </span>
                         </td>
                         <td style="text-align: right; vertical-align: middle;">
-                            <a href="${escapeHTML(owwcSettings.homeUrl)}${escapeHTML(owwcSettings.productBase)}/${escapeHTML(p.slug)}" target="_blank" class="owwc-admin-btn" style="padding: 6px 12px; font-size: 12px; margin-right: 4px; text-decoration:none; background:#2271b1; color:white;">Lihat</a>
-                            <a href="?page=owwc-products&action=edit&id=${p.id}" class="owwc-admin-btn owwc-btn-secondary" style="padding: 6px 12px; font-size: 12px; margin-right: 4px; text-decoration:none;">Edit</a>
-                            <button class="owwc-admin-btn owwc-admin-btn-danger owwc-btn-delete" data-id="${p.id}" style="padding: 6px 12px; font-size: 12px;">Hapus</button>
+                            <a href="${escapeHTML(owwcSettings.homeUrl)}${escapeHTML(owwcSettings.productBase)}/${escapeHTML(p.slug)}" target="_blank" class="owwc-admin-btn owwc-admin-btn-sm" style="text-decoration:none; background:#2271b1; color:white; margin-right:4px;">Lihat</a>
+                            <a href="?page=owwc-products&action=edit&id=${p.id}" class="owwc-admin-btn owwc-btn-secondary owwc-admin-btn-sm" style="text-decoration:none; margin-right:4px;">Edit</a>
+                            <button class="owwc-admin-btn owwc-admin-btn-danger owwc-btn-delete owwc-admin-btn-sm" data-id="${p.id}">Hapus</button>
                         </td>
                     </tr>
                 `;
@@ -103,13 +103,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Pagination UI
             if (data.total_pages > 1) {
                 html += `
-                    <div class="owwc-admin-pagination" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; background:white; padding:15px; border-radius:8px; border:1px solid #e5e7eb;">
-                        <div class="pagination-info" style="color:#6b7280; font-size:14px;">
+                    <div class="owwc-admin-pagination owwc-flex-between owwc-p-3 owwc-mt-3" style="background:white; border-radius:var(--owwc-admin-radius); border:1px solid #e5e7eb;">
+                        <div class="pagination-info owwc-text-muted">
                             Menampilkan halaman <strong>${data.current_page}</strong> dari <strong>${data.total_pages}</strong> (Total: ${data.total_items} produk)
                         </div>
-                        <div class="pagination-controls">
-                            <button class="owwc-admin-btn owwc-btn-secondary owwc-prev-page" ${data.current_page <= 1 ? 'disabled' : ''} style="margin-right:10px;">&laquo; Sebelumnya</button>
-                            <button class="owwc-admin-btn owwc-btn-secondary owwc-next-page" ${data.current_page >= data.total_pages ? 'disabled' : ''}>Selanjutnya &raquo;</button>
+                        <div class="pagination-controls owwc-flex owwc-flex-gap-2">
+                            <button class="owwc-admin-btn owwc-btn-secondary owwc-admin-btn-sm owwc-prev-page" ${data.current_page <= 1 ? 'disabled' : ''}>&laquo; Sebelumnya</button>
+                            <button class="owwc-admin-btn owwc-btn-secondary owwc-admin-btn-sm owwc-next-page" ${data.current_page >= data.total_pages ? 'disabled' : ''}>Selanjutnya &raquo;</button>
                         </div>
                     </div>
                 `;

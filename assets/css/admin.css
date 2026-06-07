@@ -1,7 +1,8 @@
 /*
  * OwwCommerce Admin Premium CSS
  * Tema: Hitam & Gold (Dark Mode Premium)
- * Clean, SaaS-like dashboard design inside WordPress admin panel.
+ * Desain dashboard ala SaaS di dalam panel admin WordPress.
+ * Edisi Compact (Optimalisasi ruang dan ukuran agar padat & elegan)
  */
 
 :root {
@@ -15,16 +16,16 @@
     --owwc-admin-text-muted: #6B7280;
     --owwc-admin-danger: #EF4444;
     --owwc-admin-success: #10B981;
-    --owwc-admin-radius: 12px;
-    --owwc-admin-radius-sm: 8px;
-    --owwc-admin-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --owwc-admin-radius: 6px; /* Lebih tegas dan compact */
+    --owwc-admin-radius-sm: 4px;
+    --owwc-admin-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 /* ==============================================================
-   1. LAYOUT WRAPPERS
+   1. STRUKTUR TATA LETAK (LAYOUT WRAPPERS)
    ============================================================== */
 .owwc-admin-wrap {
-    margin: 20px 20px 0 0;
+    margin: 10px 15px 0 0; /* Jarak luar yang lebih rapat */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
@@ -32,29 +33,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 12px; /* Lebih rapat */
 }
 
 .owwc-admin-header h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: 1.25rem; /* Ukuran font judul lebih compact */
+    font-weight: 700;
     color: var(--owwc-admin-text-main);
     margin: 0;
     padding: 0;
+    letter-spacing: -0.01em;
 }
 
-/* Split View Layout (Misal untuk Categories/Products: Kiri Form, Kanan Table) */
+/* Tampilan Terbagi (Split View) */
 .owwc-admin-split {
     display: flex;
-    gap: 30px;
+    gap: 16px; /* Jarak pemisah antar kolom lebih compact */
     align-items: flex-start;
 }
 
 .owwc-admin-split-form {
-    flex: 0 0 320px;
+    flex: 0 0 270px; /* Lebar form samping lebih padat */
     position: sticky;
-    top: 50px;
-    /* offset for admin bar */
+    top: 40px;
 }
 
 .owwc-admin-split-table {
@@ -62,11 +63,11 @@
     min-width: 0;
 }
 
-/* 2-Column Form Layout (Main + Sidebar) */
+/* Tata Letak 2 Kolom (Main + Sidebar) */
 .owwc-admin-2col-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr) 270px;
+    gap: 16px;
     align-items: start;
 }
 
@@ -77,52 +78,53 @@
 }
 
 /* ==============================================================
-   2. CARDS / SURFACES
+   2. KARTU WADAH (CARDS / SURFACES)
    ============================================================== */
 .owwc-admin-card {
     background: var(--owwc-admin-surface);
     border: 1px solid var(--owwc-admin-border);
     border-radius: var(--owwc-admin-radius);
-    padding: 24px;
+    padding: 16px; /* Padding lebih compact dari 20px */
     box-shadow: var(--owwc-admin-shadow);
-    margin-bottom: 24px;
+    margin-bottom: 14px;
 }
 
 .owwc-admin-card h2,
 .owwc-admin-card h3 {
     margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 1.1rem;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
     color: var(--owwc-admin-text-main);
-    font-weight: 600;
+    font-weight: 700;
     border-bottom: 1px solid var(--owwc-admin-border);
-    padding-bottom: 15px;
+    padding-bottom: 8px;
 }
 
 /* ==============================================================
-   2.1 TABS SYSTEM (Segmented Control / Pills v2)
+   2.1 SISTEM NAVIGASI TAB (Segmented Control / Pills)
    ============================================================== */
 .owwc-tabs {
     display: inline-flex;
-    background: #E5E7EB;
-    padding: 4px;
+    background: #e5e7eb;
+    padding: 2.5px;
     border-radius: var(--owwc-admin-radius);
-    margin-bottom: 30px;
-    gap: 4px;
+    margin-bottom: 14px;
+    gap: 1.5px;
+    flex-wrap: wrap;
 }
 
 .owwc-tab-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
+    gap: 4px;
+    padding: 6px 12px; /* Tab lebih compact */
     font-weight: 600;
     color: var(--owwc-admin-text-muted);
     text-decoration: none;
-    border-radius: calc(var(--owwc-admin-radius) - 4px);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: calc(var(--owwc-admin-radius) - 2px);
+    transition: all 0.2s ease;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
     border: none;
     background: transparent;
 }
@@ -135,20 +137,19 @@
 .owwc-tab-item.active {
     color: var(--owwc-admin-text-main);
     background: var(--owwc-admin-surface);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .owwc-tab-item .dashicons {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
     color: inherit;
 }
 
 .owwc-tab-content {
     display: none !important;
-    /* Force hide by default */
-    animation: owwc-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: owwc-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .owwc-tab-content.active {
@@ -158,9 +159,8 @@
 @keyframes owwc-slide-up {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(4px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -168,16 +168,17 @@
 }
 
 /* ==============================================================
-   3. FORM STYLES
+   3. GAYA FORMULIR (FORM STYLES)
    ============================================================== */
 .owwc-admin-wrap .form-field {
-    margin-bottom: 16px;
+    margin-bottom: 8px; /* Lebih rapat dan hemat ruang */
 }
 
 .owwc-admin-wrap label {
     display: block;
-    margin-bottom: 6px;
-    font-weight: 500;
+    margin-bottom: 3px;
+    font-size: 12px;
+    font-weight: 600;
     color: var(--owwc-admin-text-main);
 }
 
@@ -185,13 +186,12 @@
 .owwc-admin-select,
 .owwc-admin-textarea {
     width: 100%;
-    padding: 10px 14px;
-    border: 1px solid var(--owwc-admin-border);
+    padding: 6px 10px; /* Input lebih compact */
+    border: 1.5px solid var(--owwc-admin-border);
     border-radius: var(--owwc-admin-radius-sm);
-    /* Gunakan variable agar konsisten dengan dark mode */
     background-color: var(--owwc-admin-surface);
     color: var(--owwc-admin-text-main);
-    font-size: 14px;
+    font-size: 12.5px;
     transition: all 0.2s ease;
     box-sizing: border-box;
 }
@@ -200,49 +200,45 @@
 .owwc-admin-select:focus,
 .owwc-admin-textarea:focus {
     border-color: var(--owwc-admin-primary);
-    /* Focus ring gold */
-    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
+    box-shadow: 0 0 0 2.5px rgba(212, 168, 67, 0.15);
     outline: none;
 }
 
 /* ==============================================================
-   4. BUTTONS
+   4. TOMBOL-TOMBOL (BUTTONS)
    ============================================================== */
 .owwc-admin-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background: var(--owwc-admin-primary);
-    /* Teks putih di atas background gold */
     color: #fff;
     border: none;
     border-radius: var(--owwc-admin-radius-sm);
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 500;
+    padding: 6px 12px; /* Ukuran tombol lebih compact */
+    font-size: 12.5px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
-    line-height: normal;
+    line-height: 1.2;
 }
 
 .owwc-admin-btn:hover {
     background: var(--owwc-admin-primary-hover);
     transform: translateY(-1px);
-    /* Shadow gold pada hover */
-    box-shadow: 0 4px 6px rgba(212, 168, 67, 0.25);
+    box-shadow: 0 3px 6px rgba(212, 168, 67, 0.2);
     color: #fff;
 }
 
 .owwc-admin-btn-outline {
     background: transparent;
     color: var(--owwc-admin-text-main);
-    border: 1px solid var(--owwc-admin-border);
+    border: 1.5px solid var(--owwc-admin-border);
 }
 
 .owwc-admin-btn-outline:hover {
     background: var(--owwc-admin-bg);
-    /* Gunakan variable border agar konsisten */
     border-color: var(--owwc-admin-border);
     color: var(--owwc-admin-text-main);
     transform: translateY(-1px);
@@ -251,7 +247,7 @@
 .owwc-admin-btn-danger {
     background: transparent;
     color: var(--owwc-admin-danger);
-    border: 1px solid transparent;
+    border: 1.5px solid transparent;
 }
 
 .owwc-admin-btn-danger:hover {
@@ -259,8 +255,28 @@
     color: #DC2626;
 }
 
+/* Tombol Kecil (Small Button) */
+.owwc-admin-btn-sm {
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: var(--owwc-admin-radius-sm);
+}
+
+.owwc-btn-secondary {
+    background: #fff;
+    color: var(--owwc-admin-text-main);
+    border: 1px solid var(--owwc-admin-border);
+}
+
+.owwc-btn-secondary:hover {
+    background: #f3f4f6;
+    color: var(--owwc-admin-text-main);
+    box-shadow: none;
+    transform: none;
+}
+
 /* ==============================================================
-   5. DATA TABLES (WordPress List Table Overrides)
+   5. TABEL DATA (DATA TABLES)
    ============================================================== */
 .owwc-admin-table {
     width: 100%;
@@ -270,26 +286,26 @@
     border-radius: var(--owwc-admin-radius);
     border: 1px solid var(--owwc-admin-border);
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    /* Lighter shadow for table */
+    box-shadow: var(--owwc-admin-shadow);
 }
 
 .owwc-admin-table th {
     background: var(--owwc-admin-bg);
-    padding: 14px 16px;
-    font-weight: 600;
+    padding: 8px 12px; /* Padding header tabel lebih compact */
+    font-weight: 700;
     text-align: left;
     color: var(--owwc-admin-text-muted);
-    font-size: 13px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border-bottom: 1px solid var(--owwc-admin-border);
 }
 
 .owwc-admin-table td {
-    padding: 16px;
+    padding: 8px 12px; /* Sel baris tabel lebih compact */
     border-bottom: 1px solid var(--owwc-admin-border);
     color: var(--owwc-admin-text-main);
+    font-size: 12.5px;
     vertical-align: middle;
 }
 
@@ -298,18 +314,17 @@
 }
 
 .owwc-admin-table tbody tr:hover {
-    /* Hover row */
     background-color: #F9FAFB;
 }
 
-/* Status Badges */
+/* Lencana Status (Status Badges) */
 .owwc-badge {
     display: inline-flex;
     align-items: center;
-    padding: 4px 10px;
+    padding: 2px 6px; /* Lencana lebih tipis */
     border-radius: 9999px;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 10.5px;
+    font-weight: 600;
     text-transform: capitalize;
 }
 
@@ -335,12 +350,11 @@
 }
 
 /* ==============================================================
-   6. MODALS
+   6. JENDELA DIALOG (MODALS)
    ============================================================== */
 .owwc-admin-modal {
     position: fixed;
     z-index: 100000;
-    /* Higher than WP Admin Bar */
     left: 0;
     top: 0;
     width: 100%;
@@ -348,7 +362,6 @@
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(4px);
     display: none;
-    /* Default hidden */
     align-items: center;
     justify-content: center;
 }
@@ -357,14 +370,14 @@
     background-color: var(--owwc-admin-surface);
     border-radius: var(--owwc-admin-radius);
     width: 100%;
-    max-width: 500px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 420px; /* Dialog lebih compact */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    animation: owwc-modal-fade 0.3s ease-out;
+    animation: owwc-modal-fade 0.25s ease-out;
 }
 
 .owwc-admin-modal-header {
-    padding: 20px 24px;
+    padding: 12px 16px; /* Header modal lebih compact */
     border-bottom: 1px solid var(--owwc-admin-border);
     display: flex;
     justify-content: space-between;
@@ -373,12 +386,12 @@
 
 .owwc-admin-modal-header h3 {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
 }
 
 .owwc-close-modal {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     color: var(--owwc-admin-text-muted);
     cursor: pointer;
@@ -390,36 +403,35 @@
 }
 
 /* ==============================================================
-   7. ADVANCED FORM STYLES
+   7. FORMULIR TINGKAT LANJUT (ADVANCED FORM STYLES)
    ============================================================== */
 .owwc-admin-form {
-    padding: 24px;
+    padding: 16px;
 }
 
 .owwc-form-group {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .owwc-form-group:last-of-type {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .owwc-form-group label {
-    font-size: 13px;
-    margin-bottom: 8px;
+    font-size: 12px;
+    margin-bottom: 4px;
     color: var(--owwc-admin-text-main);
     display: block;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .owwc-form-actions {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     justify-content: flex-end;
-    padding-top: 12px;
     border-top: 1px solid var(--owwc-admin-border);
-    margin: 0 -24px -24px -24px;
-    padding: 20px 24px;
+    margin: 0 -16px -16px -16px;
+    padding: 12px 16px;
     background: #f9fafb;
 }
 
@@ -427,30 +439,18 @@
     text-transform: uppercase;
 }
 
-.owwc-btn-secondary {
-    background: #fff;
-    color: var(--owwc-admin-text-main);
-    border: 1px solid var(--owwc-admin-border);
-}
-
-.owwc-btn-secondary:hover {
-    background: #f3f4f6;
-    color: var(--owwc-admin-text-main);
-}
-
 @keyframes owwc-modal-fade {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-8px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* Responsive Adjustments */
+/* Penyesuaian Responsif */
 @media (max-width: 900px) {
     .owwc-admin-split {
         flex-direction: column;
@@ -464,11 +464,11 @@
 
     .owwc-admin-modal-content {
         max-width: 90%;
-        margin: 20px;
+        margin: 16px;
     }
 }
 
-/* Custom Modal Dialog (Gold & Dark) */
+/* Dialog Kustom (Custom Modal - Emas & Gelap) */
 .owwc-custom-modal-backdrop {
     position: fixed;
     top: 0;
@@ -491,14 +491,14 @@
 
 .owwc-custom-modal-box {
     background: #1f2937;
-    border: 2px solid #D4A843;
-    border-radius: 12px;
-    padding: 24px;
-    max-width: 400px;
+    border: 1.5px solid #D4A843;
+    border-radius: 6px;
+    padding: 16px;
+    max-width: 320px;
     width: 90%;
     color: #f3f4f6;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 168, 67, 0.2);
-    transform: scale(0.9);
+    transform: scale(0.95);
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -508,33 +508,33 @@
 }
 
 .owwc-custom-modal-header {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
     color: #D4A843;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .owwc-custom-modal-body {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 12px;
+    line-height: 1.4;
     color: #d1d5db;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .owwc-custom-modal-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
+    gap: 8px;
 }
 
 .owwc-custom-modal-btn {
-    padding: 8px 16px;
-    font-size: 13px;
+    padding: 4px 10px;
+    font-size: 11px;
     font-weight: 600;
-    border-radius: 6px;
+    border-radius: 4px;
     cursor: pointer;
     border: none;
     transition: all 0.2s;
@@ -557,4 +557,88 @@
 
 .owwc-custom-modal-btn-cancel:hover {
     background: #4b5563;
+}
+
+/* ==============================================================
+   8. KELAS UTILITAS LAYOUT & SPACING (COMPACT & MODERN)
+   ============================================================== */
+.owwc-flex {
+    display: flex;
+}
+
+.owwc-flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.owwc-flex-align-center {
+    display: flex;
+    align-items: center;
+}
+
+.owwc-flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.owwc-flex-gap-1 {
+    gap: 4px;
+}
+
+.owwc-flex-gap-2 {
+    gap: 8px;
+}
+
+.owwc-flex-gap-3 {
+    gap: 12px;
+}
+
+.owwc-grid-2col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.owwc-grid-3col {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.owwc-grid-4col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+/* Margin Vertikal */
+.owwc-mb-1 { margin-bottom: 4px !important; }
+.owwc-mb-2 { margin-bottom: 8px !important; }
+.owwc-mb-3 { margin-bottom: 12px !important; }
+.owwc-mb-4 { margin-bottom: 16px !important; }
+
+.owwc-mt-1 { margin-top: 4px !important; }
+.owwc-mt-2 { margin-top: 8px !important; }
+.owwc-mt-3 { margin-top: 12px !important; }
+.owwc-mt-4 { margin-top: 16px !important; }
+
+/* Padding Utilities */
+.owwc-p-0 { padding: 0 !important; }
+.owwc-p-2 { padding: 8px !important; }
+.owwc-p-3 { padding: 12px !important; }
+.owwc-p-4 { padding: 16px !important; }
+
+/* Teks Utilities */
+.owwc-text-muted {
+    color: var(--owwc-admin-text-muted) !important;
+    font-size: 11.5px !important;
+}
+
+.owwc-text-sm {
+    font-size: 12px !important;
+}
+
+.owwc-text-xs {
+    font-size: 10.5px !important;
 }

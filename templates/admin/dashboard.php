@@ -1,57 +1,69 @@
+<?php
+/**
+ * Template Halaman Dashboard Overview OwwCommerce
+ * Komentar dan deskripsi menggunakan Bahasa Indonesia.
+ */
+?>
 <div class="owwc-admin-wrap">
-    <div class="owwc-admin-header" style="margin-bottom: 30px;">
-        <h1><?php esc_html_e( 'Dashboard Overview', 'owwcommerce' ); ?></h1>
-        <p style="color: #666; margin-top: 5px;">Ringkasan performa toko OwwCommerce Anda.</p>
-    </div>
-
-    <!-- Quick Stats Cards -->
-    <div class="owwc-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 40px;">
-        <div class="owwc-admin-card" style="border-left: 4px solid var(--owwc-admin-primary);">
-            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Total Pendapatan</p>
-            <h2 id="stat-revenue" style="font-size: 28px; margin: 0;"><?php echo esc_html( get_option('owwc_currency_symbol', 'Rp') ); ?> 0</h2>
-        </div>
-        <div class="owwc-admin-card" style="border-left: 4px solid #10b981;">
-            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Total Pesanan</p>
-            <h2 id="stat-orders" style="font-size: 28px; margin: 0;">0</h2>
-        </div>
-        <div class="owwc-admin-card" style="border-left: 4px solid #3b82f6;">
-            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Total Produk</p>
-            <h2 id="stat-products" style="font-size: 28px; margin: 0;">0</h2>
+    <div class="owwc-admin-header owwc-mb-3">
+        <div>
+            <h1><?php esc_html_e( 'Dashboard Overview', 'owwcommerce' ); ?></h1>
+            <p class="owwc-text-muted owwc-mt-1 owwc-mb-0">Ringkasan performa toko OwwCommerce Anda secara real-time.</p>
         </div>
     </div>
 
-    <div class="owwc-dashboard-main-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+    <!-- Quick Stats Cards (Grid 3 Kolom Compact) -->
+    <div class="owwc-grid-3col owwc-mb-3">
+        <div class="owwc-admin-card owwc-p-3" style="border-left: 4px solid var(--owwc-admin-primary); margin-bottom: 0;">
+            <p class="owwc-text-muted owwc-mb-2">Total Pendapatan</p>
+            <h2 id="stat-revenue" class="owwc-mb-0" style="font-size: 22px; font-weight: 700; border-bottom: none; padding-bottom: 0;">
+                <?php echo esc_html( get_option('owwc_currency_symbol', 'Rp') ); ?> 0
+            </h2>
+        </div>
+        <div class="owwc-admin-card owwc-p-3" style="border-left: 4px solid #10b981; margin-bottom: 0;">
+            <p class="owwc-text-muted owwc-mb-2">Total Pesanan</p>
+            <h2 id="stat-orders" class="owwc-mb-0" style="font-size: 22px; font-weight: 700; border-bottom: none; padding-bottom: 0;">0</h2>
+        </div>
+        <div class="owwc-admin-card owwc-p-3" style="border-left: 4px solid #3b82f6; margin-bottom: 0;">
+            <p class="owwc-text-muted owwc-mb-2">Total Produk</p>
+            <h2 id="stat-products" class="owwc-mb-0" style="font-size: 22px; font-weight: 700; border-bottom: none; padding-bottom: 0;">0</h2>
+        </div>
+    </div>
+
+    <!-- Layout Utama (Dua Kolom: Chart + Sidebar Produk Terlaris) -->
+    <div class="owwc-admin-2col-layout">
         <!-- Sales Chart -->
         <div class="owwc-admin-card">
-            <h3 style="margin-bottom: 20px;">Grafik Pendapatan (7 Hari Terakhir)</h3>
-            <div style="height: 300px; width: 100%;">
+            <h3 class="owwc-mb-3">Grafik Pendapatan (7 Hari Terakhir)</h3>
+            <div style="height: 220px; width: 100%;">
                 <canvas id="owwc-sales-chart"></canvas>
             </div>
         </div>
 
         <!-- Top Products -->
         <div class="owwc-admin-card">
-            <h3 style="margin-bottom: 20px;">Produk Terlaris</h3>
+            <h3 class="owwc-mb-3">Produk Terlaris</h3>
             <div id="top-products-list">
-                <p style="color: #666; font-size: 13px;">Sedang memuat...</p>
+                <p class="owwc-text-muted">Sedang memuat data...</p>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+/* CSS khusus untuk item list produk terlaris agar lebih rapat */
 .owwc-top-product-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
+    padding: 8px 0; /* Padding diperkecil dari 12px ke 8px agar lebih compact */
     border-bottom: 1px solid #eee;
 }
 .owwc-top-product-item:last-child {
     border-bottom: none;
 }
 .owwc-top-product-meta {
-    font-size: 12px;
+    font-size: 11px;
     color: #888;
 }
 </style>
