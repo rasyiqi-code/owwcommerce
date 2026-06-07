@@ -289,63 +289,69 @@ get_header(); ?>
 
     <!-- Halaman Ulasan (Reviews) -->
     <div class="owwc-reviews-section">
-        <div class="owwc-reviews-header">
-            <h2 class="owwc-reviews-title">Ulasan Pembeli (0)</h2>
-            <div class="owwc-average-rating">
-                <div class="owwc-rating-stars-wrap">
-                    <div class="owwc-rating-stars" id="owwc-avg-stars">
-                        <!-- Stars via JS -->
+        <!-- Kolom Kiri: Daftar ulasan dan rata-rata rating -->
+        <div class="owwc-reviews-col-left">
+            <div class="owwc-reviews-header">
+                <h2 class="owwc-reviews-title">Ulasan Pembeli (0)</h2>
+                <div class="owwc-average-rating">
+                    <div class="owwc-rating-stars-wrap">
+                        <div class="owwc-rating-stars" id="owwc-avg-stars">
+                            <!-- Bintang rating akan dimuat via JavaScript -->
+                        </div>
                     </div>
+                    <strong id="owwc-avg-num">0.0</strong>
                 </div>
-                <strong id="owwc-avg-num">0.0</strong>
+            </div>
+
+            <div id="owwc-review-list" class="owwc-review-list">
+                <p style="text-align: center; color: #999; padding: 40px 0;">Belum ada ulasan untuk produk ini. Jadilah yang pertama memberikan ulasan!</p>
             </div>
         </div>
 
-        <div id="owwc-review-list" class="owwc-review-list">
-            <p style="text-align: center; color: #999; padding: 40px 0;">Belum ada ulasan untuk produk ini. Jadilah yang pertama memberikan ulasan!</p>
-        </div>
-
-        <div class="owwc-review-form-card">
-            <h3>Tulis Ulasan</h3>
-            <p class="form-subtitle">Bagikan pengalaman Anda tentang produk ini untuk membantu pembeli lain.</p>
-            
-            <form id="owwc-review-form">
-                <div class="owwc-review-form-field">
-                    <label>Rating Anda *</label>
-                    <div class="owwc-rating-picker">
-                        <input type="radio" name="rating" id="star5" value="5" required><label for="star5">★</label>
-                        <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
-                        <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
-                        <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
-                        <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+        <!-- Kolom Kanan: Formulir tambah ulasan -->
+        <div class="owwc-reviews-col-right">
+            <div class="owwc-review-form-card">
+                <h3>Tulis Ulasan</h3>
+                <p class="form-subtitle">Bagikan pengalaman Anda tentang produk ini untuk membantu pembeli lain.</p>
+                
+                <form id="owwc-review-form">
+                    <div class="owwc-review-form-field">
+                        <label>Rating Anda *</label>
+                        <div class="owwc-rating-picker">
+                            <input type="radio" name="rating" id="star5" value="5" required><label for="star5">★</label>
+                            <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
+                            <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
+                            <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
+                            <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="owwc-review-form-grid">
-                    <?php if ( ! is_user_logged_in() ) : ?>
-                        <div class="owwc-review-form-field">
-                            <label>Nama *</label>
-                            <input type="text" name="author_name" required placeholder="Nama Anda" class="owwc-admin-input">
-                        </div>
-                        <div class="owwc-review-form-field">
-                            <label>Email *</label>
-                            <input type="email" name="author_email" required placeholder="admin@example.com" class="owwc-admin-input">
-                        </div>
-                    <?php endif; ?>
-                </div>
+                    <div class="owwc-review-form-grid">
+                        <?php if ( ! is_user_logged_in() ) : ?>
+                            <div class="owwc-review-form-field">
+                                <label>Nama *</label>
+                                <input type="text" name="author_name" required placeholder="Nama Anda" class="owwc-admin-input">
+                            </div>
+                            <div class="owwc-review-form-field">
+                                <label>Email *</label>
+                                <input type="email" name="author_email" required placeholder="admin@example.com" class="owwc-admin-input">
+                            </div>
+                        <?php endif; ?>
+                    </div>
 
-                <div class="owwc-review-form-field">
-                    <label>Komentar *</label>
-                    <textarea name="comment" required rows="5" placeholder="Tulis komentar ulasan Anda di sini..." class="owwc-admin-input"></textarea>
-                </div>
+                    <div class="owwc-review-form-field">
+                        <label>Komentar *</label>
+                        <textarea name="comment" required rows="5" placeholder="Tulis komentar ulasan Anda di sini..." class="owwc-admin-input"></textarea>
+                    </div>
 
-                <div class="owwc-review-submit-wrap">
-                    <button type="submit" id="owwc-submit-review" class="owwc-btn">
-                        Kirim Ulasan
-                    </button>
-                    <span id="owwc-review-msg" class="owwc-review-msg"></span>
-                </div>
-            </form>
+                    <div class="owwc-review-submit-wrap">
+                        <button type="submit" id="owwc-submit-review" class="owwc-btn">
+                            Kirim Ulasan
+                        </button>
+                        <span id="owwc-review-msg" class="owwc-review-msg"></span>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

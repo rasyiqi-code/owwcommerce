@@ -224,8 +224,15 @@ class Plugin {
                 );
             }
 
-            // Cek khusus untuk single product script (hanya di-load di halaman detail produk virtual)
+            // Cek khusus untuk single product (halaman detail produk virtual)
             if ( get_query_var( 'owwc_product_slug' ) ) {
+                wp_enqueue_style(
+                    'owwc-single-product',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/css/single-product.css',
+                    ['owwc-frontend-pages'],
+                    OWWCOMMERCE_VERSION
+                );
+
                 wp_enqueue_script(
                     'owwc-single-product-app',
                     OWWCOMMERCE_PLUGIN_URL . 'assets/js/single-product.js',
