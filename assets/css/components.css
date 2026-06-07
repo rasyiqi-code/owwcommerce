@@ -5,7 +5,7 @@
    ============================================================== */
 .owwc-toast-container {
 position: fixed;
-    bottom: var(--owwc-space-lg);
+    top: var(--owwc-space-lg);
     right: var(--owwc-space-lg);
     display: flex;
     flex-direction: column;
