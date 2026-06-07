@@ -9,8 +9,10 @@ max-width: 900px;
     padding: var(--owwc-space-xl) var(--owwc-space-md);
 }
 
+/* Menengahkan judul dan subjudul halaman keranjang belanja */
 .owwc-cart-header {
-margin-bottom: var(--owwc-space-xl);
+    text-align: center;
+    margin-bottom: var(--owwc-space-xl);
 }
 
 /* Tabel cart — desktop */

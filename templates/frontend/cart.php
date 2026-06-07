@@ -18,12 +18,6 @@ $shop_url     = $shop_page_id ? get_permalink( $shop_page_id ) : site_url( '/tok
 
 <div class="owwc-cart-container">
 
-    <!-- Breadcrumb navigasi -->
-    <nav class="owwc-breadcrumb" aria-label="Breadcrumb">
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Beranda</a>
-        <span class="owwc-breadcrumb-sep">›</span>
-        <span class="owwc-breadcrumb-current">Keranjang Belanja</span>
-    </nav>
 
     <!-- Header halaman -->
     <div class="owwc-cart-header">
