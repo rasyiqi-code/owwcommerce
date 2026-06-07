@@ -46,14 +46,6 @@ get_header(); ?>
 
 <div class="owwc-single-product">
 
-    <!-- Breadcrumb navigasi -->
-    <nav class="owwc-breadcrumb" aria-label="Breadcrumb">
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Beranda</a>
-        <span class="owwc-breadcrumb-sep">›</span>
-        <a href="<?php echo esc_url( $shop_url ); ?>">Toko</a>
-        <span class="owwc-breadcrumb-sep">›</span>
-        <span class="owwc-breadcrumb-current"><?php echo esc_html( $product->title ); ?></span>
-    </nav>
 
     <!-- Layout produk: gambar kiri, detail kanan -->
     <div class="owwc-single-product-layout">

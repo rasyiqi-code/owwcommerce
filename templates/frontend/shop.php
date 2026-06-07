@@ -73,12 +73,6 @@ $hero_sub_color  = get_theme_mod( 'owwc_hero_subtitle_color', 'rgba(255, 255, 25
     <div class="owwc-shop-hero">
         <div class="owwc-shop-hero-content">
             <?php $page_title = get_post_field( 'post_title', get_queried_object_id() ) ?: 'Toko'; ?>
-            <!-- Breadcrumb navigasi -->
-            <nav class="owwc-breadcrumb" aria-label="Breadcrumb">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Beranda</a>
-                <span class="owwc-breadcrumb-sep">/</span>
-                <span class="owwc-breadcrumb-current"><?php echo esc_html( $page_title ); ?></span>
-            </nav>
 
             <h1 class="owwc-hero-title"><?php echo esc_html( $page_title ); ?></h1>
             <p class="owwc-hero-subtitle">Temukan produk berkualitas dan koleksi menarik terbaru dari kami.</p>
