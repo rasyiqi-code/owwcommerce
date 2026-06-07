@@ -24,6 +24,13 @@ class Plugin {
             }
         }, 1 );
 
+        // Pastikan session ditulis ke disk saat request shutdown (sangat penting untuk REST API)
+        add_action( 'shutdown', function() {
+            if ( session_status() === PHP_SESSION_ACTIVE ) {
+                session_write_close();
+            }
+        } );
+
         // Auto-upgrade: jalankan Installer jika versi plugin berubah
         // Ini menangani penambahan kolom baru (image_url, billing_address, dll.)
         // tanpa perlu deaktifasi/aktifasi manual.

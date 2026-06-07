@@ -15,13 +15,20 @@ class Cart {
     }
 
     private function load_cart(): void {
+        if ( session_status() === PHP_SESSION_NONE && ! headers_sent() ) {
+            session_start();
+        }
         if ( isset( $_SESSION[ $this->session_key ] ) && is_array( $_SESSION[ $this->session_key ] ) ) {
             $this->items = $_SESSION[ $this->session_key ];
         }
     }
 
     private function save_cart(): void {
+        if ( session_status() === PHP_SESSION_NONE && ! headers_sent() ) {
+            session_start();
+        }
         $_SESSION[ $this->session_key ] = $this->items;
+        session_write_close(); // Paksa tulis data ke disk agar persisten pada request REST API / exit prematur
     }
 
     public function add_item( int $product_id, int $quantity = 1, int $variation_id = 0, array $data = [] ): void {
