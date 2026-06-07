@@ -163,7 +163,7 @@ margin: 0 0 12px 0;
 }
 /* Aksi Pembelian & Selektor Kuantitas */
 .owwc-product-actions-wrap {
-    padding-top: 20px;
+    padding-top: 12px;
     border-top: 1px solid var(--owwc-border);
 }
 .owwc-qty-wrapper {
@@ -234,7 +234,7 @@ width: 48px;
 /* Kelompok Tombol Eksternal / Marketplace / WhatsApp */
 .owwc-external-buttons-group { display: flex; gap: 12px; width: 100%; }
 /* Status Stok */
-.owwc-stock-status-wrap { margin-top: 16px; }
+.owwc-stock-status-wrap { margin-top: 10px; }
 .owwc-stock-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; }
 .owwc-stock-status svg { flex-shrink: 0; }
 .owwc-stock-status--in-stock { color: var(--owwc-success); }
