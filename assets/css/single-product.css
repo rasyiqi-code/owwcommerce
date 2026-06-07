@@ -326,6 +326,7 @@
     padding: 0;
     background: transparent;
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .owwc-qty-input::-webkit-outer-spin-button,
