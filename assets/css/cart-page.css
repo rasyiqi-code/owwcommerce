@@ -201,49 +201,17 @@ color: var(--owwc-text-muted);
     margin-bottom: var(--owwc-space-lg);
 }
 
-.owwc-table {
-width: 100%;
-    border-collapse: collapse;
-    min-width: 800px;
+.owwc-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--owwc-radius-md);
+    border: 1px solid var(--owwc-border);
+    margin-bottom: var(--owwc-space-xl);
 }
-
-.owwc-table thead {
-background: var(--header-bg);
-    border-bottom: 2px solid #f0f0f0;
-}
-
-.owwc-table th {
-padding: 12px 15px;
-    font-size: 11px;
-    color: #888;
-    font-weight: 800;
-    text-align: left;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.owwc-table tr {
-border-bottom: 1px solid #f9f9f9;
-}
-
-.owwc-table td {
-padding: 12px 15px;
-    font-size: 13px;
-    color: #444;
-    vertical-align: middle;
-    white-space: nowrap;
-}
-
-.owwc-table .id-col {
-width: 50px;
-    font-weight: 800;
-    color: #000;
-}
-
-.owwc-table th:last-child,
-.owwc-table td:last-child {
-padding-right: 30px;
-    text-align: right;
+.owwc-table-responsive .owwc-table {
+    min-width: 700px;
+    margin-bottom: 0;
 }
 
 .owwc-add-to-cart-form {

@@ -350,18 +350,20 @@ class OwwCommerceCart {
         });
 
         return `
-            <table class="owwc-table">
-                <thead>
-                    <tr>
-                        <th colspan="2">Produk</th>
-                        <th class="owwc-cart-col-price">Harga</th>
-                        <th class="owwc-cart-col-qty">Qty</th>
-                        <th class="owwc-cart-col-subtotal">Subtotal</th>
-                        <th class="owwc-cart-col-remove"></th>
-                    </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-            </table>`;
+            <div class="owwc-table-responsive">
+                <table class="owwc-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Produk</th>
+                            <th class="owwc-cart-col-price">Harga</th>
+                            <th class="owwc-cart-col-qty">Qty</th>
+                            <th class="owwc-cart-col-subtotal">Subtotal</th>
+                            <th class="owwc-cart-col-remove"></th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>`;
     }
 
     /**
