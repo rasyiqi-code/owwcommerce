@@ -616,10 +616,81 @@
     font-weight: 500;
 }
 
+/* Sticky Mobile Action Bar */
+.owwc-mobile-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--owwc-border);
+    padding: 12px 20px;
+    display: none; /* Sembunyikan secara default di desktop */
+    z-index: 1000;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.owwc-mobile-price {
+    display: flex;
+    flex-direction: column;
+}
+
+.owwc-mobile-price-label {
+    font-size: 10px;
+    color: var(--owwc-text-muted);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.owwc-mobile-price-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--owwc-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.owwc-mobile-price-value del {
+    font-size: 12px;
+    color: var(--owwc-text-light);
+    font-weight: 400;
+    text-decoration: line-through;
+}
+
+.owwc-mobile-price-value ins {
+    text-decoration: none;
+}
+
+.owwc-mobile-buy-btn {
+    height: 40px;
+    padding: 0 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: var(--owwc-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+}
+
 /* ==============================================================
    RESPONSIVENESS (MOBILE FIRST REFINEMENTS)
    ============================================================== */
 @media (max-width: 768px) {
+    .owwc-mobile-action-bar {
+        display: flex;
+    }
+
+    .owwc-single-product {
+        padding-bottom: 80px; /* Beri ruang agar tidak tertutup sticky bar */
+    }
+
     .owwc-single-product-layout {
         grid-template-columns: 1fr;
         gap: 24px;
