@@ -46,6 +46,21 @@ class Cart {
         }
     }
 
+    /**
+     * Memperbarui kuantitas item di keranjang secara absolut.
+     * Jika kuantitas kurang dari atau sama dengan 0, item akan dihapus.
+     */
+    public function update_item( string $key, int $quantity ): void {
+        if ( isset( $this->items[ $key ] ) ) {
+            if ( $quantity <= 0 ) {
+                $this->remove_item( $key );
+            } else {
+                $this->items[ $key ]['qty'] = $quantity;
+                $this->save_cart();
+            }
+        }
+    }
+
     public function clear(): void {
         $this->items = [];
         $this->save_cart();

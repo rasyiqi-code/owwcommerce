@@ -224,6 +224,17 @@ class Plugin {
                 );
             }
 
+            // Cek khusus untuk single product script (hanya di-load di halaman detail produk virtual)
+            if ( get_query_var( 'owwc_product_slug' ) ) {
+                wp_enqueue_script(
+                    'owwc-single-product-app',
+                    OWWCOMMERCE_PLUGIN_URL . 'assets/js/single-product.js',
+                    ['owwc-cart-engine'],
+                    OWWCOMMERCE_VERSION,
+                    true
+                );
+            }
+
             // Cek khusus untuk checkout script (hanya di-load jika ada shortcode checkout)
             global $post;
             if ( $post && strpos( $post->post_content, '[owwcommerce_checkout]' ) !== false ) {

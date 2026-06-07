@@ -65,10 +65,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     <thead>
                         <tr>
                             <th style="width: 10%;">Gambar</th>
-                            <th style="width: 40%;">Product Name</th>
-                            <th style="width: 18%;">Price (Rp)</th>
-                            <th style="width: 15%;">Stock</th>
-                            <th style="width: 17%; text-align: right;">Action</th>
+                            <th style="width: 40%;">Nama Produk</th>
+                            <th style="width: 18%;">Harga (Rp)</th>
+                            <th style="width: 15%;">Stok</th>
+                            <th style="width: 17%; text-align: right;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,13 +86,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td style="vertical-align: middle;">${Number(p.price).toLocaleString()}</td>
                         <td style="vertical-align: middle;">
                             <span class="owwc-badge ${p.stock_qty > 0 ? 'completed' : 'failed'}">
-                                ${p.stock_qty > 0 ? p.stock_qty + ' In Stock' : 'Out of Stock'}
+                                ${p.stock_qty > 0 ? p.stock_qty + ' Tersedia' : 'Habis'}
                             </span>
                         </td>
                         <td style="text-align: right; vertical-align: middle;">
-                            <a href="${escapeHTML(owwcSettings.homeUrl)}${escapeHTML(owwcSettings.productBase)}/${escapeHTML(p.slug)}" target="_blank" class="owwc-admin-btn" style="padding: 6px 12px; font-size: 12px; margin-right: 4px; text-decoration:none; background:#2271b1; color:white;">View</a>
+                            <a href="${escapeHTML(owwcSettings.homeUrl)}${escapeHTML(owwcSettings.productBase)}/${escapeHTML(p.slug)}" target="_blank" class="owwc-admin-btn" style="padding: 6px 12px; font-size: 12px; margin-right: 4px; text-decoration:none; background:#2271b1; color:white;">Lihat</a>
                             <a href="?page=owwc-products&action=edit&id=${p.id}" class="owwc-admin-btn owwc-btn-secondary" style="padding: 6px 12px; font-size: 12px; margin-right: 4px; text-decoration:none;">Edit</a>
-                            <button class="owwc-admin-btn owwc-admin-btn-danger owwc-btn-delete" data-id="${p.id}" style="padding: 6px 12px; font-size: 12px;">Delete</button>
+                            <button class="owwc-admin-btn owwc-admin-btn-danger owwc-btn-delete" data-id="${p.id}" style="padding: 6px 12px; font-size: 12px;">Hapus</button>
                         </td>
                     </tr>
                 `;
@@ -129,11 +129,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             document.querySelectorAll('.owwc-btn-delete').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
+                btn.addEventListener('click', (e) => {
                     const id = e.target.getAttribute('data-id');
-                    if (confirm('Are you sure you want to delete this product?')) {
+                    owwcConfirm('Apakah Anda yakin ingin menghapus produk ini?', async () => {
                         await deleteProduct(id);
-                    }
+                    });
                 });
             });
         }
@@ -147,9 +147,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         'Content-Type': 'application/json'
                     }
                 });
-                if (res.ok) fetchProducts();
+                if (res.ok) {
+                    fetchProducts();
+                } else {
+                    owwcAlert('Gagal menghapus produk.');
+                }
             } catch (e) {
-                alert('Failed to delete product.');
+                owwcAlert('Gagal menghapus produk.');
             }
         }
 
@@ -206,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
 
                     if (updateData.length === 0) {
-                        alert('Tidak ada data produk yang ditemukan untuk diperbarui.');
+                        owwcAlert('Tidak ada data produk yang ditemukan untuk diperbarui.');
                         bulkStockBtn.disabled = false;
                         bulkStockBtn.textContent = 'Simpan Stok';
                         return;
@@ -226,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
 
                         if (res.ok) {
-                            alert('Stok berhasil diperbarui secara massal!');
+                            owwcAlert('Stok berhasil diperbarui secara massal!');
                             isBulkMode = false;
                             bulkStockBtn.textContent = 'Update Stok Massal';
                             bulkStockBtn.classList.add('owwc-btn-secondary');
@@ -237,12 +241,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             fetchProducts(currentPage);
                         } else {
-                            alert('Gagal memperbarui stok.');
+                            owwcAlert('Gagal memperbarui stok.');
                             bulkStockBtn.disabled = false;
                             bulkStockBtn.textContent = 'Simpan Stok';
                         }
                     } catch (e) {
-                        alert('Terjadi kesalahan jaringan.');
+                        owwcAlert('Terjadi kesalahan jaringan.');
                         bulkStockBtn.disabled = false;
                         bulkStockBtn.textContent = 'Simpan Stok';
                     }
@@ -256,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 e.preventDefault();
                 const value = setAllInput.value;
                 if (value === '') {
-                    alert('Masukkan nilai stok terlebih dahulu.');
+                    owwcAlert('Masukkan nilai stok terlebih dahulu.');
                     return;
                 }
 
@@ -372,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 selectedAttributes.push({ id: attrId, name: attrName, terms: terms });
                 renderSelectedAttributes();
-            } catch (e) { alert("Gagal memuat terms."); }
+            } catch (e) { owwcAlert("Gagal memuat terms."); }
         });
 
         function renderSelectedAttributes() {
@@ -419,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (groups.length === 0) {
-                alert("Pilih setidaknya satu atribut dan satu nilai.");
+                owwcAlert("Pilih setidaknya satu atribut dan satu nilai.");
                 return;
             }
 
@@ -427,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const combinations = groups.reduce((a, b) => a.flatMap(d => b.terms.map(e => ({ ...d, [b.id]: e }))), [{}]);
 
             if (combinations.length > 50) {
-                alert(`Kombinasi variasi terlalu banyak (${combinations.length}). Maksimal kombinasi yang diperbolehkan adalah 50 untuk menjaga performa halaman. Harap kurangi jumlah atribut atau nilai yang dicentang.`);
+                owwcAlert(`Kombinasi variasi terlalu banyak (${combinations.length}). Maksimal kombinasi yang diperbolehkan adalah 50 untuk menjaga performa halaman. Harap kurangi jumlah atribut atau nilai yang dicentang.`);
                 return;
             }
 
@@ -578,7 +582,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 } catch (e) {
                     console.error("Gagal memuat data produk:", e);
-                    alert('Gagal memuat data produk.');
+                    owwcAlert('Gagal memuat data produk.');
                     submitBtn.innerText = 'Update Produk';
                     submitBtn.disabled = false;
                 }
@@ -651,12 +655,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         window.location.href = '?page=owwc-products';
                     }, 1000);
                 } else {
-                    alert(pId ? 'Error update produk.' : 'Error menambah produk.');
+                    owwcAlert(pId ? 'Gagal memperbarui produk.' : 'Gagal menambahkan produk.');
                     submitBtn.disabled = false;
                     submitBtn.innerText = pId ? 'Update Produk' : 'Simpan Produk';
                 }
             } catch (error) {
-                alert('Terjadi kesalahan jaringan.');
+                owwcAlert('Terjadi kesalahan jaringan.');
                 submitBtn.disabled = false;
                 submitBtn.innerText = pId ? 'Update Produk' : 'Simpan Produk';
             }

@@ -132,6 +132,40 @@ class OwwCommerceCart {
         }
     }
 
+    /**
+     * Memperbarui kuantitas item keranjang via API PUT.
+     */
+    async updateCartItem(key, qty) {
+        try {
+            const contentBox = document.getElementById('owwc-cart-content');
+            if (contentBox) contentBox.style.opacity = '0.5';
+
+            const res = await fetch(`${this.apiBase}/${key}`, {
+                method: 'PUT',
+                headers: {
+                    'X-WP-Nonce': this.nonce,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ qty })
+            });
+            const data = await res.json();
+            this.refreshCartUI(data);
+
+            if (contentBox) contentBox.style.opacity = '1';
+
+            if (data.success === false) {
+                this.showToast('Gagal memperbarui kuantitas.', 'error');
+            }
+            return data;
+        } catch (e) {
+            console.error('Failed to update cart quantity:', e);
+            this.showToast('Terjadi kesalahan jaringan.', 'error');
+            const contentBox = document.getElementById('owwc-cart-content');
+            if (contentBox) contentBox.style.opacity = '1';
+        }
+    }
+
+
     /* ==============================================================
        UI UPDATE
        ============================================================== */
@@ -202,6 +236,48 @@ class OwwCommerceCart {
                 removeBtn.style.pointerEvents = 'none';
                 await this.removeFromCart(key);
             }
+
+            // === Tombol Minus Qty di Cart ===
+            const minusBtn = e.target.closest('.owwc-cart-qty-minus');
+            if (minusBtn) {
+                e.preventDefault();
+                const key = minusBtn.dataset.cartKey;
+                const input = minusBtn.parentNode.querySelector('.owwc-cart-qty-input');
+                let currentVal = parseInt(input.value, 10) || 1;
+                if (currentVal > 1) {
+                    currentVal--;
+                    input.value = currentVal;
+                    await this.updateCartItem(key, currentVal);
+                } else {
+                    if (confirm('Hapus produk ini dari keranjang?')) {
+                        await this.removeFromCart(key);
+                    }
+                }
+            }
+
+            // === Tombol Plus Qty di Cart ===
+            const plusBtn = e.target.closest('.owwc-cart-qty-plus');
+            if (plusBtn) {
+                e.preventDefault();
+                const key = plusBtn.dataset.cartKey;
+                const input = plusBtn.parentNode.querySelector('.owwc-cart-qty-input');
+                let currentVal = parseInt(input.value, 10) || 1;
+                currentVal++;
+                input.value = currentVal;
+                await this.updateCartItem(key, currentVal);
+            }
+        });
+
+        // === Input Manual Qty di Cart ===
+        document.body.addEventListener('change', async (e) => {
+            const input = e.target.closest('.owwc-cart-qty-input');
+            if (input) {
+                const key = input.dataset.cartKey;
+                let qty = parseInt(input.value, 10) || 1;
+                if (qty < 1) qty = 1;
+                input.value = qty;
+                await this.updateCartItem(key, qty);
+            }
         });
     }
 
@@ -255,7 +331,13 @@ class OwwCommerceCart {
                     </td>
                     <td class="owwc-cart-col-name">${item.title}</td>
                     <td class="owwc-cart-col-price">${this.formatPrice(item.price)}</td>
-                    <td class="owwc-cart-col-qty">${item.qty}x</td>
+                    <td class="owwc-cart-col-qty">
+                        <div class="owwc-cart-qty-wrapper">
+                            <button type="button" class="owwc-cart-qty-btn owwc-cart-qty-minus" data-cart-key="${item.key}">&minus;</button>
+                            <input type="number" class="owwc-cart-qty-input" data-cart-key="${item.key}" value="${item.qty}" min="1" aria-label="Jumlah untuk ${item.title}">
+                            <button type="button" class="owwc-cart-qty-btn owwc-cart-qty-plus" data-cart-key="${item.key}">&plus;</button>
+                        </div>
+                    </td>
                     <td class="owwc-cart-col-subtotal">${this.formatPrice(item.price * item.qty)}</td>
                     <td class="owwc-cart-col-remove">
                         <button class="owwc-cart-item-remove"

@@ -264,10 +264,19 @@ class Menu {
                 OWWCOMMERCE_VERSION
             );
 
+            // Script Global Admin (Modal Custom)
+            wp_enqueue_script(
+                'owwc-admin-global',
+                OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-global.js',
+                [],
+                OWWCOMMERCE_VERSION,
+                true
+            );
+
             wp_enqueue_script(
                 'owwc-admin-products',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-products.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -284,7 +293,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-categories',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-categories.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -300,7 +309,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-orders',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-orders.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -318,7 +327,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-dashboard',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-dashboard.js',
-                ['chart-js'],
+                ['chart-js', 'owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -336,7 +345,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-coupons',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-coupons.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -351,7 +360,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-migration',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-migration.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -366,7 +375,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-attributes',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-attributes.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -381,7 +390,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-reviews',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-reviews.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -396,7 +405,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-settings',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-settings.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -405,7 +414,7 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-migration',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-migration.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
@@ -418,12 +427,13 @@ class Menu {
             wp_enqueue_script(
                 'owwc-admin-import',
                 OWWCOMMERCE_PLUGIN_URL . 'assets/js/admin-import.js',
-                [],
+                ['owwc-admin-global'],
                 OWWCOMMERCE_VERSION,
                 true
             );
         }
     }
+
 
     /**
      * Render Halaman Reviews

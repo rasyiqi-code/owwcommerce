@@ -41,10 +41,15 @@ class CartController extends WP_REST_Controller {
             ],
         ] );
 
-        register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
+        register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<id>[a-zA-Z0-9_-]+)', [
             [
                 'methods'             => WP_REST_Server::DELETABLE,
                 'callback'            => [ $this, 'remove_from_cart' ],
+                'permission_callback' => '__return_true', // Public
+            ],
+            [
+                'methods'             => WP_REST_Server::EDITABLE, // PUT atau PATCH
+                'callback'            => [ $this, 'update_cart_item' ],
                 'permission_callback' => '__return_true', // Public
             ],
         ] );
@@ -120,6 +125,18 @@ class CartController extends WP_REST_Controller {
     public function remove_from_cart( $request ) {
         $key = $request['id']; // Bisa berupa string "1_2" atau numeric "1"
         $this->cart->remove_item( $key );
+        return $this->get_cart( $request );
+    }
+
+    /**
+     * Memperbarui kuantitas item di keranjang belanja melalui API.
+     */
+    public function update_cart_item( $request ) {
+        $key = $request['id'];
+        $data = $request->get_json_params() ?: $request->get_params();
+        $qty = isset( $data['qty'] ) ? (int) $data['qty'] : 1;
+
+        $this->cart->update_item( $key, $qty );
         return $this->get_cart( $request );
     }
 

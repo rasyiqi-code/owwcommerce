@@ -259,23 +259,3 @@ if ( $user_id ) {
     </div>
 </div>
 
-<!-- Script untuk toggle deskripsi pembayaran -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
-    paymentRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            // Sembunyikan semua payment box
-            document.querySelectorAll('.owwc-payment-box').forEach(box => box.style.display = 'none');
-            // Tampilkan yang sesuai pilihan
-            const targetBox = document.querySelector('.payment_method_' + this.value);
-            if (targetBox) targetBox.style.display = 'block';
-        });
-    });
-    // Auto-pilih opsi pertama
-    if (paymentRadios.length > 0) {
-        paymentRadios[0].checked = true;
-        paymentRadios[0].dispatchEvent(new Event('change'));
-    }
-});
-</script>

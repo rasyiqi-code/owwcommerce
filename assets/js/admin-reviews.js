@@ -86,36 +86,36 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (approveRes.ok) {
                             loadReviews();
                         } else {
-                            alert('Gagal menyetujui ulasan.');
+                            owwcAlert('Gagal menyetujui ulasan.');
                         }
                     } catch (e) {
                         console.error(e);
-                        alert('Terjadi kesalahan jaringan.');
+                        owwcAlert('Terjadi kesalahan jaringan.');
                     }
                 });
             });
 
             // Bind delete events
             document.querySelectorAll('.btn-delete-review').forEach(btn => {
-                btn.addEventListener('click', async function () {
+                btn.addEventListener('click', function () {
                     const id = this.getAttribute('data-id');
-                    if (!confirm('Apakah Anda yakin ingin menghapus ulasan ini?')) return;
+                    owwcConfirm('Apakah Anda yakin ingin menghapus ulasan ini?', async () => {
+                        try {
+                            const deleteRes = await fetch(`${owwcSettings.restUrl}owwc/v1/reviews/${id}`, {
+                                method: 'DELETE',
+                                headers: { 'X-WP-Nonce': owwcSettings.nonce }
+                            });
 
-                    try {
-                        const deleteRes = await fetch(`${owwcSettings.restUrl}owwc/v1/reviews/${id}`, {
-                            method: 'DELETE',
-                            headers: { 'X-WP-Nonce': owwcSettings.nonce }
-                        });
-
-                        if (deleteRes.ok) {
-                            loadReviews();
-                        } else {
-                            alert('Gagal menghapus ulasan.');
+                            if (deleteRes.ok) {
+                                loadReviews();
+                            } else {
+                                owwcAlert('Gagal menghapus ulasan.');
+                            }
+                        } catch (e) {
+                            console.error(e);
+                            owwcAlert('Terjadi kesalahan jaringan.');
                         }
-                    } catch (e) {
-                        console.error(e);
-                        alert('Terjadi kesalahan jaringan.');
-                    }
+                    });
                 });
             });
 

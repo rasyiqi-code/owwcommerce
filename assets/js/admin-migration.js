@@ -85,27 +85,27 @@ document.addEventListener('DOMContentLoaded', function () {
         addLog(`Migrasi ${type} selesai!`, 'success');
     }
 
-    startBtn.onclick = async function () {
-        if (!confirm('Apakah Anda yakin ingin memulai migrasi? Proses ini akan memindahkan data produk and pesanan ke OwwCommerce.')) return;
+    startBtn.onclick = function () {
+        owwcConfirm('Apakah Anda yakin ingin memulai migrasi? Proses ini akan memindahkan data produk dan pesanan ke OwwCommerce.', async () => {
+            startBtn.disabled = true;
+            progressWrap.style.display = 'block';
+            logCard.style.display = 'block';
+            addLog('Memulai mesin migrasi...');
 
-        startBtn.disabled = true;
-        progressWrap.style.display = 'block';
-        logCard.style.display = 'block';
-        addLog('Memulai mesin migrasi...');
+            // Step 1: Products & Categories
+            progressBar.style.width = '0%';
+            await runMigration('products', totalProducts);
 
-        // Step 1: Products & Categories
-        progressBar.style.width = '0%';
-        await runMigration('products', totalProducts);
+            // Step 2: Orders & Customers
+            progressBar.style.width = '0%';
+            await runMigration('orders', totalOrders);
 
-        // Step 2: Orders & Customers
-        progressBar.style.width = '0%';
-        await runMigration('orders', totalOrders);
+            addLog('SELURUH PROSES MIGRASI SELESAI!', 'success');
+            progressText.innerText = 'Migrasi Selesai!';
+            startBtn.innerText = 'Migrasi Berhasil';
 
-        addLog('SELURUH PROSES MIGRASI SELESAI!', 'success');
-        progressText.innerText = 'Migrasi Selesai!';
-        startBtn.innerText = 'Migrasi Berhasil';
-
-        alert('Migrasi data WooCommerce berhasil diselesaikan!');
+            owwcAlert('Migrasi data WooCommerce berhasil diselesaikan!');
+        });
     };
 
     fetchStats();

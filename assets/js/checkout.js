@@ -21,6 +21,7 @@ class OwwCommerceCheckout {
     init() {
         this.bindEvents();
         this.loadCartReview();
+        this.setupPaymentMethodToggle();
     }
 
     async loadCartReview() {
@@ -252,6 +253,28 @@ class OwwCommerceCheckout {
         if (this.errorBox) {
             this.errorBox.innerHTML = '';
             this.errorBox.style.display = 'none';
+        }
+    }
+
+    /**
+     * Mengelola penampilan info/deskripsi metode pembayaran terpilih.
+     */
+    setupPaymentMethodToggle() {
+        const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+        if (!paymentRadios.length) return;
+
+        paymentRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.owwc-payment-box').forEach(box => box.style.display = 'none');
+                const targetBox = document.querySelector('.payment_method_' + this.value);
+                if (targetBox) targetBox.style.display = 'block';
+            });
+        });
+        
+        const checkedRadio = document.querySelector('input[name="payment_method"]:checked') || paymentRadios[0];
+        if (checkedRadio) {
+            checkedRadio.checked = true;
+            checkedRadio.dispatchEvent(new Event('change'));
         }
     }
 }
