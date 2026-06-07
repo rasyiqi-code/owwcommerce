@@ -5,14 +5,13 @@
    ============================================================== */
 .owwc-btn,
 .owwc-add-to-cart-btn {
-appearance: none;
+    appearance: none;
     background: var(--owwc-primary);
-    /* Teks putih di atas background gold untuk kontras */
     color: #fff;
     border: none;
-    border-radius: var(--owwc-radius-sm);
-    padding: 12px 24px;
-    font-size: var(--owwc-font-size-sm);
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: var(--owwc-transition);
@@ -124,24 +123,6 @@ width: 100%;
     font-weight: 600;
     color: var(--owwc-text-main);
     margin-bottom: 4px;
-}
-
-.owwc-btn {
-    padding: 10px 18px;
-    font-size: 13px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #111;
-    color: #fff;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: background 0.2s, transform 0.15s;
-}
-
-.owwc-btn:hover {
-background: var(--owwc-primary);
 }
 
 .owwc-btn-link {

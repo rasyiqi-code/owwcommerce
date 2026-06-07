@@ -35,10 +35,10 @@
     --owwc-warning: #F59E0B;
 
     /* Surface & background — Tetap Light Mode */
-    --owwc-bg: #F9FAFB;
+    --owwc-bg: #FCFCFD;
     --owwc-surface: #FFFFFF;
-    --owwc-border: #E5E7EB;
-    --owwc-border-hover: #D1D5DB;
+    --owwc-border: #F1F5F9;
+    --owwc-border-hover: #E2E8F0;
 
     /* Tipografi — Hitam/gelap untuk kontras di light mode */
     --owwc-text-main: #111827;
