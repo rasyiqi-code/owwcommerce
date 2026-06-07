@@ -2,6 +2,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('#owwc-coupons-table tbody');
     const form = document.getElementById('owwc-coupon-form');
 
+    // Helper untuk mencegah XSS
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return '';
+        return String(str).replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
     function fetchCoupons() {
         fetch(`${owwcSettings.restUrl}owwc/v1/coupons`, {
             headers: { 'X-WP-Nonce': owwcSettings.nonce }
@@ -20,14 +34,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tableBody.innerHTML = coupons.map(c => `
             <tr>
-                <td><strong>${c.code}</strong></td>
+                <td><strong>${escapeHTML(c.code)}</strong></td>
                 <td>${c.type === 'percent' ? 'Persentase' : 'Potongan Tetap'}</td>
-                <td>${c.type === 'percent' ? c.amount + '%' : 'Rp ' + parseInt(c.amount).toLocaleString()}</td>
-                <td>${c.usage_limit || '∞'}</td>
-                <td>${c.usage_count}</td>
-                <td>${c.expiry_date ? new Date(c.expiry_date).toLocaleDateString() : '-'}</td>
+                <td>${c.type === 'percent' ? escapeHTML(c.amount) + '%' : 'Rp ' + parseInt(c.amount).toLocaleString()}</td>
+                <td>${escapeHTML(c.usage_limit) || '∞'}</td>
+                <td>${escapeHTML(c.usage_count)}</td>
+                <td>${c.expiry_date ? escapeHTML(new Date(c.expiry_date).toLocaleDateString()) : '-'}</td>
                 <td>
-                    <button class="owwc-delete-coupon owwc-admin-btn" style="background: #ef4444; padding: 4px 8px;" data-id="${c.id}">
+                    <button class="owwc-delete-coupon owwc-admin-btn" style="background: #ef4444; padding: 4px 8px;" data-id="${escapeHTML(c.id)}">
                         <span class="dashicons dashicons-trash"></span>
                     </button>
                 </td>
