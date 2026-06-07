@@ -107,8 +107,17 @@ class OrderRepository {
      */
     public function get_all( int $limit = 50, int $offset = 0 ): array {
         global $wpdb;
+        $table_customers = $wpdb->prefix . 'oww_customers';
         $results = $wpdb->get_results(
-            $wpdb->prepare( "SELECT * FROM {$this->table_orders} ORDER BY created_at DESC LIMIT %d OFFSET %d", $limit, $offset ),
+            $wpdb->prepare( 
+                "SELECT o.*, CONCAT(c.first_name, ' ', c.last_name) AS customer_name 
+                 FROM {$this->table_orders} o 
+                 LEFT JOIN {$table_customers} c ON o.customer_id = c.id 
+                 ORDER BY o.created_at DESC 
+                 LIMIT %d OFFSET %d", 
+                $limit, 
+                $offset 
+            ),
             ARRAY_A
         );
 
@@ -162,13 +171,14 @@ class OrderRepository {
             $format[] = '%s';
         }
 
-        return (bool) $wpdb->update(
+        $result = $wpdb->update(
             $this->table_orders,
             $data,
             [ 'id' => $id ],
             $format,
             [ '%d' ]
         );
+        return $result !== false;
     }
 
     /**

@@ -152,9 +152,9 @@ $shipping_address = $order->get_shipping_array();
         <div class="owwc-admin-sidebar">
             <div class="owwc-admin-card">
                 <h2 style="font-size: 16px; margin-bottom: 15px;">Pelanggan</h2>
-                <p style="margin: 0 0 10px 0;"><strong>Nama:</strong> <?php echo $cust_name; ?></p>
-                <p style="margin: 0 0 10px 0;"><strong>Email:</strong> <a href="mailto:<?php echo $cust_email; ?>"><?php echo $cust_email; ?></a></p>
-                <p style="margin: 0 0 15px 0;"><strong>Telp:</strong> <?php echo $cust_phone; ?></p>
+                <p style="margin: 0 0 10px 0;"><strong>Nama:</strong> <?php echo esc_html( $cust_name ); ?></p>
+                <p style="margin: 0 0 10px 0;"><strong>Email:</strong> <a href="mailto:<?php echo esc_attr( $cust_email ); ?>"><?php echo esc_html( $cust_email ); ?></a></p>
+                <p style="margin: 0 0 15px 0;"><strong>Telp:</strong> <?php echo esc_html( $cust_phone ); ?></p>
                 <div style="padding-top: 15px; border-top: 1px solid var(--owwc-admin-border);">
                     <a href="?page=owwc-customers" style="font-size: 13px; text-decoration: none; color: var(--owwc-admin-primary);">Lihat Profil Pelanggan &rarr;</a>
                 </div>

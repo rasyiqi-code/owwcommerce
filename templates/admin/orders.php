@@ -1,9 +1,7 @@
 <?php
 use OwwCommerce\Repositories\OrderRepository;
-use OwwCommerce\Repositories\CustomerRepository;
 
 $order_repo = new OrderRepository();
-$customer_repo = new CustomerRepository();
 
 // Ambil 20 order terbaru
 $orders = $order_repo->get_all( 20, 0 );
@@ -55,8 +53,7 @@ function owwc_get_status_class( $status ) {
                 </thead>
                 <tbody>
                     <?php foreach ( $orders as $order ) : 
-                        $customer = $customer_repo->find( $order->customer_id );
-                        $cust_name = $customer ? esc_html( $customer['first_name'] . ' ' . $customer['last_name'] ) : 'Tamu';
+                        $cust_name = $order->customer_name ?: 'Tamu';
                         $date_fmt = wp_date( 'd M Y, H:i', strtotime( $order->created_at ) );
                     ?>
                         <tr>
