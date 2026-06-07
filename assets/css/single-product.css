@@ -63,7 +63,6 @@
     border: 1px solid var(--owwc-border);
     border-radius: var(--owwc-radius-md);
     overflow: hidden;
-    aspect-ratio: 1 / 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -72,9 +71,9 @@
 }
 
 .owwc-main-image-wrap img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    width: 100%;
+    height: auto;
+    display: block;
     transition: transform 0.3s ease;
 }
 

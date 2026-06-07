@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     upsellList.innerHTML = data.upsells.map(p => `
                         <div class="owwc-product-card owwc-recommendation-card">
                             <a href="${owwcSettings.homeUrl}${owwcSettings.productBase}/${p.slug}" style="text-decoration: none; color: inherit;">
-                                <img src="${p.image_url || ''}" style="width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 4px; margin-bottom: 10px;">
+                                <img src="${p.image_url || ''}" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px; display: block;">
                                 <h3 style="font-size: 14px; margin-bottom: 8px;">${p.title}</h3>
                                 <div class="owwc-product-price" style="font-weight: 600; color: var(--owwc-primary);">
                                     ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p.price).replace('IDR', 'Rp')}
