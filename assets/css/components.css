@@ -4,18 +4,22 @@
    TOAST NOTIFICATIONS
    ============================================================== */
 .owwc-toast-container {
-position: fixed;
+    position: fixed;
     top: var(--owwc-space-lg);
-    right: var(--owwc-space-lg);
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--owwc-space-sm);
     z-index: 10000;
     pointer-events: none;
+    width: 90%;
+    max-width: 360px;
 }
 
 .owwc-toast {
-/* Surface terang + blur untuk toast */
+    /* Surface terang + blur untuk toast */
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -29,30 +33,30 @@ position: fixed;
     align-items: center;
     gap: var(--owwc-space-sm);
     pointer-events: auto;
-    transform: translateX(120%);
+    transform: translateY(-50px);
     opacity: 0;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-    max-width: 360px;
+    width: 100%;
 }
 
 .owwc-toast.owwc-show {
-transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
 }
 
 .owwc-toast.success {
-border-left-color: var(--owwc-success);
+    border-left-color: var(--owwc-success);
 }
 
 .owwc-toast.error {
-border-left-color: var(--owwc-danger);
+    border-left-color: var(--owwc-danger);
 }
 
 /* ==============================================================
    LOADING SKELETON
    ============================================================== */
 .owwc-skeleton {
-/* Skeleton loading shimmer untuk light mode */
+    /* Skeleton loading shimmer untuk light mode */
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: owwc-shimmer 1.5s ease-in-out infinite;
@@ -60,30 +64,30 @@ border-left-color: var(--owwc-danger);
 }
 
 .owwc-skeleton--text {
-height: 14px;
+    height: 14px;
     margin-bottom: 10px;
     width: 80%;
 }
 
 .owwc-skeleton--text-sm {
-height: 12px;
+    height: 12px;
     margin-bottom: 8px;
     width: 60%;
 }
 
 .owwc-skeleton--box {
-height: 60px;
+    height: 60px;
     width: 100%;
 }
 
 .owwc-skeleton--circle {
-width: 48px;
+    width: 48px;
     height: 48px;
     border-radius: 50%;
 }
 
 @keyframes owwc-shimmer {
-0% {
+    0% {
         background-position: 200% 0;
     }
 
@@ -93,7 +97,7 @@ width: 48px;
 }
 
 @keyframes owwc-spin {
-100% {
+    100% {
         transform: rotate(360deg);
     }
 }
@@ -102,7 +106,7 @@ width: 48px;
    BREADCRUMB
    ============================================================== */
 .owwc-breadcrumb {
-display: flex;
+    display: flex;
     align-items: center;
     gap: var(--owwc-space-sm);
     font-size: var(--owwc-font-size-sm);
@@ -112,22 +116,22 @@ display: flex;
 }
 
 .owwc-breadcrumb a {
-color: var(--owwc-text-muted);
+    color: var(--owwc-text-muted);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .owwc-breadcrumb a:hover {
-color: var(--owwc-primary);
+    color: var(--owwc-primary);
 }
 
 .owwc-breadcrumb .owwc-breadcrumb-sep {
-color: var(--owwc-text-light);
+    color: var(--owwc-text-light);
     user-select: none;
 }
 
 .owwc-breadcrumb .owwc-breadcrumb-current {
-color: var(--owwc-text-main);
+    color: var(--owwc-text-main);
     font-weight: 500;
 }
 
@@ -135,7 +139,7 @@ color: var(--owwc-text-main);
    FLOATING CART
    ============================================================== */
 .owwc-floating-cart-wrapper {
-position: fixed;
+    position: fixed;
     z-index: 9999;
     background: var(--owwc-surface);
     box-shadow: var(--owwc-shadow-xl);
@@ -148,15 +152,15 @@ position: fixed;
 /* Sembunyikan jika di halaman My Account atau Checkout */
 .owwc-my-account-page .owwc-floating-cart-wrapper,
 .owwc-checkout-page .owwc-floating-cart-wrapper {
-display: none !important;
+    display: none !important;
 }
 
 .owwc-floating-cart-wrapper:hover {
-transform: scale(1.08) translateY(-3px);
+    transform: scale(1.08) translateY(-3px);
 }
 
 .owwc-floating-cart-wrapper .owwc-cart-icon-link {
-display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     color: var(--owwc-text-main) !important;
@@ -165,43 +169,43 @@ display: flex;
 
 /* Posisi */
 .owwc-floating-cart-wrapper.bottom-right {
-bottom: 28px;
+    bottom: 28px;
     right: 28px;
 }
 
 .owwc-floating-cart-wrapper.bottom-left {
-bottom: 28px;
+    bottom: 28px;
     left: 28px;
 }
 
 .owwc-floating-cart-wrapper.top-right {
-top: 28px;
+    top: 28px;
     right: 28px;
 }
 
 .owwc-floating-cart-wrapper.top-left {
-top: 28px;
+    top: 28px;
     left: 28px;
 }
 
 /* Varian style */
 .owwc-floating-cart-wrapper.style-1 {
-border-radius: 50%;
+    border-radius: 50%;
     padding: 14px;
 }
 
 .owwc-floating-cart-wrapper.style-2 {
-border-radius: var(--owwc-radius-lg);
+    border-radius: var(--owwc-radius-lg);
     padding: 14px;
 }
 
 .owwc-floating-cart-wrapper.style-3 {
-border-radius: var(--owwc-radius-full);
+    border-radius: var(--owwc-radius-full);
     padding: 14px 24px;
 }
 
 .owwc-floating-cart-wrapper.style-3 .owwc-cart-icon-link::after {
-content: "Keranjang";
+    content: "Keranjang";
     margin-left: 12px;
     font-size: 15px;
     font-weight: 600;
@@ -209,7 +213,7 @@ content: "Keranjang";
 }
 
 .owwc-shop-hero .owwc-breadcrumb {
-justify-content: center;
+    justify-content: center;
     margin-bottom: 10px;
     opacity: 0.8;
 }
@@ -217,7 +221,7 @@ justify-content: center;
 .owwc-shop-hero .owwc-breadcrumb a,
 .owwc-shop-hero .owwc-breadcrumb .owwc-breadcrumb-current,
 .owwc-shop-hero .owwc-breadcrumb .owwc-breadcrumb-sep {
-color: #fff !important;
+    color: #fff !important;
 }
 
 /* Styling Single Product dipindahkan secara modular ke single-product.css */
@@ -225,7 +229,7 @@ color: #fff !important;
 /* --- UI Refactor: Merged Inline CSS --- */
 /* Cart Badge */
 .owwc-cart-icon-link {
-position: relative;
+    position: relative;
     display: inline-flex;
     align-items: center;
     text-decoration: none;
@@ -234,7 +238,7 @@ position: relative;
 }
 
 .owwc-cart-badge {
-position: absolute;
+    position: absolute;
     top: -5px;
     right: -8px;
     background: var(--owwc-primary, #4F46E5);
@@ -251,6 +255,7 @@ position: absolute;
 .owwc-cart-icon-link:hover .owwc-cart-badge {
     transform: scale(1.1);
 }
+
 /* Cart Skeleton Loader */
 .owwc-skeleton-cart-row {
     height: 80px;
@@ -263,11 +268,13 @@ position: absolute;
     padding-bottom: 15px;
     border-bottom: 1px dotted var(--owwc-border);
 }
+
 .owwc-coupon-controls {
     display: flex;
     gap: 8px;
     align-items: center;
 }
+
 .owwc-coupon-input {
     margin-bottom: 0 !important;
     flex: 1;
@@ -275,6 +282,7 @@ position: absolute;
     padding: 8px 12px;
     font-size: 13px;
 }
+
 .owwc-coupon-btn {
     height: 40px;
     padding: 0 16px !important;
@@ -287,13 +295,13 @@ position: absolute;
     font-weight: 600;
     transition: var(--owwc-transition);
 }
+
 .owwc-coupon-btn:hover {
     background: var(--owwc-primary);
 }
+
 .owwc-coupon-msg {
     font-size: 12px;
     margin-top: 5px;
     display: none;
 }
-
-
