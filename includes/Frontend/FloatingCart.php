@@ -31,37 +31,51 @@ class FloatingCart {
             return;
         }
 
-        // 2. Jangan merender jika Page ID My Account/Checkout sudah diset
-        $myaccount_page_id = (int) get_option('owwc_page_myaccount_id');
-        $checkout_page_id  = (int) get_option('owwc_page_checkout_id');
-        
-        if ( is_page($myaccount_page_id) || is_page($checkout_page_id) ) {
-            return;
-        }
+        // 2. Deteksi halaman bawaan OwwCommerce dan Checkout
+        $shop_page_id      = (int) get_option( 'owwc_page_shop_id' );
+        $cart_page_id      = (int) get_option( 'owwc_page_cart_id' );
+        $checkout_page_id  = (int) get_option( 'owwc_page_checkout_id' );
 
-        // 3. Fallback: Cek konten post untuk shortcode
         global $post;
-        if ( is_singular() && $post ) {
-            if ( 
-                strpos( $post->post_content, '[owwcommerce_my_account]' ) !== false ||
-                strpos( $post->post_content, '[owwcommerce_checkout]' )   !== false
-            ) {
-                return;
+        $has_shop_shortcode     = false;
+        $has_cart_shortcode     = false;
+        $has_checkout_shortcode = false;
+        $has_product_shortcode  = false;
+
+        if ( $post && ! empty( $post->post_content ) ) {
+            $content = $post->post_content;
+            if ( strpos( $content, '[owwcommerce_products]' ) !== false || strpos( $content, '[owwcommerce_shop]' ) !== false ) {
+                $has_shop_shortcode = true;
+            }
+            if ( strpos( $content, '[owwcommerce_cart]' ) !== false ) {
+                $has_cart_shortcode = true;
+            }
+            if ( strpos( $content, '[owwcommerce_checkout]' ) !== false ) {
+                $has_checkout_shortcode = true;
+            }
+            if ( strpos( $content, '[owwcommerce_single_product]' ) !== false ) {
+                $has_product_shortcode = true;
             }
         }
 
-        // 4. Fallback Terakhir: Cek URI (misal jika user belum set setting tapi slug-nya /my-account)
-        $request_uri = trim($_SERVER['REQUEST_URI'], '/');
-        // Ambil slug dari ID jika ada
-        $myaccount_slug = $myaccount_page_id ? get_post_field('post_name', $myaccount_page_id) : 'my-account';
-        $checkout_slug  = $checkout_page_id ? get_post_field('post_name', $checkout_page_id) : 'checkout';
+        $is_shop_page           = ( $shop_page_id && is_page( $shop_page_id ) ) || $has_shop_shortcode;
+        $is_cart_page           = ( $cart_page_id && is_page( $cart_page_id ) ) || $has_cart_shortcode;
+        $is_checkout_page       = ( $checkout_page_id && is_page( $checkout_page_id ) ) || $has_checkout_shortcode;
+        $is_single_product_page = get_query_var( 'owwc_product_slug' ) || $has_product_shortcode;
 
-        if ( 
-            strpos($request_uri, $myaccount_slug) === 0 || 
-            strpos($request_uri, $checkout_slug) === 0 ||
-            strpos($request_uri, 'my-account') !== false ||
-            strpos($request_uri, 'checkout') !== false
-        ) {
+        // Cek fallback URI untuk checkout dan keranjang jika halaman belum diset
+        $request_uri   = trim( $_SERVER['REQUEST_URI'], '/' );
+        $checkout_slug = $checkout_page_id ? get_post_field( 'post_name', $checkout_page_id ) : 'checkout';
+        $cart_slug     = $cart_page_id ? get_post_field( 'post_name', $cart_page_id ) : 'keranjang';
+
+        $is_uri_checkout = strpos( $request_uri, $checkout_slug ) === 0 || strpos( $request_uri, 'checkout' ) !== false;
+        $is_uri_cart     = strpos( $request_uri, $cart_slug ) === 0 || strpos( $request_uri, 'keranjang' ) !== false || strpos( $request_uri, 'cart' ) !== false;
+
+        $is_checkout = $is_checkout_page || $is_uri_checkout;
+        $is_cart     = $is_cart_page || $is_uri_cart;
+
+        // Hanya tampilkan di halaman checkout dan toko bawaan OwwCommerce (Shop, Single Product, Cart, Checkout)
+        if ( ! $is_checkout && ! $is_cart && ! $is_shop_page && ! $is_single_product_page ) {
             return;
         }
 
