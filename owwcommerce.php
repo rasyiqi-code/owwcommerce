@@ -20,9 +20,26 @@ define( 'OWWCOMMERCE_VERSION', '1.4.0' );
 define( 'OWWCOMMERCE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OWWCOMMERCE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-// Load Composer autoloader
+// Load Composer autoloader or fallback to custom PSR-4 autoloader
 if ( file_exists( OWWCOMMERCE_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
     require_once OWWCOMMERCE_PLUGIN_DIR . 'vendor/autoload.php';
+} else {
+    spl_autoload_register( function ( $class ) {
+        $prefix = 'OwwCommerce\\';
+        $base_dir = OWWCOMMERCE_PLUGIN_DIR . 'includes/';
+
+        $len = strlen( $prefix );
+        if ( strncmp( $prefix, $class, $len ) !== 0 ) {
+            return;
+        }
+
+        $relative_class = substr( $class, $len );
+        $file = $base_dir . str_replace( '\\', '/', $relative_class ) . '.php';
+
+        if ( file_exists( $file ) ) {
+            require_once $file;
+        }
+    } );
 }
 
 // Activation hook
